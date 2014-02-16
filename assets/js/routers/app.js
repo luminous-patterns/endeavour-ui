@@ -4,7 +4,7 @@ Endeavour.Router.App = Backbone.Router.extend({
         'dashboard':                   'showDashboard',
         'list/:ID':                    'showList',
         'list/:ListID/item/:ID':       'showListItem',
-        'user/:ID':                    'showUserInfo',
+        'user/:ID':                    'showUserProfile',
     },
 
     showDashboard: function() {
@@ -19,7 +19,7 @@ Endeavour.Router.App = Backbone.Router.extend({
         
     },
 
-    showUserInfo: function(ID) {
+    showUserProfile: function(ID) {
         
     },
 
