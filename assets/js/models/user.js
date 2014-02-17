@@ -20,8 +20,8 @@ Endeavour.Model.User = Backbone.Model.extend({
         this.reminders = new Endeavour.Collection.Reminders;
         this.reminders.url = '/users/' + this.id + '/reminders';
 
-        this.calendar = new Endeavour.Collection.Tags;
-        this.calendar.url = '/users/' + this.id + '/calendar';
+        this.timetable = new Endeavour.Collection.Timetable;
+        this.timetable.url = '/users/' + this.id + '/timetable';
 
 
     },
