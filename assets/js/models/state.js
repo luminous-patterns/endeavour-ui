@@ -1,73 +1,81 @@
-Endeavour.Model.State = Backbone.Model.extend({
+$(function() {
 
-    session: null,
+    Endeavour.Model.State = Backbone.Model.extend({
 
-    initialize: function() {
+        session: null,
 
-        this.checkSession();
+        initialize: function() {
 
-        Endeavour.events.on('logout', this.logout, this);
+            this.session = new Endeavour.Model.Session();
 
-        Endeavour.events.on('login-success', this.onLoginSuccess, this);
+            this.checkSession();
 
-    },
+            Endeavour.subscribe('logout', this.logout, this);
 
-    login: function(data) {
+            this.session.on('login:success', this.onLoginSuccess, this);
 
-        var that = this;
+        },
 
-        if (this.isLoggedIn()) {
-            
+        login: function(data) {
+            this.session.login(data);
             return this;
-        }
+        },
 
-        var xhr = Endeavour.post({
-            url:         '/login',
-            data:        data,
-            success:     $.proxy(that.onLoginSuccess, that),
-        });
+        logout: function() {
+            this.session.logout();
+            return this;
+        },
 
-    },
+        checkSession: function() {
 
-    logout: function() {
-
-        var that = this;
-
-        if (!this.isLoggedIn()) {
+            if (sessionKey = this.getSavedSessionKey()) {
+                this.loadSession(sessionKey);
+            }
 
             return this;
-        }
 
-        var xhr = Endeavour.post({
-            url:         '/logout',
-            data:        data,
-            success:     $.proxy(that.onLogoutSuccess, that)
-        });
+        },
 
-    },
+        loadSession: function(sessionKey) {
+            this.session.loginWithKey(sessionKey);
+            return this;
+        },
 
-    onLogoutSuccess: function(jsonResponse) {
+        onLogoutSuccess: function(jsonResponse) {
 
-        var session = this.session = new Endeavour.Models.Session(jsonResponse);
+            // Clear saved session key
+            this.clearSavedSessionKey();
 
-        // unsetCookie
+            Enveavour.publish('session-ended');
 
-        Enveavour.events.trigger('session-ended');
+        },
 
-    },
+        onLoginSuccess: function(jsonResponse) {
+            this.saveSessionKey(this.session);
+            Endeavour.publish('session-set', this.session);
+            console.log(this.getSavedSessionKey());
+            return this;
+        },
 
-    onLoginSuccess: function(jsonResponse) {
+        isLoggedIn: function() {
 
-        var session = this.session = new Endeavour.Models.Session(jsonResponse);
+        },
 
-        // setCookie
+        getSavedSessionKey: function() {
+            return window.localStorage.getItem('sessionKey');
+        },
 
-        Enveavour.events.trigger('session-set', session);
+        saveSessionKey: function(session) {
+            var sessionKey = session.get('Key') + '-' + session.get('UserID');
+            window.localStorage.setItem('sessionKey', sessionKey);
+            return this;
+        },
 
-    },
+        clearSavedSessionKey: function() {
+            window.localStorage.setItem('sessionKey', null);
+            return this;
+        },
 
-    isLoggedIn: function() {
-
-    },
+    });
 
 });
