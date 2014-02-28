@@ -3,6 +3,7 @@ $(function() {
     Endeavour.Model.State = Backbone.Model.extend({
 
         session: null,
+        checkingSession: false,
 
         initialize: function() {
 
@@ -12,7 +13,11 @@ $(function() {
 
             Endeavour.subscribe('logout', this.logout, this);
 
+            Endeavour.subscribe('session:set', function(){console.log('session:set')}, this);
+            Endeavour.subscribe('session:unset', function(){console.log('session:unset')}, this);
+
             this.session.on('login:success', this.onLoginSuccess, this);
+            this.session.on('login:failure', this.onLoginFailure, this);
 
         },
 
@@ -28,15 +33,36 @@ $(function() {
 
         checkSession: function() {
 
-            if (sessionKey = this.getSavedSessionKey()) {
-                this.loadSession(sessionKey);
+            // This function will end up publishing a
+            // session:set or session:unset event when
+            // session exists or does not exist respectively.
+
+            if (this.checkingSession) {
+                console.log('***BE PATIENT*** already checking session...');
+                return this;
             }
+
+            if (this.isLoggedIn()) {
+                Endeavour.publish('session:set', this.session);
+                return this;
+            }
+
+            this.checkingSession = true;
+
+            if (sessionKey = this.getSavedSessionKey()) {
+                return this.loadSession(sessionKey);
+            }
+
+            this.checkingSession = false;
+            
+            Endeavour.publish('session:unset', this.session);
 
             return this;
 
         },
 
         loadSession: function(sessionKey) {
+            this.session.once('login:failure', this.onLoadSessionFailure, this);
             this.session.loginWithKey(sessionKey);
             return this;
         },
@@ -46,19 +72,27 @@ $(function() {
             // Clear saved session key
             this.clearSavedSessionKey();
 
-            Enveavour.publish('session-ended');
+            Enveavour.publish('session:unset');
 
         },
 
         onLoginSuccess: function(jsonResponse) {
+            this.checkingSession = false;
+            this.session.off('login:failure', this.onLoadSessionFailure, this);
             this.saveSessionKey(this.session);
-            Endeavour.publish('session-set', this.session);
-            console.log(this.getSavedSessionKey());
+            console.log('***SESSION START***', this.getSavedSessionKey());
+            Endeavour.publish('session:set', this.session);
             return this;
         },
 
-        isLoggedIn: function() {
+        onLoadSessionFailure: function(jsonResponse) {
+            this.checkingSession = false;
+            Endeavour.publish('session:unset');
+            return this.clearSavedSessionKey();
+        },
 
+        isLoggedIn: function() {
+            return this.session.isLoggedIn();
         },
 
         getSavedSessionKey: function() {
@@ -72,7 +106,7 @@ $(function() {
         },
 
         clearSavedSessionKey: function() {
-            window.localStorage.setItem('sessionKey', null);
+            window.localStorage.setItem('sessionKey', '');
             return this;
         },
 

@@ -11,12 +11,21 @@ $(function() {
             'Revoked':            false, // bool
         },
 
+        created: null,
+
         initialize: function() {
+
+            this.on('change:Created', this.onChangeCreated, this);
 
         },
 
-        isLoggedIn: function() {
+        onChangeCreated: function() {
+            this.created = new Date(this.get('Created'));
+            return this;
+        },
 
+        isLoggedIn: function() {
+            return this.get('ID') ? true : false;
         },
 
         login: function(data) {
@@ -32,6 +41,7 @@ $(function() {
                 url:         '/login',
                 data:        data,
                 success:     $.proxy(that.onLoginSuccess, that),
+                error:       $.proxy(that.onLoginFailure, that),
             });
 
         },
@@ -48,7 +58,8 @@ $(function() {
             var xhr = Endeavour.post({
                 url:         '/logout',
                 data:        data,
-                success:     $.proxy(that.onLogoutSuccess, that)
+                success:     $.proxy(that.onLogoutSuccess, that),
+                error:       $.proxy(that.onLogoutFailure, that),
             });
 
         },
@@ -68,10 +79,22 @@ $(function() {
                 url:         '/sessions/0',
                 data:        data,
                 success:     $.proxy(that.onLoginSuccess, that),
+                error:       $.proxy(that.onLoginFailure, that),
             });
 
             return this;
 
+        },
+
+        onLoginSuccess: function(jsonResponse) {
+            this.set(jsonResponse);
+            this.trigger('login:success');
+            return this;
+        },
+
+        onLoginFailure: function(jsonResponse) {
+            this.trigger('login:failure');
+            return this;
         },
 
         onLogoutSuccess: function(jsonResponse) {
@@ -80,9 +103,8 @@ $(function() {
             return this;
         },
 
-        onLoginSuccess: function(jsonResponse) {
-            this.set(jsonResponse);
-            this.trigger('login:success');
+        onLogoutFailure: function(jsonResponse) {
+            this.trigger('logout:failure');
             return this;
         },
 

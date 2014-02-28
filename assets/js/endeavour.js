@@ -6,6 +6,7 @@ $(function() {
 
     Endeavour.publish = Backbone.Events.trigger;
     Endeavour.subscribe = Backbone.Events.on;
+    Endeavour.unsubscribe = Backbone.Events.off;
 
     Endeavour.Model = {};
     Endeavour.View = {};

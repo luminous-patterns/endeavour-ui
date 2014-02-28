@@ -18,6 +18,36 @@ $(function() {
 
         },
 
+        execute: function(callback, args) {
+
+            var that = this;
+
+            console.log('pre-route');
+
+            var onSessionSet = function() {
+                Endeavour.unsubscribe('session:set', onSessionSet, this);
+                if (callback) callback.apply(this, args);
+            };
+
+            var onSessionUnset = function() {
+                Endeavour.unsubscribe('session:unset', onSessionUnset, this);
+                this.showLogin();
+            };
+
+            if (!Endeavour.state.isLoggedIn()) {
+                console.log('router got inactive session...');
+                Endeavour.subscribe('session:set', onSessionSet, this);
+                Endeavour.subscribe('session:unset', onSessionUnset, this);
+                Endeavour.state.checkSession();
+                return;
+            }
+
+            console.log('router got active session...');
+
+            if (callback) callback.apply(this, args);
+
+        },
+
         showDashboard: function() {
             
         },
@@ -41,7 +71,7 @@ $(function() {
         },
 
         showLogin: function() {
-            
+            console.log('***LOGIN REQUIRED***');
         },
 
         showRegister: function() {
