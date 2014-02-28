@@ -31,7 +31,8 @@ $(function() {
 
             var onSessionUnset = function() {
                 Endeavour.unsubscribe('session:unset', onSessionUnset, that);
-                that.navigate('login', {trigger: true, replace: true});
+                that.showLogin();
+                // that.navigate('login', {trigger: true, replace: true});
             };
 
             if (!Endeavour.state.isLoggedIn()) {
