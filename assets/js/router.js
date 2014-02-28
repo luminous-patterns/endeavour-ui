@@ -25,13 +25,13 @@ $(function() {
             console.log('pre-route');
 
             var onSessionSet = function() {
-                Endeavour.unsubscribe('session:set', onSessionSet, this);
-                if (callback) callback.apply(this, args);
+                Endeavour.unsubscribe('session:set', onSessionSet, that);
+                if (callback) callback.apply(that, args);
             };
 
             var onSessionUnset = function() {
-                Endeavour.unsubscribe('session:unset', onSessionUnset, this);
-                this.showLogin();
+                Endeavour.unsubscribe('session:unset', onSessionUnset, that);
+                that.navigate('login', {trigger: true, replace: true});
             };
 
             if (!Endeavour.state.isLoggedIn()) {
@@ -71,8 +71,15 @@ $(function() {
         },
 
         showLogin: function() {
+
+            if (Endeavour.state.isLoggedIn()) {
+                return this.navigate('dashboard', {trigger: true, replace: true});
+            }
+
             console.log('***LOGIN REQUIRED***');
+
             Endeavour.stage.show('login');
+
         },
 
         showRegister: function() {
