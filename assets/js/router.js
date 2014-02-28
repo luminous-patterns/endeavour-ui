@@ -49,7 +49,7 @@ $(function() {
         },
 
         showDashboard: function() {
-            
+            Endeavour.stage.show('dashboard');
         },
 
         showList: function(ID) {
@@ -72,6 +72,7 @@ $(function() {
 
         showLogin: function() {
             console.log('***LOGIN REQUIRED***');
+            Endeavour.stage.show('login');
         },
 
         showRegister: function() {

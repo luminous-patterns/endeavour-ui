@@ -17,6 +17,10 @@ $(function() {
         window.Endeavour.router = options.router;
         window.Endeavour.state = new Endeavour.Model.State();
 
+        // Load stage view
+        window.Endeavour.stage = new Endeavour.View.Stage();
+        $('body').prepend(window.Endeavour.stage.render().$el);
+
         // Start backbone history
         Backbone.history.start({pushState: false});
 
