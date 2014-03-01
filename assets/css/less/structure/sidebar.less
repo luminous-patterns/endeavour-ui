@@ -1,0 +1,74 @@
+#sidebar {
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #333 linear-gradient(to right, rgba(0,0,0,0.25) 0px, rgba(0,0,0,0) 5px);
+    width: 100px;
+    border-radius: 0 10px 10px 0;
+
+    .sidebar-item {
+
+        height: 100px;
+        position: relative;
+        text-align: center;
+
+        a {
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding-top: 80px;
+            line-height: 20px;
+
+            &:hover {
+                color: #eee;
+            }
+
+        }
+
+    }
+
+    .icon-add {
+        background-image: url("/assets/img/inactive-plus-24.png");
+    }
+    .icon-add:hover {
+        background-image: url("/assets/img/plus-24.png");
+    }
+
+    .icon-lists {
+        background-image: url("/assets/img/inactive-menu-24.png");
+    }
+    .icon-lists:hover {
+        background-image: url("/assets/img/menu-24.png");
+    }
+
+    .icon-calendar {
+        background-image: url("/assets/img/inactive-time-24.png");
+    }
+    .icon-calendar:hover {
+        background-image: url("/assets/img/time-24.png");
+    }
+
+    .icon-today {
+        background-image: url("/assets/img/inactive-checkround-24.png");
+    }
+    .icon-today:hover {
+        background-image: url("/assets/img/checkround-24.png");
+    }
+
+    .sidebar-button {
+        background-size: 32px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+}
+
+
