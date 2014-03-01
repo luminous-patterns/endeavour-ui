@@ -50,7 +50,7 @@ $(function() {
         },
 
         showDashboard: function() {
-            Endeavour.stage.show('dashboard');
+            Endeavour.stage.showSection('dashboard');
         },
 
         showList: function(ID) {
@@ -79,7 +79,7 @@ $(function() {
 
             console.log('***LOGIN REQUIRED***');
 
-            Endeavour.stage.show('login');
+            Endeavour.stage.showDialog('login');
 
         },
 

@@ -93,7 +93,7 @@ $(function() {
         },
 
         onLoginFailure: function(jsonResponse) {
-            this.trigger('login:failure');
+            this.trigger('login:failure', jsonResponse);
             return this;
         },
 
@@ -104,7 +104,7 @@ $(function() {
         },
 
         onLogoutFailure: function(jsonResponse) {
-            this.trigger('logout:failure');
+            this.trigger('logout:failure', jsonResponse);
             return this;
         },
 

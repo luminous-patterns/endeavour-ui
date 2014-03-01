@@ -82,7 +82,15 @@ $(function() {
             this.saveSessionKey(this.session);
             console.log('***SESSION START***', this.getSavedSessionKey());
             Endeavour.publish('session:set', this.session);
+            Endeavour.publish('session:login:success', jsonResponse);
             return this;
+        },
+
+        onLoginFailure: function(jsonResponse) {
+            this.checkingSession = false;
+            Endeavour.publish('session:unset');
+            Endeavour.publish('session:login:failure', jsonResponse);
+            return this.clearSavedSessionKey();
         },
 
         onLoadSessionFailure: function(jsonResponse) {
