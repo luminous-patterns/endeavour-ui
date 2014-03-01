@@ -10,6 +10,7 @@ $(function() {
 
     Endeavour.Model = {};
     Endeavour.View = {};
+    Endeavour.Layout = {};
 
     Endeavour.post = function(options) {
         options.type = 'POST';

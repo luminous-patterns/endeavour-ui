@@ -34,9 +34,15 @@ $(function() {
 
             console.log('### stage view showSection:', what);
 
+            if (!(this.currentView instanceof Endeavour.Layout.Main)) {
+                console.log('### stage view load layout');
+                this.setCurrentView(new Endeavour.Layout.Main());
+                this.currentView.sidebar.show(new Endeavour.View.Sidebar());
+            }
+
             switch(what) {
                 case 'dashboard':
-                    this.setCurrentView(new Endeavour.View.Dashboard());
+                    this.currentView.content.show(new Endeavour.View.Dashboard());
                     break;
             }
 
