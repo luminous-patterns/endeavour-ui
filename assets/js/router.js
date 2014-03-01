@@ -5,6 +5,7 @@ $(function() {
         routes: {
 
             'dashboard':                   'showDashboard',
+            'lists':                       'showAllLists',
             'list/:ID':                    'showList',
             'list/:ListID/item/:ID':       'showListItem',
             'user/:ID':                    'showUserProfile',
@@ -51,6 +52,10 @@ $(function() {
 
         showDashboard: function() {
             Endeavour.stage.showSection('dashboard');
+        },
+
+        showAllLists: function() {
+            Endeavour.stage.showSection('all-lists');
         },
 
         showList: function(ID) {

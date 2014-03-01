@@ -1,12 +1,12 @@
 #sidebar {
 
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
     background: #333 linear-gradient(to right, rgba(0,0,0,0.25) 0px, rgba(0,0,0,0) 5px);
-    width: 100px;
     border-radius: 0 10px 10px 0;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
 
     .sidebar-item {
 
@@ -16,21 +16,31 @@
 
         a {
 
-            position: absolute;
-            top: 0;
-            left: 0;
+            border-bottom: 1px solid #222;
+            border-top: 1px solid #444;
             bottom: 0;
-            right: 0;
             color: #999;
-            text-decoration: none;
             font-size: 0.9em;
-            padding-top: 80px;
+            left: 0;
             line-height: 20px;
+            padding-top: 65px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            text-decoration: none;
 
             &:hover {
                 color: #eee;
             }
 
+        }
+
+    }
+
+    .sidebar-item:first-of-type {
+
+        a {
+            border-top: none;
         }
 
     }
@@ -64,11 +74,12 @@
     }
 
     .sidebar-button {
-        background-size: 32px;
+        background-position: center 25px;
         background-repeat: no-repeat;
-        background-position: center;
+        background-size: 32px;
     }
 
 }
-
-
+#main-sidebar {
+    border-bottom: 1px solid #444;
+}

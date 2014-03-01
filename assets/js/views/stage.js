@@ -44,6 +44,9 @@ $(function() {
                 case 'dashboard':
                     this.currentView.content.show(new Endeavour.View.Dashboard());
                     break;
+                case 'all-lists':
+                    this.currentView.content.show(new Endeavour.View.AllLists());
+                    break;
             }
 
             return this;

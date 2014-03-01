@@ -1,15 +1,15 @@
 $(function() {
 
-    window.Endeavour.View.Dashboard = Backbone.Marionette.View.extend({
+    window.Endeavour.View.AllLists = Backbone.Marionette.View.extend({
 
-        id: 'dashboard',
+        id: 'all-lists',
         tagName: 'div',
 
         initialize: function() {
 
             this.$el
-                .append("<h1><em>Dashing...</em></h1>")
-                .append("dashing!");
+                .append("<h1><em>All lists</em></h1>")
+                .append("listy!");
 
         },
 
