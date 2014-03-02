@@ -1,14 +1,23 @@
 $(function() {
 
-    window.Endeavour.View.SingleList = Backbone.View.extend({
+    window.Endeavour.View.SingleList = Backbone.Marionette.View.extend({
 
-        tagName: 'div',
-        className: 'single-list-item',
+        tagName: 'li',
+        className: 'single-list',
+
+        events: {
+            'click':  'onClick',
+        },
 
         initialize: function() {
             
             this.$el.append(this.model.get('Title'));
 
+        },
+
+        onClick: function() {
+            console.log('click')
+            return this.trigger('click', this);
         },
 
         render: function() {
