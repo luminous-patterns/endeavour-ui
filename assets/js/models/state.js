@@ -1,13 +1,13 @@
 $(function() {
 
-    Endeavour.Model.State = Backbone.Model.extend({
+    Endeavour.Model.State = Endeavour.Model.Abstract.extend({
 
         session: null,
         checkingSession: false,
 
         initialize: function() {
 
-            this.session = new Endeavour.Model.Session();
+            this.session = new Endeavour.Model.Session;
 
             this.checkSession();
 

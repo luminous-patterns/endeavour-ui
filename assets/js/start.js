@@ -15,10 +15,10 @@ $(function() {
 
         // Copy options to Endeavour object
         window.Endeavour.router = options.router;
-        window.Endeavour.state = new Endeavour.Model.State();
+        window.Endeavour.state = new Endeavour.Model.State;
 
         // Load stage view
-        window.Endeavour.stage = new Endeavour.View.Stage();
+        window.Endeavour.stage = new Endeavour.View.Stage;
         $('body').prepend(window.Endeavour.stage.render().$el);
 
         // Start backbone history

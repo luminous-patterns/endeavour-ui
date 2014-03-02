@@ -1,29 +1,33 @@
-Endeavour.Model.User = Backbone.Model.extend({
+$(function() {
 
-    defaults: {
-        'ID':                 null, // int
-        'EmailAddress':       null, // str
-        'FirstName':          null, // str
-        'LastName':           null, // str
-        'Created':            null, // str - ISO-8601 date
-        'Modified':           null, // str - ISO-8601 date
-    },
+    Endeavour.Model.User = Endeavour.Model.Abstract.extend({
 
-    initialize: function() {
+        urlRoot: 'http://api.endeavour.local/users',
 
-        this.lists = new Endeavour.Collection.Lists;
-        this.lists.url = '/users/' + this.id + '/lists';
+        defaults: {
+            'ID':                 null, // int
+            'EmailAddress':       null, // str
+            'FirstName':          null, // str
+            'LastName':           null, // str
+            'Created':            null, // str - ISO-8601 date
+            'Modified':           null, // str - ISO-8601 date
+        },
 
-        this.tags = new Endeavour.Collection.Tags;
-        this.tags.url = '/users/' + this.id + '/tags';
+        initialize: function() {
 
-        this.reminders = new Endeavour.Collection.Reminders;
-        this.reminders.url = '/users/' + this.id + '/reminders';
+            this.lists = new Endeavour.Collection.Lists;
+            this.lists.url = 'http://api.endeavour.local/lists';
 
-        this.timetable = new Endeavour.Collection.Timetable;
-        this.timetable.url = '/users/' + this.id + '/timetable';
+            this.on('sync', this.onSync, this);
 
+        },
 
-    },
+        onSync: function() {
+            console.log('user sync',this);
+            this.lists.fetch();
+            return this;
+        },
+
+    });
 
 });

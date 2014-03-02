@@ -1,6 +1,6 @@
 $(function() {
 
-    Endeavour.Model.Session = Backbone.Model.extend({
+    Endeavour.Model.Session = Endeavour.Model.Abstract.extend({
         
         defaults: {
             'ID':                 null, // int
@@ -12,15 +12,24 @@ $(function() {
         },
 
         created: null,
+        user: null,
 
         initialize: function() {
 
             this.on('change:Created', this.onChangeCreated, this);
+            this.on('login:success', this.loadUserModel, this);
 
         },
 
         onChangeCreated: function() {
             this.created = new Date(this.get('Created'));
+            return this;
+        },
+
+        loadUserModel: function() {
+            this.user = new Endeavour.Model.User;
+            this.user.url = 'http://api.endeavour.local/users/' + this.get('UserID');
+            this.user.fetch();
             return this;
         },
 
@@ -60,6 +69,10 @@ $(function() {
                 data:        data,
                 success:     $.proxy(that.onLogoutSuccess, that),
                 error:       $.proxy(that.onLogoutFailure, that),
+                beforeSend:  function (xhr) {
+                    xhr.setRequestHeader('Endeavour-Session-Key', that.get('Key'));
+                    xhr.setRequestHeader('Endeavour-Auth-User-ID', that.get('UserID'));
+                },
             });
 
         },
@@ -70,16 +83,14 @@ $(function() {
 
             var keyParts = sessionKey.split(/-/);
 
-            var data = {
-                UserID: keyParts[1],
-                SessionKey: keyParts[0],
-            };
-
             var xhr = Endeavour.get({
                 url:         '/sessions/0',
-                data:        data,
                 success:     $.proxy(that.onLoginSuccess, that),
                 error:       $.proxy(that.onLoginFailure, that),
+                beforeSend:  function (xhr) {
+                    xhr.setRequestHeader('Endeavour-Session-Key', keyParts[0]);
+                    xhr.setRequestHeader('Endeavour-Auth-User-ID', keyParts[1]);
+                },
             });
 
             return this;
