@@ -39,6 +39,8 @@ $(function() {
 
             this.els.submitButton.on('click', $.proxy(this.onClickSubmit, this));
             this.els.cancelButton.on('click', $.proxy(this.onClickCancel, this));
+            
+            this.$el.on('keypress', $.proxy(this.onKeyPress, this));
 
             console.log('### initialize stage view');
 
@@ -90,14 +92,7 @@ $(function() {
             return this;
         },
 
-        onClick: function(ev) {
-            ev.stopPropagation();
-            return this;
-        },
-
-        onClickSubmit: function() {
-
-            console.log('add new list item submit',this.getInputs());
+        submit: function() {
 
             var activeListModel = Endeavour.state.getActiveModel('list');
 
@@ -107,6 +102,25 @@ $(function() {
             }
 
             return this;
+
+        },
+
+        onKeyPress: function(ev) {
+            if (event.which == 13) {
+                return this.submit();
+            }
+        },
+
+        onClick: function(ev) {
+            ev.stopPropagation();
+            return this;
+        },
+
+        onClickSubmit: function() {
+
+            console.log('add new list item submit',this.getInputs());
+
+            return this.submit();
 
         },
 

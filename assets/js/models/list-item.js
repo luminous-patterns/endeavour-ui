@@ -41,7 +41,20 @@ $(function() {
         },
 
         onChangeCompleted: function() {
-            this.completed = new Date(this.get('Completed'));
+            var completed = this.get('Completed');
+            if (completed && completed != 'now') {
+                this.completed = new Date(completed);
+            }
+            return this;
+        },
+
+        toggleComplete: function() {
+            if (this.get('Completed')) {
+                this.save('Completed', 0, {patch: true});
+            }
+            else {
+                this.save('Completed', 'now', {patch: true});
+            }
             return this;
         },
 

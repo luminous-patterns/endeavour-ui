@@ -40,6 +40,8 @@ $(function() {
             this.els.submitButton.on('click', $.proxy(this.onClickSubmit, this));
             this.els.cancelButton.on('click', $.proxy(this.onClickCancel, this));
 
+            this.$el.on('keypress', $.proxy(this.onKeyPress, this));
+
             console.log('### initialize stage view');
 
         },
@@ -90,6 +92,17 @@ $(function() {
             return this;
         },
 
+        submit: function() {
+            Endeavour.state.session.user.createList(this.getInputs());
+            return this.closeDialog();
+        },
+
+        onKeyPress: function(ev) {
+            if (event.which == 13) {
+                return this.submit();
+            }
+        },
+
         onClick: function(ev) {
             ev.stopPropagation();
             return this;
@@ -99,8 +112,7 @@ $(function() {
 
             console.log('add new list submit',this.getInputs());
 
-            Endeavour.state.session.user.createList(this.getInputs());
-            return this.closeDialog();
+            return this.submit();
 
         },
 

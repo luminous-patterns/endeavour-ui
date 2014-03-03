@@ -9,6 +9,8 @@ $(function() {
             
             this.els = {};
 
+            this.$el.addClass('list-item-' + this.model.id);
+
             this.els.summary = $('<div class="summary"></div>');
             this.els.checkbox = $('<div class="checkbox"></div>');
 
@@ -20,12 +22,14 @@ $(function() {
 
             this.els.checkbox.on('click', $.proxy(this.onClickCheckbox, this));
 
+            this.model.on('change', this.render, this);
+
         },
 
         render: function() {
 
             this.els.summary.html(this.model.get('Summary'));
-
+            
             if (this.model.get('Completed')) {
                 this.els.checkbox.addClass('checked');
             }
@@ -38,7 +42,7 @@ $(function() {
         },
 
         onClickCheckbox: function() {
-            this.els.checkbox.toggleClass('checked');
+            this.model.toggleComplete();
             return this;
         },
 
