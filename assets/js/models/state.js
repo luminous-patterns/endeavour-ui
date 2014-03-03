@@ -2,10 +2,13 @@ $(function() {
 
     Endeavour.Model.State = Endeavour.Model.Abstract.extend({
 
+        activeModel: null,
         session: null,
         checkingSession: false,
 
         initialize: function() {
+
+            this.activeModel = {};
 
             this.session = new Endeavour.Model.Session;
 
@@ -15,6 +18,7 @@ $(function() {
 
             Endeavour.subscribe('session:set', function(){console.log('session:set')}, this);
             Endeavour.subscribe('session:unset', function(){console.log('session:unset')}, this);
+            Endeavour.subscribe('active-model:set', this.onSetActiveModel, this);
 
             this.session.on('login:success', this.onLoginSuccess, this);
             this.session.on('login:failure', this.onLoginFailure, this);
@@ -116,6 +120,15 @@ $(function() {
         clearSavedSessionKey: function() {
             window.localStorage.setItem('sessionKey', '');
             return this;
+        },
+
+        onSetActiveModel: function(type, model) {
+            this.activeModel[type] = model;
+            return this;
+        },
+
+        getActiveModel: function(type) {
+            return this.activeModel[type];
         },
 
     });

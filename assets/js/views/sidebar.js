@@ -62,14 +62,14 @@ $(function() {
 
         onClickAddNewList: function(ev) {
             ev.preventDefault();
-            Endeavour.publish('show:dialog:create:list');
+            Endeavour.publish('show:dialog', 'add-new-list');
             console.log('click add new list item');
             return this;
         },
 
         onClickAddNewListItem: function(ev) {
             ev.preventDefault();
-            Endeavour.publish('show:dialog:create:list-item');
+            Endeavour.publish('show:dialog', 'add-new-list-item');
             console.log('click add new list item');
             return this;
         },

@@ -18,6 +18,8 @@ $(function() {
                 .append(this.els.summary)
                 .append(this.els.checkbox);
 
+            this.els.checkbox.on('click', $.proxy(this.onClickCheckbox, this));
+
         },
 
         render: function() {
@@ -33,6 +35,11 @@ $(function() {
 
             return this;
 
+        },
+
+        onClickCheckbox: function() {
+            this.els.checkbox.toggleClass('checked');
+            return this;
         },
 
     });

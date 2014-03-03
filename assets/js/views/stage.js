@@ -8,11 +8,32 @@ $(function() {
         currentView: null,
 
         initialize: function() {
+
             console.log('### initialize stage view');
+
+            Endeavour.subscribe('show:dialog', this.showDialog, this);
+
         },
 
         render: function() {
             console.log('### render stage view');
+            return this;
+        },
+
+        newDialogContainer: function(dialog) {
+            console.log('show dialog', dialog);
+            var that = this;
+            this.dialogContainer = new Endeavour.View.DialogContainer({
+                dialog: dialog,
+                onCloseDialog: $.proxy(that.onCloseDialog, that),
+            });
+            this.$el.append(this.dialogContainer.render().$el);
+            this.dialogContainer.focusDialogField();
+            return this;
+        },
+
+        onCloseDialog: function() {
+            this.dialogContainer = null;
             return this;
         },
 
@@ -21,9 +42,21 @@ $(function() {
             console.log('### stage view showDialog:', what);
 
             switch(what) {
+
                 case 'login':
                     this.setCurrentView(new Endeavour.View.Login());
                     break;
+
+                case 'add-new-list-item':
+                    console.log('show add new list item dialog');
+                    this.newDialogContainer(new Endeavour.View.DialogAddNewListItem());
+                    break;
+
+                case 'add-new-list':
+                    console.log('show add new list dialog');
+                    this.newDialogContainer(new Endeavour.View.DialogAddNewList());
+                    break;
+
             }
 
             return this;
