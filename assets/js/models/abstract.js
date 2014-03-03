@@ -4,22 +4,18 @@ $(function() {
 
         idAttribute: 'ID',
 
-        fetch: function(options) {
-            options = options ? _.clone(options) : {};
+        sync: function(method, model, options) {
             options.beforeSend = Endeavour.ajaxSetHeaders;
-            console.log('fetching', options);
-            return Backbone.Model.prototype.fetch.call(this, options);
+            return Backbone.Model.prototype.sync.call(this, method, model, options);
         },
 
     });
 
     Endeavour.Collection.Abstract = Backbone.Collection.extend({
 
-        fetch: function(options) {
-            options = options ? _.clone(options) : {};
+        sync: function(method, model, options) {
             options.beforeSend = Endeavour.ajaxSetHeaders;
-            console.log('fetching', options);
-            return Backbone.Collection.prototype.fetch.call(this, options);
+            return Backbone.Collection.prototype.sync.call(this, method, model, options);
         },
 
     });
