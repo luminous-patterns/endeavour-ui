@@ -6,6 +6,8 @@ $(function() {
 
             'dashboard':                   'showDashboard',
             'lists':                       'showAllLists',
+            'calendar':                    'showCalendar',
+            'today':                       'showToday',
             'list/:ID':                    'showList',
             'list/:ListID/item/:ID':       'showListItem',
             'user/:ID':                    'showUserProfile',
@@ -56,6 +58,14 @@ $(function() {
 
         showAllLists: function() {
             Endeavour.stage.showSection('all-lists');
+        },
+
+        showCalendar: function() {
+            Endeavour.stage.showSection('calendar');
+        },
+
+        showToday: function() {
+            Endeavour.stage.showSection('today');
         },
 
         showList: function(ID) {

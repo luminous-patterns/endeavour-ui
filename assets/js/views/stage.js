@@ -47,6 +47,12 @@ $(function() {
                 case 'all-lists':
                     this.currentView.content.show(new Endeavour.View.AllLists());
                     break;
+                case 'calendar':
+                    this.currentView.content.show(new Endeavour.View.Calendar());
+                    break;
+                case 'today':
+                    this.currentView.content.show(new Endeavour.View.Today());
+                    break;
             }
 
             return this;

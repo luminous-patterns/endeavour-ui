@@ -41,7 +41,6 @@ $(function() {
         },
 
         onListItemClick: function(view) {
-            console.log('clickin');
             this.listItems.setCollection(view.model.items);
             if (!view.model.getItems()) view.model.loadItems();
             return this;

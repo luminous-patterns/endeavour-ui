@@ -16,7 +16,6 @@ $(function() {
         },
 
         onClick: function() {
-            console.log('click')
             return this.trigger('click', this);
         },
 
