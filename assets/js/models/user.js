@@ -28,6 +28,21 @@ $(function() {
             return this;
         },
 
+        getLists: function() {
+            if (this.lists.length < 1) return null;
+            return this.lists;
+        },
+
+        getList: function(ID) {
+            if (this.lists.length < 1) return null;
+            return this.lists.get(ID);
+        },
+
+        createList: function(attributes) {
+            var that = this;
+            return this.lists.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID'), ParentID: that.id}));
+        },
+
     });
 
 });

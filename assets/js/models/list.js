@@ -23,6 +23,7 @@ $(function() {
         initialize: function() {
 
             this.items = new Endeavour.Collection.ListItems;
+            this.lists = new Endeavour.Collection.Lists;
 
             this.on('change:Created', this.onChangeCreated, this);
             this.on('change:Start', this.onChangeStart, this);
@@ -32,15 +33,46 @@ $(function() {
 
         },
 
+        loadItems: function() {
+            this.items.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
+            this.items.fetch();
+            return this;
+        },
+
         getItems: function() {
             if (this.items.length < 1) return null;
             return this.items;
         },
 
-        loadItems: function() {
-            this.items.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
-            this.items.fetch();
+        getItem: function(ID) {
+            if (this.items.length < 1) return null;
+            return this.items.get(ID);
+        },
+
+        createItem: function(attributes) {
+            var that = this;
+            return this.items.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID'), ListID: that.id}));
+        },
+
+        loadLists: function() {
+            this.lists.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
+            this.lists.fetch();
             return this;
+        },
+
+        getLists: function() {
+            if (this.lists.length < 1) return null;
+            return this.lists;
+        },
+
+        getList: function(ID) {
+            if (this.lists.length < 1) return null;
+            return this.lists.get(ID);
+        },
+
+        createList: function(attributes) {
+            var that = this;
+            return this.lists.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID'), ParentID: that.id}));
         },
 
         onChangeCreated: function() {
@@ -59,7 +91,6 @@ $(function() {
         },
 
         onSync: function() {
-            console.log('user sync',this);
             return this;
         },
 

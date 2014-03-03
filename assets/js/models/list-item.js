@@ -22,25 +22,12 @@ $(function() {
 
         initialize: function() {
 
-            this.items = new Endeavour.Collection.ListItems;
-
             this.on('change:Created', this.onChangeCreated, this);
             this.on('change:Due', this.onChangeDue, this);
             this.on('change:Completed', this.onChangeCompleted, this);
 
             this.on('sync', this.onSync, this);
 
-        },
-
-        getListItems: function() {
-            if (this.items.length < 1) return null;
-            return this.items;
-        },
-
-        loadListItems: function() {
-            this.items.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
-            this.items.fetch();
-            return this;
         },
 
         onChangeCreated: function() {
@@ -59,7 +46,6 @@ $(function() {
         },
 
         onSync: function() {
-            console.log('user sync',this);
             return this;
         },
 

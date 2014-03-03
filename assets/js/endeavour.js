@@ -29,7 +29,7 @@ $(function() {
         return $.ajax(options);
     };
 
-    Endeavour.ajaxSetHeaders = function (xhr) {
+    Endeavour.ajaxSetHeaders = function(xhr) {
         console.log('set headers');
         if (Endeavour.state.session.isLoggedIn()) {
         console.log('set headers logged in');
