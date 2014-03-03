@@ -40,6 +40,21 @@ $(function() {
                 xhr.setRequestHeader('Endeavour-Auth-User-ID', UserID);
             }
         }
-    }
+    };
+
+    Endeavour.newDate = function(utc_date) {
+        var d = utc_date.split(' ');
+        var date = d[0].split('-');
+        var time = d[1].split(':');
+        var o = {
+            yy: parseInt(date[0]),
+            mm: parseInt(date[1])-1,
+            dd: parseInt(date[2]),
+            hh: parseInt(time[0]),
+            ii: parseInt(time[1]),
+            ss: parseInt(time[2]),
+        }
+        return new Date(Date.UTC(o.yy, o.mm, o.dd, o.hh, o.ii, o.ss));
+    };
 
 });

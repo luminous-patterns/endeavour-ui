@@ -31,19 +31,25 @@ $(function() {
         },
 
         onChangeCreated: function() {
-            this.created = new Date(this.get('Created'));
+            var created = this.get('Created');
+            if (typeof created == 'object') {
+                this.created = Endeavour.newDate(created.date);
+            }
             return this;
         },
 
         onChangeDue: function() {
-            this.due = new Date(this.get('Due'));
+            var due = this.get('Due');
+            if (typeof due == 'object') {
+                this.due = Endeavour.newDate(due.date);
+            }
             return this;
         },
 
         onChangeCompleted: function() {
             var completed = this.get('Completed');
-            if (completed && completed != 'now') {
-                this.completed = new Date(completed);
+            if (typeof completed == 'object') {
+                this.completed = Endeavour.newDate(completed.date);
             }
             return this;
         },
