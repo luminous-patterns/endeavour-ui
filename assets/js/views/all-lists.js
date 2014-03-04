@@ -15,6 +15,8 @@ $(function() {
             this.viewsByModelID = {};
             this.els = {};
 
+            this.activeSingleList = null;
+
             this.els.list = $('<ul class="lists"></ul>');
 
             this.$el
@@ -40,11 +42,25 @@ $(function() {
             return this.addSingleList(model);
         },
 
-        onListItemClick: function(view) {
+        onSingleListClick: function(view) {
+
+            if (this.activeSingleList) {
+                if (view.model.id == this.activeSingleList.model.id) return this;
+                this.activeSingleList.clearActiveClass();
+            }
+
+            this.activeSingleList = view;
+
             this.listItems.setCollection(view.model.items);
+
             if (!view.model.getItems()) view.model.loadItems();
+
             Endeavour.publish('active-model:set', 'list', view.model);
+
+            view.setActiveClass();
+
             return this;
+
         },
 
         addSingleList: function(model) {
@@ -53,7 +69,7 @@ $(function() {
                 model: model,
             });
 
-            view.on('click', this.onListItemClick, this);
+            view.on('click', this.onSingleListClick, this);
 
             this.views[this.views.length] = view;
             this.viewsByModelID[model.id] = view;

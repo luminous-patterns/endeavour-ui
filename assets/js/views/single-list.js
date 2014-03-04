@@ -63,6 +63,16 @@ $(function() {
             return this;
         },
 
+        setActiveClass: function() {
+            this.$el.addClass('active');
+            return this;
+        },
+
+        clearActiveClass: function() {
+            this.$el.removeClass('active');
+            return this;
+        },
+
         toggleSubList: function() {
             if (this.els.subListIndicator.hasClass('expanded')) {
                 this.hideSubList();
@@ -90,7 +100,7 @@ $(function() {
             return this.addSingleList(model);
         },
 
-        onListItemClick: function(view) {
+        onSingleListClick: function(view) {
             // Event bubbles . O o *
             return this.trigger('click', view);
         },
@@ -101,7 +111,7 @@ $(function() {
                 model: model,
             });
 
-            view.on('click', this.onListItemClick, this);
+            view.on('click', this.onSingleListClick, this);
 
             this.views[this.views.length] = view;
             this.viewsByModelID[model.id] = view;
