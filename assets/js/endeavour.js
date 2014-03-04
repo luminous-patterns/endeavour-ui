@@ -30,9 +30,7 @@ $(function() {
     };
 
     Endeavour.ajaxSetHeaders = function(xhr) {
-        console.log('set headers');
         if (Endeavour.state.session.isLoggedIn()) {
-        console.log('set headers logged in');
             var SessionKey = Endeavour.state.session.get('Key');
             var UserID = Endeavour.state.session.get('UserID');
             if (SessionKey && UserID) {

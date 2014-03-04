@@ -17,7 +17,7 @@ $(function() {
 
             this.els.title = $('<div class="dialog-title">Add List Item</div>');
 
-            this.els.summarySection = $('<div class="dialog-section"><label for="summary">Summary</label><input type="text" id="summary" /></div>');
+            this.els.summarySection = $('<div class="dialog-section"><label for="summary">Summary</label><input type="text" id="summary" class="full-width" /></div>');
             this.els.summaryInput = this.els.summarySection.find('#summary');
 
             this.els.buttonSection = $('<div class="dialog-section button-section"><button class="cancel">Cancel</button><button class="call-to-action">Create</button></div>');
@@ -39,7 +39,7 @@ $(function() {
 
             this.els.submitButton.on('click', $.proxy(this.onClickSubmit, this));
             this.els.cancelButton.on('click', $.proxy(this.onClickCancel, this));
-            
+
             this.$el.on('keypress', $.proxy(this.onKeyPress, this));
 
             console.log('### initialize stage view');

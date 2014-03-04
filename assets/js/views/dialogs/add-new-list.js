@@ -17,7 +17,7 @@ $(function() {
 
             this.els.title = $('<div class="dialog-title">Add List</div>');
 
-            this.els.listTitleSection = $('<div class="dialog-section"><label for="list-title">Title</label><input type="text" id="list-title" /></div>');
+            this.els.listTitleSection = $('<div class="dialog-section"><label for="list-title">Title</label><input type="text" id="list-title" class="full-width" /></div>');
             this.els.listTitleInput = this.els.listTitleSection.find('#list-title');
 
             this.els.buttonSection = $('<div class="dialog-section button-section"><button class="cancel">Cancel</button><button class="call-to-action">Create</button></div>');
