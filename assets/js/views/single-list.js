@@ -8,7 +8,11 @@ $(function() {
         events: {
             'click':                        'onClick',
             'click .sublist-indicator':     'onClickSubListIndicator',
+            'dblclick .title-text':         'onDblClickTitleText',
         },
+
+        inputMinSize: 15,
+        inputMaxSize: 30,
 
         initialize: function() {
             
@@ -20,10 +24,12 @@ $(function() {
 
             this.els.title = $('<div class="title"></div>');
             this.els.titleText = $('<div class="title-text"></div>');
+            this.els.titleInput = $('<input class="title-input-inline" value="" />');
             this.els.subListIndicator = $('<div class="sublist-indicator"></div>');
             this.els.subList = $('<ul class="sub-lists"></ul>');
 
             this.els.title.append(this.els.titleText)
+                .append(this.els.titleInput.hide())
                 .append(this.els.subListIndicator);
 
             this.$el
@@ -36,6 +42,10 @@ $(function() {
                 this.addSingleList(this.model.lists.at(i));
             }
 
+            this.els.titleInput.bind('blur', $.proxy(this.onTitleInputBlur, this));
+            this.els.titleInput.bind('keydown', $.proxy(this.onTitleInputKeyDown, this));
+
+            this.model.on('change', this.render, this);
             this.model.lists.on('add', this.onModelListAdd, this);
 
         },
@@ -43,12 +53,40 @@ $(function() {
         render: function() {
 
             this.els.titleText.html(this.model.get('Title'));
+            this.els.titleInput.val(this.model.get('Title'));
 
             if (!this.model.hasLists()) this.els.subListIndicator.hide();
             else this.els.subListIndicator.show();
 
             return this;
 
+        },
+
+        editTitle: function() {
+            this.els.titleText.hide();
+            this.els.titleInput.show().focus();
+            return this;
+        },
+
+        saveTitle: function() {
+            var newTitle = this.els.titleInput.val().trim();
+            if (this.model.get('Title') != newTitle) {
+                this.model.save({Title: newTitle}, {patch: true});
+            }
+            this.finishedEditingTitle();
+            return this;
+        },
+
+        finishedEditingTitle: function() {
+            this.els.titleInput.hide();
+            this.els.titleText.show();
+            return this;
+        },
+
+        onDblClickTitleText: function(ev) {
+            ev.stopImmediatePropagation();
+            this.editTitle();
+            return this;
         },
 
         onClick: function(ev) {
@@ -60,6 +98,20 @@ $(function() {
         onClickSubListIndicator: function(ev) {
             ev.stopImmediatePropagation();
             if (this.model.hasLists()) this.toggleSubList();
+            return this;
+        },
+
+        onTitleInputBlur: function(ev) {
+            this.saveTitle();
+            return this;
+        },
+
+        onTitleInputKeyDown: function(ev) {
+            var inputEl = this.els.titleInput;
+            inputEl.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, inputEl.val().length + Number(inputEl.val().length * 0.1))));
+            if (ev.which == 13) {
+                this.saveTitle();
+            }
             return this;
         },
 
