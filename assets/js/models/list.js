@@ -10,6 +10,7 @@ $(function() {
             'UserID':             null, // int
             'Title':              null, // string
             'Description':        null, // string
+            'Lists':              null, // int
             'Created':            null, // str - ISO-8601 date
             'Start':              null, // str - ISO-8601 date
             'Due':                null, // str - ISO-8601 date
@@ -55,7 +56,7 @@ $(function() {
         },
 
         loadLists: function() {
-            this.lists.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
+            this.lists.url = 'http://api.endeavour.local/lists/' + this.id + '/lists';
             this.lists.fetch();
             return this;
         },
@@ -73,6 +74,10 @@ $(function() {
         createList: function(attributes) {
             var that = this;
             return this.lists.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID'), ParentID: that.id}));
+        },
+
+        hasLists: function() {
+            return this.get('Lists') ? true : false;
         },
 
         onChangeCreated: function() {

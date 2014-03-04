@@ -16,15 +16,59 @@ ul.lists {
 
     li.single-list {
 
-        border-bottom: 1px solid #e5e5e5;
-        padding: 5px 20px;
+        cursor: pointer;
         font-size: 0.9em;
         line-height: 2em;
-        cursor: pointer;
+        overflow-x: hidden;
+        position: relative;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
-        &:hover {
-            background-color: #17b;
-            color: #fff;
+        div.title {
+
+            padding: 5px 20px 5px 30px;
+            position: relative;
+
+            &:hover {
+
+                background-color: #17b;
+                color: #fff;
+
+                .sublist-indicator {
+                    background-image: url('/assets/img/right-arrow-white.png');
+                }
+                .sublist-indicator.expanded {
+                    background-image: url('/assets/img/down-arrow-white.png');
+                }
+
+            }
+
+        }
+
+        .sublist-indicator {
+            background-image: url('/assets/img/inactive-right-arrow.png');
+            background-position: right center;
+            background-repeat: no-repeat;
+            background-size: 8px;
+            height: 38px;
+            left: 0;
+            top: 0;
+            position: absolute;
+            width: 25px;
+        }
+        .sublist-indicator.expanded {
+            background-image: url('/assets/img/inactive-down-arrow.png');
+        }
+
+    }
+
+    ul.sub-lists {
+        
+        padding: 0;
+        
+        li.single-list {
+            padding-left: 16px;
+            font-size: 1em;
         }
 
     }

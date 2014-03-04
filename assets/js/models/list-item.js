@@ -32,7 +32,7 @@ $(function() {
 
         onChangeCreated: function() {
             var created = this.get('Created');
-            if (typeof created == 'object') {
+            if (created && typeof created == 'object') {
                 this.created = Endeavour.newDate(created.date);
             }
             return this;
@@ -40,7 +40,7 @@ $(function() {
 
         onChangeDue: function() {
             var due = this.get('Due');
-            if (typeof due == 'object') {
+            if (due && typeof due == 'object') {
                 this.due = Endeavour.newDate(due.date);
             }
             return this;
@@ -48,7 +48,7 @@ $(function() {
 
         onChangeCompleted: function() {
             var completed = this.get('Completed');
-            if (typeof completed == 'object') {
+            if (completed && typeof completed == 'object') {
                 this.completed = Endeavour.newDate(completed.date);
             }
             return this;

@@ -40,7 +40,7 @@ $(function() {
 
         createList: function(attributes) {
             var that = this;
-            return this.lists.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID'), ParentID: that.id}));
+            return this.lists.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID')}));
         },
 
     });
