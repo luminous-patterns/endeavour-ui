@@ -54,6 +54,7 @@ $(function() {
 
             this.els.titleText.html(this.model.get('Title'));
             this.els.titleInput.val(this.model.get('Title'));
+            this.els.titleInput.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, this.els.titleInput.val().length + Number(this.els.titleInput.val().length * 0.1))));
 
             if (!this.model.hasLists()) this.els.subListIndicator.hide();
             else this.els.subListIndicator.show();
