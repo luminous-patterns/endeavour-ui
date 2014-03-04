@@ -45,9 +45,11 @@ $(function() {
 
             if (this.model.get('Completed')) {
                 this.els.checkbox.addClass('checked');
+                this.$el.addClass('complete');
             }
             else {
                 this.els.checkbox.removeClass('checked');
+                this.$el.removeClass('complete');
             }
 
             return this;
