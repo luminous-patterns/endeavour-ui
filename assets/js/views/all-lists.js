@@ -29,6 +29,7 @@ $(function() {
             }
 
             this.collection.on('add', this.onCollectionAdd, this);
+            this.collection.on('remove', this.onCollectionRemove, this);
 
         },
 
@@ -40,6 +41,10 @@ $(function() {
 
         onCollectionAdd: function(model) {
             return this.addSingleList(model);
+        },
+
+        onCollectionRemove: function(model) {
+            return this.removeSingleList(model);
         },
 
         onSingleListClick: function(view) {
@@ -75,6 +80,19 @@ $(function() {
             this.viewsByModelID[model.id] = view;
 
             this.els.list.append(view.render().$el);
+
+            return this;
+
+        },
+
+        removeSingleList: function(model) {
+
+            if (model.id in this.viewsByModelID) {
+                var view = this.viewsByModelID[model.id];
+                delete this.viewsByModelID[model.id];
+                this.views.splice(this.views.indexOf(view), 1);
+                view.close();
+            }
 
             return this;
 

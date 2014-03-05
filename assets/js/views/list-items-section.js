@@ -31,9 +31,11 @@ $(function() {
 
             if (this.collection) {
                 this.collection.off('add', this.onCollectionAdd, this);
+                this.collection.off('remove', this.onCollectionRemove, this);
             }
             
             collection.on('add', this.onCollectionAdd, this);
+            collection.on('remove', this.onCollectionRemove, this);
             this.collection = collection;
 
             this.clearList();
@@ -64,6 +66,10 @@ $(function() {
             return this.addSingleListItem(model);
         },
 
+        onCollectionRemove: function(model) {
+            return this.removeSingleList(model);
+        },
+
         addSingleListItem: function(model) {
             var view = new Endeavour.View.SingleListItem({
                 model: model,
@@ -72,6 +78,19 @@ $(function() {
             this.viewsByModelID[model.id] = view;
             this.els.list.append(view.render().$el);
             return this;
+        },
+
+        removeSingleList: function(model) {
+
+            if (model.id in this.viewsByModelID) {
+                var view = this.viewsByModelID[model.id];
+                delete this.viewsByModelID[model.id];
+                this.views.splice(this.views.indexOf(view), 1);
+                view.close();
+            }
+
+            return this;
+
         },
 
     });

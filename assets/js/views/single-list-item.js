@@ -6,8 +6,13 @@ $(function() {
         className: 'single-list-item',
 
         events: {
-            'dblclick .summary':           'onClickSummary',
-            'click .delete':               'onClickDelete',
+
+            'dblclick .summary':                'onClickSummary',
+            'click .delete':                    'onClickDelete',
+
+            // Drag & drop
+            'mousedown':                        'onMouseDown',
+
         },
 
         inputMinSize: 25,
@@ -16,6 +21,9 @@ $(function() {
         initialize: function() {
             
             this.els = {};
+            this.dragging = false;
+            this.hasMoved = false;
+            this.dragView = false;
 
             this.$el.addClass('list-item-' + this.model.id);
 
@@ -35,6 +43,7 @@ $(function() {
             this.els.checkbox.on('click', $.proxy(this.onClickCheckbox, this));
             this.els.summaryInput.bind('blur', $.proxy(this.onSummaryInputBlur, this));
             this.els.summaryInput.bind('keydown', $.proxy(this.onSummaryInputKeyDown, this));
+            this.els.summaryInput.bind('mousedown', $.proxy(this.onSummaryInputMousedown, this));
 
             this.model.on('change', this.render, this);
 
@@ -109,9 +118,85 @@ $(function() {
             return this;
         },
 
+        onSummaryInputMousedown: function(ev) {
+            ev.stopImmediatePropagation();
+            return this;
+        },
+
         deleteModel: function() {
             this.model.destroy();
             return this.close();
+        },
+
+        onMouseDown: function() {
+
+
+
+            this.dragStart();
+
+        },
+
+        onMouseMove: function(ev) {
+
+            this.dragMove(ev.pageX, ev.pageY);
+
+
+        },
+
+        onMouseUp: function() {
+
+            this.dragEnd();
+
+        },
+
+        bindDragEvents: function() {
+
+            $('body').on('mousemove', $.proxy(this.onMouseMove, this));
+            $('body').on('mouseup', $.proxy(this.onMouseUp, this));
+
+        },
+
+        unbindDragEvents: function() {
+
+            $('body').off('mousemove', $.proxy(this.onMouseMove, this));
+            $('body').off('mouseup', $.proxy(this.onMouseUp, this));
+
+        },
+
+        dragStart: function() {
+
+            this.bindDragEvents();
+            this.dragging = true;
+            this.hasMoved = false;
+
+        },
+
+        dragMove: function(x, y) {
+
+            // Load DragView on first mouse move.
+            // Improves performance of click and dblclick
+            if (!this.hasMoved) {
+                this.dragView = new Endeavour.View.DragView({elem: this.$el.clone(), model: this.model});
+                $('body').append(this.dragView.render().$el);
+                Endeavour.publish('drag:start', this.dragView);
+                this.hasMoved = true;
+            }
+
+            this.dragView.setPosition(x + 10, y + 10);
+
+        },
+
+        dragEnd: function() {
+
+            this.unbindDragEvents();
+            this.dragging = false;
+
+            if (this.hasMoved) {
+                this.dragView.close();
+                Endeavour.publish('drag:end');
+                this.hasMoved = false;
+            }
+
         },
 
     });

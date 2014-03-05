@@ -75,6 +75,20 @@ ul.lists {
 
         }
 
+        div.title.droppable {
+
+            background-color: #17b;
+            color: #fff;
+
+            .sublist-indicator {
+                background-image: url('/assets/img/right-arrow-white.png');
+            }
+            .sublist-indicator.expanded {
+                background-image: url('/assets/img/down-arrow-white.png');
+            }
+
+        }
+
         .sublist-indicator {
             background-image: url('/assets/img/inactive-right-arrow.png');
             background-position: right center;
@@ -116,6 +130,7 @@ div.list-items-section {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ccc;
     border-left: 1px solid #ddd;
+    overflow-y: auto;
 
     ul.list-items {
     
@@ -215,8 +230,4 @@ div.list-items-section {
 
     }
 
-}
-
-#all-lists div.list-items-section ul.list-items li.single-list-item 
-#all-lists div.list-items-section ul.list-items li.single-list-item {
 }

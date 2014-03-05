@@ -32,6 +32,9 @@ $(function() {
 
             this.on('sync', this.onSync, this);
 
+            // Add this to global collection
+            Endeavour.publish('new:model:list', this);
+
         },
 
         loadItems: function() {

@@ -6,10 +6,17 @@ $(function() {
         className: 'single-list',
 
         events: {
+
             'click':                        'onClick',
             'click .sublist-indicator':     'onClickSubListIndicator',
             'dblclick .title-text':         'onDblClickTitleText',
             'click .delete':                'onClickDelete',
+
+            // Dragging stuff
+            'mouseover .title':             'onMouseOver',
+            'mouseout .title':              'onMouseOut',
+            'mouseup .title':               'onMouseUp',
+
         },
 
         inputMinSize: 15,
@@ -186,6 +193,26 @@ $(function() {
         deleteModel: function() {
             this.model.destroy();
             return this.close();
+        },
+
+        onMouseOver: function(ev) {
+            ev.stopImmediatePropagation();
+            this.els.title.addClass('droppable');
+        },
+
+        onMouseOut: function(ev) {
+            ev.stopImmediatePropagation();
+            this.els.title.removeClass('droppable');
+        },
+
+        onMouseUp: function() {
+            console.log('mouseup');
+            if (Endeavour.stage.dragging) {
+                if (Endeavour.stage.dragging.model instanceof Endeavour.Model.ListItem) {
+                    console.log('list item dropped');
+                    Endeavour.stage.dragging.model.setListID(this.model.id);
+                }
+            }
         },
 
     });

@@ -28,6 +28,9 @@ $(function() {
 
             this.on('sync', this.onSync, this);
 
+            // Add this to global collection
+            Endeavour.publish('new:model:listItem', this);
+
         },
 
         onChangeCreated: function() {
@@ -62,6 +65,24 @@ $(function() {
                 this.save('Completed', 'now', {patch: true});
             }
             return this;
+        },
+
+        setListID: function(ListID) {
+
+            var lastListID = this.get('ListID');
+            var lastList = Endeavour.collection.lists.get(lastListID);
+
+            var list = Endeavour.collection.lists.get(ListID);
+            
+            if (lastList) lastList.items.remove(this);
+            if (list) list.items.add(this);
+
+            console.log('moving item from' +lastListID+' to ' +ListID,lastList, list);
+
+            this.save({ListID: ListID}, {patch: true});
+
+            return this;
+
         },
 
         onSync: function() {

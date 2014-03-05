@@ -7,11 +7,17 @@ $(function() {
 
         currentView: null,
 
+        dragging: null,
+
         initialize: function() {
 
             console.log('### initialize stage view');
 
+            this.dragging = null;
+
             Endeavour.subscribe('show:dialog', this.showDialog, this);
+            Endeavour.subscribe('drag:start', this.onDragStart, this);
+            Endeavour.subscribe('drag:end', this.onDragEnd, this);
 
         },
 
@@ -105,6 +111,16 @@ $(function() {
             // Render new view & append it to stage
             return this.$el.append(view.render().$el);
 
+        },
+
+        onDragStart: function(view) {
+            this.dragging = view;
+            return this;
+        },
+
+        onDragEnd: function(view) {
+            this.dragging = null;
+            return this;
         },
 
     });
