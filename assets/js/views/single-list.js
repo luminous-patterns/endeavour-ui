@@ -66,7 +66,7 @@ $(function() {
         },
 
         render: function() {
-            console.log('render',this.model.id);
+
             this.els.titleText.html(this.model.get('Title'));
             this.els.titleInput.val(this.model.get('Title'));
             this.els.titleInput.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, this.els.titleInput.val().length + Number(this.els.titleInput.val().length * 0.1))));
@@ -157,7 +157,7 @@ $(function() {
             }
             else {
                 this.showSubList();
-                if (!this.model.getLists()) this.model.loadLists();
+                if (!this.model.listsLoaded) this.model.loadLists();
             }
             return this;
         },

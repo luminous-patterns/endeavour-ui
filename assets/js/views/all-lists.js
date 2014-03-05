@@ -58,7 +58,7 @@ $(function() {
 
             this.listItems.setCollection(view.model.items);
 
-            if (!view.model.getItems()) view.model.loadItems();
+            if (!view.model.itemsLoaded) view.model.loadItems();
 
             Endeavour.publish('active-model:set', 'list', view.model);
 

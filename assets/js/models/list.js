@@ -24,7 +24,9 @@ $(function() {
         initialize: function() {
 
             this.items = new Endeavour.Collection.ListItems;
+            this.itemsLoaded = false;
             this.lists = new Endeavour.Collection.Lists;
+            this.listsLoaded = false;
 
             this.on('change:Created', this.onChangeCreated, this);
             this.on('change:Start', this.onChangeStart, this);
@@ -39,7 +41,12 @@ $(function() {
 
         loadItems: function() {
             this.items.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
-            this.items.fetch();
+            this.items.fetch({success: $.proxy(this.onItemsLoaded, this)});
+            return this;
+        },
+
+        onItemsLoaded: function() {
+            this.itemsLoaded = true;
             return this;
         },
 
@@ -60,7 +67,12 @@ $(function() {
 
         loadLists: function() {
             this.lists.url = 'http://api.endeavour.local/lists/' + this.id + '/lists';
-            this.lists.fetch();
+            this.lists.fetch({success: $.proxy(this.onListsLoaded, this)});
+            return this;
+        },
+
+        onListsLoaded: function() {
+            this.listsLoaded = true;
             return this;
         },
 
