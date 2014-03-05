@@ -9,6 +9,7 @@ $(function() {
             'click':                        'onClick',
             'click .sublist-indicator':     'onClickSubListIndicator',
             'dblclick .title-text':         'onDblClickTitleText',
+            'click .delete':                'onClickDelete',
         },
 
         inputMinSize: 15,
@@ -25,11 +26,13 @@ $(function() {
             this.els.title = $('<div class="title"></div>');
             this.els.titleText = $('<div class="title-text"></div>');
             this.els.titleInput = $('<input class="title-input-inline" value="" />');
+            this.els.deleteButton = $('<div class="delete"></div>');
             this.els.subListIndicator = $('<div class="sublist-indicator"></div>');
             this.els.subList = $('<ul class="sub-lists"></ul>');
 
             this.els.title.append(this.els.titleText)
                 .append(this.els.titleInput.hide())
+                .append(this.els.deleteButton)
                 .append(this.els.subListIndicator);
 
             this.$el
@@ -99,6 +102,11 @@ $(function() {
         onClickSubListIndicator: function(ev) {
             ev.stopImmediatePropagation();
             if (this.model.hasLists()) this.toggleSubList();
+            return this;
+        },
+
+        onClickDelete: function() {
+            this.deleteModel();
             return this;
         },
 
@@ -173,6 +181,11 @@ $(function() {
 
             return this;
 
+        },
+
+        deleteModel: function() {
+            this.model.destroy();
+            return this.close();
         },
 
     });

@@ -7,6 +7,7 @@ $(function() {
 
         events: {
             'dblclick .summary':           'onClickSummary',
+            'click .delete':               'onClickDelete',
         },
 
         inputMinSize: 25,
@@ -21,13 +22,15 @@ $(function() {
             this.els.summary = $('<div class="summary"></div>');
             this.els.summaryInput = $('<input class="summary-input-inline" value="" />');
             this.els.checkbox = $('<div class="checkbox"></div>');
+            this.els.deleteButton = $('<div class="delete"></div>');
 
             this.els.checkbox.html('<div class="outline"><div class="indicator"></div></div>');
 
             this.$el
                 .append(this.els.summary)
                 .append(this.els.summaryInput.hide())
-                .append(this.els.checkbox);
+                .append(this.els.checkbox)
+                .append(this.els.deleteButton);
 
             this.els.checkbox.on('click', $.proxy(this.onClickCheckbox, this));
             this.els.summaryInput.bind('blur', $.proxy(this.onSummaryInputBlur, this));
@@ -87,6 +90,11 @@ $(function() {
             return this;
         },
 
+        onClickDelete: function() {
+            this.deleteModel();
+            return this;
+        },
+
         onSummaryInputBlur: function(ev) {
             this.saveSummary();
             return this;
@@ -99,6 +107,11 @@ $(function() {
                 this.saveSummary();
             }
             return this;
+        },
+
+        deleteModel: function() {
+            this.model.destroy();
+            return this.close();
         },
 
     });
