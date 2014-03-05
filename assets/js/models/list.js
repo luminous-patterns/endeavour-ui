@@ -80,7 +80,7 @@ $(function() {
         },
 
         hasLists: function() {
-            return this.get('Lists') ? true : false;
+            return this.get('Lists') || this.lists.length > 0 ? true : false;
         },
 
         onChangeCreated: function() {
@@ -96,6 +96,34 @@ $(function() {
         onChangeDue: function() {
             this.due = new Date(this.get('Due'));
             return this;
+        },
+
+        setParentID: function(ParentID) {
+
+            var lastParentID = this.get('ParentID');
+            var lastParent = Endeavour.collection.lists.get(lastParentID);
+
+            var parent = Endeavour.collection.lists.get(ParentID);
+            
+            if (lastParent) {
+                lastParent.lists.remove(this);
+                lastParent.set('Lists', Math.max(0, parseInt(parent.get('Lists')) - 1));
+            }
+            else {
+                Endeavour.state.session.user.lists.remove(this);
+            }
+
+            if (parent) {
+                parent.lists.add(this);
+                parent.set('Lists', parseInt(parent.get('Lists')) + 1);
+            }
+
+            console.log('moving item from' +lastParentID+' to ' +ParentID,lastParent, parent);
+
+            this.save({ParentID: ParentID}, {patch: true});
+
+            return this;
+
         },
 
         onSync: function() {

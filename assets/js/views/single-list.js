@@ -12,7 +12,8 @@ $(function() {
             'dblclick .title-text':         'onDblClickTitleText',
             'click .delete':                'onClickDelete',
 
-            // Dragging stuff
+            // Drag & drop
+            'mousedown':                    'onMouseDown',
             'mouseover .title':             'onMouseOver',
             'mouseout .title':              'onMouseOut',
             'mouseup .title':               'onMouseUp',
@@ -27,6 +28,9 @@ $(function() {
             this.views = [];
             this.viewsByModelID = {};
             this.els = {};
+            this.dragging = false;
+            this.hasMoved = false;
+            this.dragView = false;
 
             this.$el.addClass('list-item-' + this.model.id);
 
@@ -54,14 +58,16 @@ $(function() {
 
             this.els.titleInput.bind('blur', $.proxy(this.onTitleInputBlur, this));
             this.els.titleInput.bind('keydown', $.proxy(this.onTitleInputKeyDown, this));
+            this.els.titleInput.bind('mousedown', $.proxy(this.onTitleInputMousedown, this));
 
             this.model.on('change', this.render, this);
             this.model.lists.on('add', this.onModelListAdd, this);
+            this.model.lists.on('remove', this.onModelListRemove, this);
 
         },
 
         render: function() {
-
+            console.log('render',this.model.id);
             this.els.titleText.html(this.model.get('Title'));
             this.els.titleInput.val(this.model.get('Title'));
             this.els.titleInput.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, this.els.titleInput.val().length + Number(this.els.titleInput.val().length * 0.1))));
@@ -131,6 +137,11 @@ $(function() {
             return this;
         },
 
+        onTitleInputMousedown: function(ev) {
+            ev.stopImmediatePropagation();
+            return this;
+        },
+
         setActiveClass: function() {
             this.$el.addClass('active');
             return this;
@@ -168,6 +179,10 @@ $(function() {
             return this.addSingleList(model);
         },
 
+        onModelListRemove: function(model) {
+            return this.removeSingleList(model);
+        },
+
         onSingleListClick: function(view) {
             // Event bubbles . O o *
             return this.trigger('click', view);
@@ -190,6 +205,19 @@ $(function() {
 
         },
 
+        removeSingleList: function(model) {
+            
+            if (model.id in this.viewsByModelID) {
+                var view = this.viewsByModelID[model.id];
+                delete this.viewsByModelID[model.id];
+                this.views.splice(this.views.indexOf(view), 1);
+                view.close();
+            }
+
+            return this;
+
+        },
+
         deleteModel: function() {
             this.model.destroy();
             return this.close();
@@ -205,14 +233,93 @@ $(function() {
             this.els.title.removeClass('droppable');
         },
 
-        onMouseUp: function() {
-            console.log('mouseup');
+        onMouseUp: function(ev) {
+
+            // Make sure this onMouseUp was meant for this view
+            if ($(ev.currentTarget).parent().attr('class') != $(ev.delegateTarget).attr('class')) return;
+
             if (Endeavour.stage.dragging) {
                 if (Endeavour.stage.dragging.model instanceof Endeavour.Model.ListItem) {
                     console.log('list item dropped');
                     Endeavour.stage.dragging.model.setListID(this.model.id);
                 }
+                else if (Endeavour.stage.dragging.model instanceof Endeavour.Model.List) {
+                    console.log('list dropped');
+                    Endeavour.stage.dragging.model.setParentID(this.model.id);
+                }
             }
+
+        },
+
+        onMouseDown: function(ev) {
+
+            ev.stopImmediatePropagation();
+
+            this.dragStart();
+
+        },
+
+        onBodyMouseMove: function(ev) {
+
+            this.dragMove(ev.pageX, ev.pageY);
+
+
+        },
+
+        onBodyMouseUp: function() {
+
+            this.dragEnd();
+
+        },
+
+        bindDragEvents: function() {
+
+            $('body').on('mousemove', $.proxy(this.onBodyMouseMove, this));
+            $('body').on('mouseup', $.proxy(this.onBodyMouseUp, this));
+
+        },
+
+        unbindDragEvents: function() {
+
+            $('body').off('mousemove', $.proxy(this.onBodyMouseMove, this));
+            $('body').off('mouseup', $.proxy(this.onBodyMouseUp, this));
+
+        },
+
+        dragStart: function() {
+
+            this.bindDragEvents();
+            this.dragging = true;
+            this.hasMoved = false;
+
+        },
+
+        dragMove: function(x, y) {
+
+            // Load DragView on first mouse move.
+            // Improves performance of click and dblclick
+            if (!this.hasMoved) {
+                this.dragView = new Endeavour.View.DragView({elem: this.$el.clone(), model: this.model});
+                $('body').append(this.dragView.render().$el);
+                Endeavour.publish('drag:start', this.dragView);
+                this.hasMoved = true;
+            }
+
+            this.dragView.setPosition(x + 10, y + 10);
+
+        },
+
+        dragEnd: function() {
+
+            this.unbindDragEvents();
+            this.dragging = false;
+
+            if (this.hasMoved) {
+                this.dragView.close();
+                Endeavour.publish('drag:end');
+                this.hasMoved = false;
+            }
+
         },
 
     });

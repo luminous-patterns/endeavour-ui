@@ -136,14 +136,14 @@ $(function() {
 
         },
 
-        onMouseMove: function(ev) {
+        onBodyMouseMove: function(ev) {
 
             this.dragMove(ev.pageX, ev.pageY);
 
 
         },
 
-        onMouseUp: function() {
+        onBodyMouseUp: function() {
 
             this.dragEnd();
 
@@ -151,15 +151,15 @@ $(function() {
 
         bindDragEvents: function() {
 
-            $('body').on('mousemove', $.proxy(this.onMouseMove, this));
-            $('body').on('mouseup', $.proxy(this.onMouseUp, this));
+            $('body').on('mousemove', $.proxy(this.onBodyMouseMove, this));
+            $('body').on('mouseup', $.proxy(this.onBodyMouseUp, this));
 
         },
 
         unbindDragEvents: function() {
 
-            $('body').off('mousemove', $.proxy(this.onMouseMove, this));
-            $('body').off('mouseup', $.proxy(this.onMouseUp, this));
+            $('body').off('mousemove', $.proxy(this.onBodyMouseMove, this));
+            $('body').off('mouseup', $.proxy(this.onBodyMouseUp, this));
 
         },
 

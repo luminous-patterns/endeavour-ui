@@ -86,7 +86,7 @@ $(function() {
         },
 
         removeSingleList: function(model) {
-
+            
             if (model.id in this.viewsByModelID) {
                 var view = this.viewsByModelID[model.id];
                 delete this.viewsByModelID[model.id];

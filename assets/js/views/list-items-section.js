@@ -67,7 +67,7 @@ $(function() {
         },
 
         onCollectionRemove: function(model) {
-            return this.removeSingleList(model);
+            return this.removeSingleListItem(model);
         },
 
         addSingleListItem: function(model) {
@@ -80,7 +80,7 @@ $(function() {
             return this;
         },
 
-        removeSingleList: function(model) {
+        removeSingleListItem: function(model) {
 
             if (model.id in this.viewsByModelID) {
                 var view = this.viewsByModelID[model.id];
