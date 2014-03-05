@@ -12,7 +12,6 @@ $(function() {
             this.listItems = new Endeavour.View.ListItemsSection;
 
             this.views = [];
-            this.viewsByModelID = {};
             this.els = {};
 
             this.activeSingleList = null;
@@ -44,6 +43,7 @@ $(function() {
         },
 
         onCollectionRemove: function(model) {
+            console.log('remove list',model);
             return this.removeSingleList(model);
         },
 
@@ -77,7 +77,6 @@ $(function() {
             view.on('click', this.onSingleListClick, this);
 
             this.views[this.views.length] = view;
-            this.viewsByModelID[model.id] = view;
 
             this.els.list.append(view.render().$el);
 
@@ -86,15 +85,25 @@ $(function() {
         },
 
         removeSingleList: function(model) {
-            
-            if (model.id in this.viewsByModelID) {
-                var view = this.viewsByModelID[model.id];
-                delete this.viewsByModelID[model.id];
-                this.views.splice(this.views.indexOf(view), 1);
-                view.close();
+
+            var modelView = this.getViewByModelID(model.id);
+
+            if (modelView) {
+                this.views.splice(this.views.indexOf(modelView), 1);
+                modelView.close();
             }
 
             return this;
+
+        },
+
+        getViewByModelID: function(modelID) {
+
+            var predicate = function(view) { 
+                return view.model.id == modelID; 
+            };
+
+            return _.find(this.views, predicate);
 
         },
 

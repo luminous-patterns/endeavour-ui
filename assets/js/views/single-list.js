@@ -26,7 +26,6 @@ $(function() {
         initialize: function() {
             
             this.views = [];
-            this.viewsByModelID = {};
             this.els = {};
             this.dragging = false;
             this.hasMoved = false;
@@ -197,7 +196,6 @@ $(function() {
             view.on('click', this.onSingleListClick, this);
 
             this.views[this.views.length] = view;
-            this.viewsByModelID[model.id] = view;
 
             this.els.subList.append(view.render().$el);
 
@@ -206,15 +204,25 @@ $(function() {
         },
 
         removeSingleList: function(model) {
-            
-            if (model.id in this.viewsByModelID) {
-                var view = this.viewsByModelID[model.id];
-                delete this.viewsByModelID[model.id];
-                this.views.splice(this.views.indexOf(view), 1);
-                view.close();
+
+            var modelView = this.getViewByModelID(model.id);
+
+            if (modelView) {
+                this.views.splice(this.views.indexOf(modelView), 1);
+                modelView.close();
             }
 
             return this;
+
+        },
+
+        getViewByModelID: function(modelID) {
+
+            var predicate = function(view) { 
+                return view.model.id == modelID; 
+            };
+
+            return _.find(this.views, predicate);
 
         },
 
@@ -240,11 +248,11 @@ $(function() {
 
             if (Endeavour.stage.dragging) {
                 if (Endeavour.stage.dragging.model instanceof Endeavour.Model.ListItem) {
-                    console.log('list item dropped');
                     Endeavour.stage.dragging.model.setListID(this.model.id);
                 }
                 else if (Endeavour.stage.dragging.model instanceof Endeavour.Model.List) {
-                    console.log('list dropped');
+                    // Prevent nesting an item inside its self
+                    if (Endeavour.stage.dragging.model.id == this.model.id) return;
                     Endeavour.stage.dragging.model.setParentID(this.model.id);
                 }
             }

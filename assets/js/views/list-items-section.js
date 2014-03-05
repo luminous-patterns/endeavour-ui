@@ -10,7 +10,6 @@ $(function() {
             this.collection = null;
 
             this.views = [];
-            this.viewsByModelID = {};
             this.els = {};
 
             this.els.list = $('<ul class="list-items"></ul>');
@@ -54,7 +53,6 @@ $(function() {
             }
 
             this.views = [];
-            this.viewsByModelID = {};
 
             this.els.list.html('');
 
@@ -71,25 +69,39 @@ $(function() {
         },
 
         addSingleListItem: function(model) {
+
             var view = new Endeavour.View.SingleListItem({
                 model: model,
             });
+
             this.views[this.views.length] = view;
-            this.viewsByModelID[model.id] = view;
+
             this.els.list.append(view.render().$el);
+
             return this;
+
         },
 
         removeSingleListItem: function(model) {
 
-            if (model.id in this.viewsByModelID) {
-                var view = this.viewsByModelID[model.id];
-                delete this.viewsByModelID[model.id];
-                this.views.splice(this.views.indexOf(view), 1);
-                view.close();
+            var modelView = this.getViewByModelID(model.id);
+
+            if (modelView) {
+                this.views.splice(this.views.indexOf(modelView), 1);
+                modelView.close();
             }
 
             return this;
+
+        },
+
+        getViewByModelID: function(modelID) {
+
+            var predicate = function(view) { 
+                return view.model.id == modelID; 
+            };
+
+            return _.find(this.views, predicate);
 
         },
 
