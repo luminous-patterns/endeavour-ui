@@ -29,7 +29,11 @@ $(function() {
             this.els = {};
             this.dragging = false;
             this.hasMoved = false;
-            this.dragView = false;
+            this.dragView = null;
+            this.dragCoords = {
+                initial: {x: 0, y: 0},
+                last: {x: 0, y: 0},
+            };
 
             this.$el.addClass('list-item-' + this.model.id);
 
@@ -268,16 +272,11 @@ $(function() {
         },
 
         onBodyMouseMove: function(ev) {
-
             this.dragMove(ev.pageX, ev.pageY);
-
-
         },
 
         onBodyMouseUp: function() {
-
             this.dragEnd();
-
         },
 
         bindDragEvents: function() {
@@ -304,13 +303,28 @@ $(function() {
 
         dragMove: function(x, y) {
 
+            if (!this.hasMoved) {
+                this.dragCoords.initial.x = x;
+                this.dragCoords.initial.y = y;
+                this.hasMoved = true;
+                return;
+            }
+
+            this.dragCoords.last.x = x;
+            this.dragCoords.last.y = y;
+
             // Load DragView on first mouse move.
             // Improves performance of click and dblclick
-            if (!this.hasMoved) {
-                this.dragView = new Endeavour.View.DragView({elem: this.$el.clone(), model: this.model});
-                $('body').append(this.dragView.render().$el);
-                Endeavour.publish('drag:start', this.dragView);
-                this.hasMoved = true;
+            if (this.hasMoved && !this.dragView) {
+                if ((this.dragCoords.initial.x + 5) > this.dragCoords.last.x
+                    || (this.dragCoords.initial.y + 5) > this.dragCoords.last.y) {
+                    this.dragView = new Endeavour.View.DragView({elem: this.$el.clone(), model: this.model});
+                    $('body').append(this.dragView.render().$el);
+                    Endeavour.publish('drag:start', this.dragView);
+                }
+                else {
+                    return;
+                }
             }
 
             this.dragView.setPosition(x + 10, y + 10);
@@ -323,9 +337,12 @@ $(function() {
             this.dragging = false;
 
             if (this.hasMoved) {
-                this.dragView.close();
-                Endeavour.publish('drag:end');
                 this.hasMoved = false;
+                if (this.dragView) {
+                    this.dragView.close();
+                    this.dragView = null;
+                    Endeavour.publish('drag:end');
+                }
             }
 
         },
