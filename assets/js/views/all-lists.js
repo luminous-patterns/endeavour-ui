@@ -19,7 +19,7 @@ $(function() {
             this.els.list = $('<ul class="lists"></ul>');
 
             this.$el
-                .append("<h1><em>All lists</em></h1>")
+                .append("<h1>All lists</h1>")
                 .append(this.els.list)
                 .append(this.listItems.render().$el);
 

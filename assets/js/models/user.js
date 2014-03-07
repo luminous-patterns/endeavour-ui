@@ -23,7 +23,6 @@ $(function() {
         },
 
         onSync: function() {
-            console.log('user sync',this);
             this.lists.fetch();
             return this;
         },

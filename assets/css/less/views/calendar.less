@@ -1,0 +1,52 @@
+/* #calendar */
+
+color: #333;
+
+.calendar-month {
+
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+
+    .month-grid {
+
+        .day-cell {
+
+            display: inline-block;
+            width: 14.28%;
+            position: relative;
+            border-style: solid;
+            background-color: #fefefe;
+            border-width: 1px 1px 0 0;
+            border-color: #eee;
+            height: 90px;
+            padding: 10px;
+            font-size: 0.8em;
+            vertical-align: top;
+
+            &:hover {
+                z-index: 3;
+                box-shadow: 0 0 10px 3px rgba(30,180,30,0.8);
+                font-weight: bold;
+                color: rgb(30,180,30);
+            }
+
+        }
+
+        .day-cell.empty {
+            background: transparent;
+            border: 0;
+        }
+
+        .day-cell.today {
+            z-index: 2;
+            box-shadow: 0 0 10px 3px rgba(30,100,180,0.8);
+            font-weight: bold;
+            color: rgb(30,100,180);
+        }
+
+    }
+
+}
