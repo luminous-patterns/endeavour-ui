@@ -7,7 +7,7 @@ $(function() {
 
         events: {
 
-            'dblclick .summary':                'onClickSummary',
+            'click .summary':                   'onClickSummary',
             'click .delete':                    'onClickDelete',
 
             // Drag & drop
