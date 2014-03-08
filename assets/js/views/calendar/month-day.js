@@ -11,17 +11,16 @@ $(function() {
 
             var date = new Date;
 
-            if (this.date) {
-                
-                this.$el.append(this.date.getDate());
+            if (date.toString().substr(0,15) == this.date.toString().substr(0,15)) {
+                this.$el.addClass('today');
+            }
 
-                if (date.toString().substr(0,15) == this.date.toString().substr(0,15)) {
-                    this.$el.addClass('today');
-                }
-
+            if (this.options.extra) {
+                this.$el.addClass('extra');
+                this.$el.append(this.date.getDate() + '/' + (this.date.getMonth() + 1));
             }
             else {
-                this.$el.addClass('empty');
+                this.$el.append(this.date.getDate());
             }
             
         },
