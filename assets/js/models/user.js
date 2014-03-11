@@ -2,7 +2,9 @@ $(function() {
 
     Endeavour.Model.User = Endeavour.Model.Abstract.extend({
 
-        urlRoot: 'http://api.endeavour.local/users',
+        urlRoot: function() {
+            return Endeavour.serverURL + '/users';
+        },
 
         defaults: {
             'ID':                 null, // int
@@ -16,7 +18,7 @@ $(function() {
         initialize: function() {
 
             this.lists = new Endeavour.Collection.Lists;
-            this.lists.url = 'http://api.endeavour.local/lists';
+            this.lists.url = Endeavour.serverURL + '/lists';
 
             this.on('sync', this.onSync, this);
 

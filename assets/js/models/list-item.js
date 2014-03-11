@@ -2,7 +2,9 @@ $(function() {
 
     Endeavour.Model.ListItem = Endeavour.Model.Abstract.extend({
 
-        urlRoot: 'http://api.endeavour.local/listitems',
+        urlRoot: function() {
+            return Endeavour.serverURL + '/listitems';
+        },
 
         defaults: {
             'ID':                 null, // int

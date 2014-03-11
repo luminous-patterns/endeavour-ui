@@ -28,7 +28,7 @@ $(function() {
 
         loadUserModel: function() {
             this.user = new Endeavour.Model.User;
-            this.user.url = 'http://api.endeavour.local/users/' + this.get('UserID');
+            this.user.url = Endeavour.serverURL + '/users/' + this.get('UserID');
             this.user.fetch();
             return this;
         },

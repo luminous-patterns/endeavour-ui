@@ -2,7 +2,9 @@ $(function() {
 
     Endeavour.Model.List = Endeavour.Model.Abstract.extend({
 
-        urlRoot: 'http://api.endeavour.local/lists',
+        urlRoot: function() {
+            return Endeavour.serverURL + '/lists';
+        },
 
         defaults: {
             'ID':                 null, // int
@@ -40,7 +42,7 @@ $(function() {
         },
 
         loadItems: function() {
-            this.items.url = 'http://api.endeavour.local/lists/' + this.id + '/items';
+            this.items.url = Endeavour.serverURL + '/lists/' + this.id + '/items';
             this.items.fetch({success: $.proxy(this.onItemsLoaded, this)});
             return this;
         },
@@ -66,7 +68,7 @@ $(function() {
         },
 
         loadLists: function() {
-            this.lists.url = 'http://api.endeavour.local/lists/' + this.id + '/lists';
+            this.lists.url = Endeavour.serverURL + '/lists/' + this.id + '/lists';
             this.lists.fetch({success: $.proxy(this.onListsLoaded, this)});
             return this;
         },
