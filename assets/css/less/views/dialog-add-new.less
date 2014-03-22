@@ -1,0 +1,74 @@
+/* #add-new-dialog.dialog */
+
+width: auto;
+margin: 40px 0 0;
+border-radius: 0;
+bottom: initial;
+padding-top: 60px;
+position: absolute;
+top: 200px;
+left: 25%;
+right: 25%;
+
+.dialog-title {
+    right: 0;
+    background: #07a linear-gradient(to bottom,rgba(255,255,255,.2) 0,rgba(255,255,255,0) 50px);
+    line-height: 40px;
+    text-align: center;
+    border-top: 1px solid #2ad;
+    border-left: 1px solid #2ad;
+    border-right: 1px solid #069;
+    top: 0;
+}
+
+.dialog-section {
+
+    input[type=text], input[type=password], textarea, .input {
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+        line-height: 30px;
+        margin: 0;
+        padding: 1px 10px;
+        width: 100%;
+    }
+
+    .input {
+
+        padding: 0 4px;
+        display: inline-block;
+        width: auto;
+
+        input[type=text] {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            font-family: monospace;
+            outline: none;
+            padding: 0;
+            text-align: center;
+            width: 25px;
+        }
+
+        input.year {
+            width: 45px;
+        }
+
+    }
+
+}
+
+.dialog-section.button-section {
+
+    text-align: left;
+
+    button {
+        margin: 0;
+    }
+
+    .call-to-action {
+        right: 20px;
+        position: absolute;
+    }
+
+}

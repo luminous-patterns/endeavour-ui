@@ -7,7 +7,7 @@ $(function() {
         className: 'dialog',
 
         events: {
-            'click':  'onClick',
+            'click':          'onClick',
         },
 
         initialize: function() {
@@ -19,6 +19,18 @@ $(function() {
 
             this.els.summarySection = $('<div class="dialog-section"><label for="summary">Summary</label><input type="text" id="summary" class="full-width" /></div>');
             this.els.summaryInput = this.els.summarySection.find('#summary');
+
+            this.els.detailsSection = $('<div class="dialog-section"><label for="details">Details (e.g. chocolate, with sprinkles)</label><textarea id="details" class="full-width"></textarea></div>');
+            this.els.detailsInput = this.els.detailsSection.find('#details');
+
+            this.els.dueDateSection = $('<div class="dialog-section"><label for="due-hour">Due on</label>'
+                + '<div class="input date-input"><input type="text" id="due-year" value="YYYY" /><span>-</span><input type="text" id="due-month" value="MM" /><span>-</span><input type="text" id="due-date" value="DD" /></div>'
+                + ' @ '
+                + '<div class="input time-input"><input type="text" id="due-hour" value="HH" /><span>:</span><input type="text" id="due-minute" value="MM" /></div>'
+                + '</div>'
+            );
+            this.els.dueDateInput = this.els.dueDateSection.find('#due-date');
+            this.els.dueTimeInput = this.els.dueDateSection.find('#due-time');
 
             this.els.buttonSection = $('<div class="dialog-section button-section"><button class="cancel">Cancel</button><button class="call-to-action">Create</button></div>');
             this.els.submitButton = this.els.buttonSection.find('.call-to-action');
@@ -34,6 +46,8 @@ $(function() {
             this.$el
                 .append(this.els.title)
                 .append(this.els.summarySection)
+                .append(this.els.detailsSection)
+                .append(this.els.dueDateSection)
                 .append(this.els.buttonSection)
                 .prepend(this.els.errorContainer);
 
@@ -62,6 +76,7 @@ $(function() {
 
             var inputs = {
                 Summary: that.els.summaryInput.val(),
+                Details: that.els.detailsInput.val(),
             };
 
             return inputs;

@@ -8,10 +8,10 @@ $(function() {
 
         defaults: {
             'ID':                 null, // int
-            'ParentID':           null, // int
+            'ListID':             null, // int
             'UserID':             null, // int
-            'Title':              null, // string
-            'Description':        null, // string
+            'Summary':            null, // string
+            'Details':            null, // string
             'Created':            null, // str - ISO-8601 date
             'Due':                null, // str - ISO-8601 date
             'Completed':          null, // str - ISO-8601 date
