@@ -123,8 +123,36 @@ $(function() {
         },
 
         onSetActiveModel: function(type, model) {
+
+            if (!model && model !== 0) {
+                console.error('No model or ID given');
+                return;
+            }
+
+            if (typeof model != 'object') {
+                switch (type) {
+                    case 'list':
+                        if (model === 0) {
+                            model = Endeavour.state.session.user;
+                        }
+                        else {
+                            loadedList = Endeavour.collection.lists.get(model);
+                            model = loadedList ? loadedList : new Endeavour.Model.List({ID: model});
+                        }
+                        break;
+                    case 'listItem':
+                        loadedListItem = Endeavour.collection.listItems.get(model);
+                        model = loadedListItem ? loadedListItem : new Endeavour.Model.ListItem({ID: model});
+                        break;
+                }
+            }
+
+            model.fetch();
+
             this.activeModel[type] = model;
+
             return this;
+
         },
 
         getActiveModel: function(type) {

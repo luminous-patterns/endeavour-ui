@@ -57,6 +57,7 @@ $(function() {
         },
 
         showAllLists: function() {
+            Endeavour.publish('active-model:set', 'list', 0);
             Endeavour.stage.showSection('all-lists');
         },
 
@@ -69,11 +70,14 @@ $(function() {
         },
 
         showList: function(ID) {
-            
+            Endeavour.publish('active-model:set', 'list', ID);
+            Endeavour.stage.showSection('list');
         },
 
         showListItem: function(ListID, ID) {
-            
+            Endeavour.publish('active-model:set', 'list', ID);
+            Endeavour.publish('active-model:set', 'listItem', ID);
+            Endeavour.stage.showSection('list-item');
         },
 
         showUserProfile: function(ID) {
@@ -83,6 +87,10 @@ $(function() {
         
 
         showIndex: function() {
+
+            if (Endeavour.state.isLoggedIn()) {
+                return this.navigate('lists', {trigger: true, replace: true});
+            }
             
         },
 
