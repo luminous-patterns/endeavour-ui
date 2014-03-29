@@ -30,9 +30,24 @@ $(function() {
 
             this.on('sync', this.onSync, this);
 
+            this.details = new Endeavour.Model.ListItemDetails;
+            this.detailsLoaded = false;
+
             // Add this to global collection
             Endeavour.publish('new:model:listItem', this);
 
+        },
+
+        loadDetails: function() {
+            this.details.url = Endeavour.serverURL + '/listitems/' + this.id + '/details';
+            this.details.fetch({success: $.proxy(this.onDetailsLoaded, this)});
+            return this;
+        },
+
+        onDetailsLoaded: function() {
+            this.trigger('loaded:details');
+            this.detailsLoaded = true;
+            return this;
         },
 
         onChangeCreated: function() {

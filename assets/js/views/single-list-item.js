@@ -7,8 +7,10 @@ $(function() {
 
         events: {
 
-            'click .summary':                   'onClickSummary',
+            'click':                            'onClick',
+            'dblclick .summary':                'onDblClickSummary',
             'click .delete':                    'onClickDelete',
+            'click .checkbox':                  'onClickCheckbox',
 
             // Drag & drop
             'mousedown':                        'onMouseDown',
@@ -44,7 +46,6 @@ $(function() {
                 .append(this.els.checkbox)
                 .append(this.els.deleteButton);
 
-            this.els.checkbox.on('click', $.proxy(this.onClickCheckbox, this));
             this.els.summaryInput.bind('blur', $.proxy(this.onSummaryInputBlur, this));
             this.els.summaryInput.bind('keydown', $.proxy(this.onSummaryInputKeyDown, this));
             this.els.summaryInput.bind('mousedown', $.proxy(this.onSummaryInputMousedown, this));
@@ -93,7 +94,14 @@ $(function() {
             return this;
         },
 
-        onClickSummary: function() {
+        onClick: function(ev) {
+            console.log('click',this);
+            this.trigger('click', this);
+            return this;
+        },
+
+        onDblClickSummary: function(ev) {
+            ev.stopImmediatePropagation();
             this.editSummary();
             return this;
         },

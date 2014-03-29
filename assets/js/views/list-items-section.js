@@ -12,12 +12,16 @@ $(function() {
             this.emptyIndicatorExists = false;
             this.loadingIndicatorExists = false;
 
+            this.detailsView = new Endeavour.View.ListItemDetails;
+
             this.views = [];
             this.els = {};
 
-            this.els.list = $('<ul class="list-items"></ul>');
+            this.els.listContainer = $('<div class="list-items-container"><ul class="list-items"></ul></div>');
+            this.els.list = this.els.listContainer.find('ul.list-items');
 
-            this.$el.append(this.els.list);
+            this.$el.append(this.els.listContainer)
+                .append(this.detailsView.render().$el);
 
             if (this.options.collection) this.setCollection(this.options.collection);
 
@@ -85,6 +89,11 @@ $(function() {
             return this;
         },
 
+        onSingleItemClick: function(view) {
+            this.detailsView.setModel(view.model);
+            return this;
+        },
+
         addSingleListItem: function(model) {
 
             if (this.emptyIndicatorExists) this.removeEmptyIndicator();
@@ -92,6 +101,8 @@ $(function() {
             var view = new Endeavour.View.SingleListItem({
                 model: model,
             });
+
+            view.on('click', this.onSingleItemClick, this);
 
             this.views[this.views.length] = view;
 
@@ -130,7 +141,7 @@ $(function() {
             if (this.loadingIndicatorExists) this.removeLoadingIndicator();
 
             this.els.emptyIndicator = $('<div class="indicator empty-indicator">List empty</div>');
-            this.$el.append(this.els.emptyIndicator);
+            this.els.listContainer.append(this.els.emptyIndicator);
             this.emptyIndicatorExists = true;
 
             return this;
@@ -153,7 +164,7 @@ $(function() {
             if (this.emptyIndicatorExists) this.removeEmptyIndicator();
 
             this.els.loadingIndicator = $('<div class="indicator loading-indicator"><span class="icon"></span>Loading...</div>');
-            this.$el.append(this.els.loadingIndicator);
+            this.els.listContainer.append(this.els.loadingIndicator);
             this.loadingIndicatorExists = true;
 
             return this;
