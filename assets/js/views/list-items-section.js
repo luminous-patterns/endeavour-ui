@@ -5,9 +5,20 @@ $(function() {
         tagName: 'div',
         className: 'list-items-section',
 
+        events: {
+            'mousedown .details-resizer':     'onResizeMouseDown',
+        },
+
         initialize: function() {
 
             this.collection = null;
+
+            this.resizing = false;
+            this.hasMoved = false;
+            this.resizeCoords = {
+                initial: {y: 0},
+                last: {y: 0},
+            };
 
             this.emptyIndicatorExists = false;
             this.loadingIndicatorExists = false;
@@ -19,8 +30,10 @@ $(function() {
 
             this.els.listContainer = $('<div class="list-items-container"><ul class="list-items"></ul></div>');
             this.els.list = this.els.listContainer.find('ul.list-items');
+            this.els.detailsResizer = $('<div class="details-resizer"></div>');
 
             this.$el.append(this.els.listContainer)
+                .append(this.els.detailsResizer)
                 .append(this.detailsView.render().$el);
 
             if (this.options.collection) this.setCollection(this.options.collection);
@@ -29,9 +42,30 @@ $(function() {
 
         render: function() {
 
+            this.setDetailsHeight(300);
+
             return this;
 
         },
+
+        setDetailsHeight: function(height) {
+            this.detailsHeight = height;
+            this.detailsView.$el.css({height: height + 'px'})
+            this.els.list.css({bottom: height + 'px'});
+            this.els.detailsResizer.css({bottom: ( height - 2 ) + 'px'});
+            return this;
+        },
+
+        /*
+
+
+
+
+            ===================================
+            COLLECTION FUNCTIONS
+            ===================================
+
+        */
 
         setCollection: function(collection) {
 
@@ -135,6 +169,17 @@ $(function() {
 
         },
 
+        /*
+
+
+
+
+            ===================================
+            INDICATOR FUNCTIONS
+            ===================================
+
+        */
+
         addEmptyIndicator: function() {
 
             if (this.emptyIndicatorExists) return this;
@@ -179,6 +224,78 @@ $(function() {
 
             return this;
             
+        },
+
+        /*
+
+
+
+
+            ===================================
+            RESIZE FUNCTIONS
+            ===================================
+
+        */
+
+        resizeStart: function() {
+
+            this.resizing = true;
+            this.hasMoved = false;
+            this.bindDragEvents();
+            this.els.detailsResizer.addClass('resizing');
+
+        },
+
+        resizeMove: function(y) {
+
+            if (!this.hasMoved) {
+                this.resizeCoords.initial.y = y;
+                this.resizeCoords.last.y = y;
+                this.hasMoved = true;
+                return;
+            }
+
+            var movedY = this.resizeCoords.last.y - y;
+
+            this.resizeCoords.last.y = y;
+
+            this.setDetailsHeight(this.detailsHeight + movedY);
+
+        },
+
+        resizeEnd: function() {
+
+            this.els.detailsResizer.removeClass('resizing');
+            this.unbindDragEvents();
+            this.resizing = false;
+
+        },
+
+        bindDragEvents: function() {
+
+            $('body').on('mousemove', $.proxy(this.onBodyMouseMove, this));
+            $('body').on('mouseup', $.proxy(this.onBodyMouseUp, this));
+
+        },
+
+        unbindDragEvents: function() {
+
+            $('body').off('mousemove', $.proxy(this.onBodyMouseMove, this));
+            $('body').off('mouseup', $.proxy(this.onBodyMouseUp, this));
+
+        },
+
+        onResizeMouseDown: function() {
+            this.resizeStart();
+        },
+
+        onBodyMouseMove: function(ev) {
+            ev.preventDefault();
+            this.resizeMove(ev.pageY);
+        },
+
+        onBodyMouseUp: function() {
+            this.resizeEnd();
         },
 
     });
