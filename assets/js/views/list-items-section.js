@@ -51,7 +51,7 @@ $(function() {
         setDetailsHeight: function(height) {
             this.detailsHeight = height;
             this.detailsView.$el.css({height: height + 'px'})
-            this.els.list.css({bottom: height + 'px'});
+            this.els.listContainer.css({bottom: height + 'px'});
             this.els.detailsResizer.css({bottom: ( height - 2 ) + 'px'});
             return this;
         },
