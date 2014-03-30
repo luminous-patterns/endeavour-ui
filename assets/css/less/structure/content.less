@@ -24,9 +24,6 @@
             text-align: center;
             font-size: 0.9em;
             position: relative;
-            background: url("../img/add-new.png") no-repeat;
-            background-size: 50px;
-            background-position: center 15px;
             margin-left: 0;
             border-left: 1px solid #fefefe;
             border-right: 1px solid #ddd;
@@ -36,6 +33,9 @@
             }
 
             a {
+                background-size: 50px;
+                background-position: center 15px;
+                background-repeat: no-repeat;
                 color: #333;
                 text-decoration: none;
                 position: absolute;
@@ -44,6 +44,15 @@
                 right: 0;
                 top: 0;
                 padding-top: 70px;
+            }
+            a.add-new-list-button {
+                background-image: url("../img/add-new-list.png");
+            }
+            a.add-new-list-item-button {
+                background-image: url("../img/add-new.png");
+            }
+            a.share-list-button {
+                background-image: url("../img/share-list.png");
             }
 
         }
