@@ -13,7 +13,7 @@ $(function() {
 
             this.els.title = $('<div class="dialog-title">Endeavour Login</div>');
 
-            this.els.emailAddressSection = $('<div class="dialog-section"><label for="email">Email Address</label><input type="text" id="email" /></div>');
+            this.els.emailAddressSection = $('<div class="dialog-section"><label for="email">Email Address</label><input type="email" id="email" /></div>');
             this.els.passwordSection = $('<div class="dialog-section"><label for="password">Password</label><input type="password" id="password" /></div>');
             this.els.rememberSection = $('<div class="dialog-section"><label for="remember"><input type="checkbox" id="remember" value="remember" /> Remember me</div>');
 
