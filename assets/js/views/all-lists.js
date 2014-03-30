@@ -27,6 +27,17 @@ $(function() {
 
             this.activeSingleList = null;
 
+            this.els.topButtons = $('<div class="top-buttons">'
+                + '<div class="top-button">'
+                + '<a class="add-new-list-button icon-add" href="#">List</a>'
+                + '</div>'
+                + '<div class="top-button">'
+                + '<a class="add-new-list-item-button icon-add" href="#">List Item</a>'
+                + '</div>'
+                + '</div>');
+            this.els.addNewListButton = this.els.topButtons.find('.add-new-list-button');
+            this.els.addNewListItemButton = this.els.topButtons.find('.add-new-list-item-button');
+
             this.els.list = $('<ul class="lists"></ul>');
             this.els.listResizer = $('<div class="list-resizer"></div>');
 
@@ -38,7 +49,8 @@ $(function() {
                 .append(this.listItems.render().$el);
 
             this.$el
-                .append("<h1>All lists</h1>")
+                .append(this.els.topButtons)
+                .append("<h1>My Lists</h1>")
                 .append(this.els.mainArea);
 
             for (var i = 0; i < this.collection.length; i++) {
@@ -47,6 +59,9 @@ $(function() {
 
             this.collection.on('add', this.onCollectionAdd, this);
             this.collection.on('remove', this.onCollectionRemove, this);
+
+            this.els.addNewListButton.on('click', $.proxy(this.onClickAddNewList, this));
+            this.els.addNewListItemButton.on('click', $.proxy(this.onClickAddNewListItem, this));
 
         },
 
@@ -63,6 +78,20 @@ $(function() {
             this.els.list.css({width: width + 'px'});
             this.listItems.$el.css({left: width + 'px'})
             this.els.listResizer.css({left: width + 'px'});
+            return this;
+        },
+
+        onClickAddNewList: function(ev) {
+            ev.preventDefault();
+            Endeavour.publish('show:dialog', 'add-new-list');
+            console.log('click add new list item');
+            return this;
+        },
+
+        onClickAddNewListItem: function(ev) {
+            ev.preventDefault();
+            Endeavour.publish('show:dialog', 'add-new-list-item');
+            console.log('click add new list item');
             return this;
         },
 

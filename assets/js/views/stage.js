@@ -15,6 +15,12 @@ $(function() {
 
             this.dragging = null;
 
+            this.headerOn = true;
+            this.header = new Endeavour.View.Header;
+
+            this.$el
+                .append(this.header.render().$el);
+
             Endeavour.subscribe('show:dialog', this.showDialog, this);
             Endeavour.subscribe('drag:start', this.onDragStart, this);
             Endeavour.subscribe('drag:end', this.onDragEnd, this);
@@ -47,6 +53,13 @@ $(function() {
 
             console.log('### stage view showDialog:', what);
 
+            if (Endeavour.state.isLoggedIn()) {
+                this.header.$el.show();
+            }
+            else {
+                this.header.$el.hide();
+            }
+
             switch(what) {
 
                 case 'login':
@@ -76,7 +89,13 @@ $(function() {
             if (!(this.currentView instanceof Endeavour.Layout.Main)) {
                 console.log('### stage view load layout');
                 this.setCurrentView(new Endeavour.Layout.Main());
-                this.currentView.sidebar.show(new Endeavour.View.Sidebar());
+            }
+
+            if (Endeavour.state.isLoggedIn()) {
+                this.header.$el.show();
+            }
+            else {
+                this.header.$el.hide();
             }
 
             switch(what) {

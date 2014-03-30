@@ -5,12 +5,11 @@ $(function() {
         id: 'layout',
 
         regions: {
-            sidebar: '#sidebar',
             content: '#content',
         },
 
         template: function() {
-            return $('<div id="sidebar"></div><div id="content"></div>');
+            return $('<div id="content"></div>');
         },
 
     });
