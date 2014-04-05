@@ -26,7 +26,12 @@ $(function() {
 
         onSync: function() {
             this.lists.fetch();
+            Endeavour.publish('change:user');
             return this;
+        },
+
+        getFullName: function() {
+            return this.get('FirstName') + ' ' + this.get('LastName');
         },
 
         getLists: function() {

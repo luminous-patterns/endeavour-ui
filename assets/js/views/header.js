@@ -27,9 +27,12 @@ $(function() {
 
             this.addButton('right', 'my-account', 'My Account', this.onClickToday);
 
+            Endeavour.subscribe('change:user', this.render, this);
+
         },
 
         render: function() {
+            if (Endeavour.state.session.user) this.$el.find('.button.my-account a').html(Endeavour.state.session.user.getFullName());
             return this;
         },
 

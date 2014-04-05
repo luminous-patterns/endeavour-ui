@@ -269,7 +269,7 @@ $(function() {
 
             ev.stopImmediatePropagation();
 
-            this.dragStart();
+            if (!this.model.get('Shared')) this.dragStart();
 
         },
 
