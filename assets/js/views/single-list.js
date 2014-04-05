@@ -59,6 +59,8 @@ $(function() {
                 this.addSingleList(this.model.lists.at(i));
             }
 
+            if (this.model.get('Shared')) this.$el.addClass('shared');
+
             this.els.titleInput.bind('blur', $.proxy(this.onTitleInputBlur, this));
             this.els.titleInput.bind('keydown', $.proxy(this.onTitleInputKeyDown, this));
             this.els.titleInput.bind('mousedown', $.proxy(this.onTitleInputMousedown, this));

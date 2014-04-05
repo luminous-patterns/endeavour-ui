@@ -10,6 +10,7 @@ $(function() {
             'ID':                 null, // int
             'ParentID':           null, // int
             'UserID':             null, // int
+            'Shared':             null, // boolean
             'Title':              null, // string
             'Description':        null, // string
             'Lists':              null, // int
