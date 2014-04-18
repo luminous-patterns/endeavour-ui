@@ -40,6 +40,7 @@ $(function() {
             this.els.title = $('<div class="title"></div>');
             this.els.titleText = $('<div class="title-text"></div>');
             this.els.titleInput = $('<input class="title-input-inline" value="" />');
+            this.els.ownerLabel = $('<div class="owner-label"></div>');
             this.els.deleteButton = $('<div class="delete"></div>');
             this.els.subListIndicator = $('<div class="sublist-indicator"></div>');
             this.els.subList = $('<ul class="sub-lists"></ul>');
@@ -79,6 +80,11 @@ $(function() {
 
             if (!this.model.hasLists()) this.els.subListIndicator.hide();
             else this.els.subListIndicator.show();
+
+            if (this.model.owner) {
+                this.els.ownerLabel.html(this.model.owner.get('FirstName'));
+                this.els.titleText.append(this.els.ownerLabel);
+            }
 
             return this;
 

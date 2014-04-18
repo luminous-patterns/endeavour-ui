@@ -10,6 +10,7 @@ $(function() {
             'ID':                 null, // int
             'ParentID':           null, // int
             'UserID':             null, // int
+            'OwnerID':            null, // int
             'Shared':             null, // boolean
             'Title':              null, // string
             'Description':        null, // string
@@ -34,11 +35,16 @@ $(function() {
             this.on('change:Created', this.onChangeCreated, this);
             this.on('change:Start', this.onChangeStart, this);
             this.on('change:Due', this.onChangeDue, this);
+            this.on('change:OwnerID', this.onChangeOwnerID, this);
 
             this.on('sync', this.onSync, this);
 
             // Add this to global collection
             Endeavour.publish('new:model:list', this);
+            
+            if (this.get('OwnerID') != this.get('UserID')) {
+                this.owner = new Endeavour.Model.User(this.get('Owner'));
+            }
 
         },
 
@@ -139,6 +145,13 @@ $(function() {
 
             return this;
 
+        },
+
+        onChangeOwnerID: function() {
+            if (this.get('OwnerID') != this.get('UserID')) {
+                this.owner = new Endeavour.Model.User(this.get('Owner'));
+            }
+            return this;
         },
 
         onSync: function() {

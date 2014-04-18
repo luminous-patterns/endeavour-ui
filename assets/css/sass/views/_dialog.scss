@@ -1,0 +1,76 @@
+.dialog {
+
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.25);
+    margin: 200px auto;
+    padding: 20px;
+    position: relative;
+    width: 400px;
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .dialog-title {
+        position: absolute;
+        top: -40px;
+        line-height: 30px;
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        left: 0px;
+    }
+
+    .dialog-section {
+
+        margin-bottom: 20px;
+
+        input[type=text], input[type=email], input[type=password], select, textarea {
+            width: 250px;
+            margin-top: 10px;
+        }
+
+        input.full-width, select.full-width, textarea.full-width {
+            width: 100%;
+        }
+
+    }
+
+    .dialog-section.error-section {
+        color: #a21;
+    }
+
+    .dialog-section.button-section {
+
+        text-align: right;
+        margin-bottom: 0px;
+
+        button {
+            @include background(#ddd linear-gradient(to bottom, rgba(255,255,255,0.5) 0px, rgba(255,255,255,0) 50px));
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.4), inset -1px -1px 0 rgba(255,255,255,0.2);
+            color: #555;
+            cursor: pointer;
+            font-weight: 400;
+            height: 30px;
+            margin-left: 10px;
+            padding: 0 15px;
+            text-align: right;
+            text-shadow: 1px 1px 0 rgba(255,255,255,.3);
+        }
+
+        .call-to-action {
+            @include background(#07a linear-gradient(to bottom, rgba(255,255,255,0.2) 0px, rgba(255,255,255,0) 50px));
+            border: 1px solid #058;
+            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2), inset -1px -1px 0 rgba(255,255,255,0.1);
+            color: #fff;
+            text-shadow: -1px -1px 0 rgba(0,0,0,0.5);
+        }
+
+    }
+
+}

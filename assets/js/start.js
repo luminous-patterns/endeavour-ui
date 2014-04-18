@@ -30,6 +30,10 @@ $(function() {
         window.Endeavour.stage = new Endeavour.View.Stage;
         $('body').prepend(window.Endeavour.stage.render().$el);
 
+        $(document).ajaxError(function( event, jqxhr, settings, exception ) {
+            console.log(arguments);
+        });
+
         // Start backbone history
         Backbone.history.start({pushState: false});
 
