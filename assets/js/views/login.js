@@ -114,8 +114,10 @@ $(function() {
 
         onInvalidLogin: function(jsonResponse) {
             console.log('### invalid login', jsonResponse.responseJSON.error);
-            this.showError('Invalid login');
-            this.els.passwordInput.val('').focus();
+            if (jsonResponse.responseJSON.error == 'invalid_login') {
+                this.showError('Invalid login');
+                this.els.passwordInput.val('').focus();
+            }
             return this;
         },
 
