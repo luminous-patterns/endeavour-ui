@@ -1,6 +1,6 @@
 $(function() {
 
-    window.Endeavour.View.DialogAddNewListItem = Endeavour.View.Dialog.extend({
+    window.Endeavour.View.DialogAddNewListItem = Endeavour.View.FormDialog.extend({
 
         id: 'add-new-dialog',
 
