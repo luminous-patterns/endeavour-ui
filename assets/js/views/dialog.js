@@ -25,7 +25,6 @@ $(function() {
         },
 
         closeDialog: function() {
-            this.trigger('close');
             return this.close();
         },
 

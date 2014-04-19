@@ -65,6 +65,59 @@ $(function() {
         Endeavour.internalTimer = new Endeavour.Model.InternalTimer;
         Endeavour.subscribe('beat', Endeavour.checkin, Endeavour.internalTimer);
 
+        // Alerts & Confirmation Dialogs
+        Endeavour.alert = function(options) {
+
+            var message = options.message;
+            var callback = options.callback;
+
+            var dialog = new Endeavour.View.AlertDialog({
+                message: message,
+                callback: callback,
+            });
+
+            Endeavour.haltWithDialog(dialog);
+
+        }
+
+        Endeavour.confirm = function(options) {
+
+            var message = options.message;
+            var onConfirm = options.onConfirm;
+            var onCancel = options.onCancel;
+
+            var dialog = new Endeavour.View.ConfirmDialog({
+                message: message,
+                onConfirm: onConfirm,
+                onCancel: onCancel,
+            });
+
+            Endeavour.haltWithDialog(dialog);
+
+        }
+
+        Endeavour.haltWithDialog = function(dialog) {
+
+            console.log('$$$$ opening dialog');
+
+            var onClose = function() {
+                // Resume internal timer
+                Endeavour.internalTimer.start();
+                console.log('$$$$ closing dialog');
+            };
+
+            // Pause internal timer
+            Endeavour.internalTimer.stop();
+
+            dialogContainer = new Endeavour.View.DialogContainer({
+                dialog: dialog,
+                onCloseDialog: onClose,
+            });
+
+            $('body').append(dialogContainer.render().$el);
+
+        }
+
         // Start backbone history
         Backbone.history.start({pushState: false});
 

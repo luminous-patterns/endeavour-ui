@@ -17,13 +17,13 @@ $(function() {
 
             this.dialog = this.options.dialog;
 
-            if ('onCloseOverlay' in this.options) {
-                this.onCloseOverlay = this.options.onCloseOverlay;
+            if ('onCloseDialog' in this.options) {
+                this.onCloseDialog = this.options.onCloseDialog;
             }
 
             this.$el.append(this.dialog.render().$el);
 
-            this.dialog.on('close', this.closeOverlay, this);
+            this.dialog.on('close', this.onDialogClose, this);
 
         },
 
@@ -41,10 +41,18 @@ $(function() {
         },
 
         closeOverlay: function() {
-            if ('onCloseOverlay' in this && typeof this.onCloseOverlay == 'function') {
-                this.onCloseOverlay();
-            }
+            this.dialog.close();
             return this.close();
+        },
+
+        onDialogClose: function() {
+            return this.close();
+        },
+
+        onClose: function() {
+            if ('onCloseDialog' in this && typeof this.onCloseDialog == 'function') {
+                this.onCloseDialog();
+            }
         },
 
     });
