@@ -130,8 +130,15 @@ $(function() {
         },
 
         onClickDelete: function() {
-            this.deleteModel();
+            Endeavour.confirm({
+                message: 'Delete list \'' + this.model.get('Title') + '\'',
+                onConfirm: $.proxy(this.onConfirmDelete, this),
+            });
             return this;
+        },
+
+        onConfirmDelete: function() {
+            this.deleteModel();
         },
 
         onTitleInputBlur: function(ev) {
