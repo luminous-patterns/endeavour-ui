@@ -37,7 +37,13 @@ $(function() {
                     console.log('Bad request [' + response.error + ']: ', response.error_description);
                     switch (response.error) {
                         case 'invalid_session':
-                            window.location.reload();
+                            if (Endeavour.state.getSavedSessionKey()) {
+                                Endeavour.state.clearSavedSessionKey();
+                                Endeavour.alert({
+                                    message: 'Your session has expired.',
+                                    callback: function() { window.location.reload(); },
+                                });
+                            }
                             break;
                     }
                     break;
@@ -98,12 +104,9 @@ $(function() {
 
         Endeavour.haltWithDialog = function(dialog) {
 
-            console.log('$$$$ opening dialog');
-
             var onClose = function() {
                 // Resume internal timer
                 Endeavour.internalTimer.start();
-                console.log('$$$$ closing dialog');
             };
 
             // Pause internal timer
