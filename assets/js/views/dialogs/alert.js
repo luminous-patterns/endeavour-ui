@@ -22,8 +22,6 @@ $(function() {
             this.$el.append(this.els.message)
                 .append(this.els.buttonSection);
 
-            // this.on('close', this.onClose, this);
-
         },
 
         onClickOK: function() {

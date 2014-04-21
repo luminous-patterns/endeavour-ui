@@ -116,8 +116,10 @@ li { cursor: default; }
 #all-lists .main-area div.list-items-section .list-item-details .item-details-header .input-rows .input-row label { margin-left: 10px; width: 90px; display: inline-block; font-size: 0.7em; line-height: 30px; vertical-align: top; text-transform: uppercase; color: #ccc; }
 #all-lists .main-area div.list-items-section .list-item-details .item-details-header .input-rows .input-row .input-container { position: absolute; left: 100px; right: 0; top: 0; bottom: 0; }
 #all-lists .main-area div.list-items-section .list-item-details .item-details-header .input-rows .input-row .input-container input.fullwidth { position: absolute; width: 100%; border: none; height: 100%; margin: 0; padding: 0; }
+#all-lists .main-area div.list-items-section .list-item-details .item-details-header .input-rows .input-row .input-container input.fullwidth:disabled { background-color: #fff; }
 #all-lists .main-area div.list-items-section .list-item-details .item-details-header .input-rows .input-row .input-container input.fullwidth:focus { outline: none; }
 #all-lists .main-area div.list-items-section .list-item-details textarea.item-details { position: absolute; top: 92px; bottom: 0; width: 100%; padding: 20px; border: none; margin: 0; border-top: 1px solid #ddd; }
+#all-lists .main-area div.list-items-section .list-item-details textarea.item-details:disabled { background-color: #fff; }
 #all-lists .main-area div.list-items-section .list-item-details textarea.item-details:focus { outline: none; }
 #all-lists .main-area div.list-items-section .indicator { position: absolute; top: 45%; left: 0; bottom: 0; right: 0; line-height: 30px; font-weight: bold; color: #bbb; text-transform: uppercase; text-align: center; }
 #all-lists .main-area div.list-items-section .indicator.loading-indicator { color: #777; }
