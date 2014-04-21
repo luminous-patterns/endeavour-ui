@@ -52,7 +52,8 @@ li { cursor: default; }
 
 .dialog-container { background: rgba(0, 0, 0, 0.5); bottom: 0; left: 0; right: 0; top: 0; position: absolute; z-index: 10; }
 
-.dialog { background-color: #fff; border-radius: 0 0 4px 4px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25); margin: 200px auto; padding: 20px 20px 60px; position: relative; width: 400px; }
+.dialog { background-color: #fff; border-radius: 0 0 4px 4px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25); margin: 200px auto 0; padding: 20px 20px 60px; position: relative; width: 400px; }
+.dialog.wide { width: 650px; }
 .dialog label { display: block; margin-bottom: 10px; }
 .dialog p { margin-top: 0; }
 .dialog .dialog-title { position: absolute; top: -40px; line-height: 30px; font-weight: 600; text-transform: uppercase; font-size: 0.8em; left: 0px; background: #222222 -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0))); background: #222222 -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); background: #222222 -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); background: #222222 -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); background: #222222 linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); border-top: 1px solid #333; border-left: 1px solid #333; border-right: 1px solid #111; right: 0; padding: 5px 20px; border-radius: 4px 4px 0 0; text-align: center; color: #eee; border-bottom: 3px solid #ddd; }
@@ -62,6 +63,11 @@ li { cursor: default; }
 .dialog .dialog-section .input input[type=text] { background: transparent; border: none; box-shadow: none; font-family: monospace; outline: none; padding: 0; text-align: center; width: 25px; }
 .dialog .dialog-section .input input.year { width: 45px; }
 .dialog .dialog-section input.full-width, .dialog .dialog-section select.full-width, .dialog .dialog-section textarea.full-width { width: 100%; }
+.dialog .dialog-section textarea.tall { height: 200px; }
+.dialog .dialog-section .rating-stars { list-style-type: none; margin: 0; padding: 0; width: 250px; display: inline-block; vertical-align: middle; }
+.dialog .dialog-section .rating-stars li { cursor: pointer; display: inline-block; height: 50px; width: 50px; background-image: url(../img/feedback-star-inactive.png); background-size: 32px; background-repeat: no-repeat; background-position: center; }
+.dialog .dialog-section .rating-stars li.active { background-image: url(../img/feedback-star-active.png); }
+.dialog .dialog-section .rating-value { display: inline-block; line-height: 30px; padding: 10px 30px; vertical-align: middle; color: #aaa; font-style: italic; }
 .dialog .dialog-section.error-section { color: #a21; }
 .dialog .dialog-section.button-section { left: 0; right: 0; position: absolute; background-color: #eee; border-top: 1px solid #ddd; padding: 15px; border-radius: 0 0 4px 4px; text-align: right; margin-bottom: 0px; }
 .dialog .dialog-section.button-section button { background: #dddddd -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.5)), color-stop(100%, rgba(255, 255, 255, 0))); background: #dddddd -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #dddddd -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #dddddd -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #dddddd linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); border: 1px solid #ccc; border-radius: 2px; box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.4), inset -1px -1px 0 rgba(255, 255, 255, 0.2); color: #555; cursor: pointer; font-weight: 400; height: 34px; margin-left: 10px; padding: 0 15px; text-align: right; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3); font-size: 1em; line-height: 26px; }

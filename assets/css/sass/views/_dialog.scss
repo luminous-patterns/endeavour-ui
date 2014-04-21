@@ -3,11 +3,14 @@
     background-color: #fff;
     border-radius: 0 0 4px 4px;
     box-shadow: 0px 5px 10px rgba(0,0,0,0.25);
-    margin: 200px auto;
+    margin: 200px auto 0;
     padding: 20px 20px 60px;
     position: relative;
     width: 400px;
 
+    &.wide {
+        width: 650px;
+    }
     label {
         display: block;
         margin-bottom: 10px;
@@ -76,6 +79,46 @@
 
         input.full-width, select.full-width, textarea.full-width {
             width: 100%;
+        }
+
+        textarea.tall {
+            height: 200px;
+        }
+
+        .rating-stars {
+
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 250px;
+            display: inline-block;
+            vertical-align: middle;
+
+            li {
+
+                cursor: pointer;
+                display: inline-block;
+                height: 50px;
+                width: 50px;
+                background-image: url(../img/feedback-star-inactive.png);
+                background-size: 32px;
+                background-repeat: no-repeat;
+                background-position: center;
+
+                &.active {
+                    background-image: url(../img/feedback-star-active.png);
+                }
+
+            }
+
+        }
+        .rating-value {
+            display: inline-block;
+            line-height: 30px;
+            padding: 10px 30px;
+            vertical-align: middle;
+            color: #aaa;
+            font-style: italic;
         }
 
     }

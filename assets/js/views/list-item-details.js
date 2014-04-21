@@ -58,6 +58,8 @@ $(function() {
 
             if (this.model) {
 
+                this.enableInputs();
+
                 this.els.summaryInput.val(this.model.get('Summary'));
 
                 if (this.model.due) this.els.dueDateInput.val(this.model.due.toString());
@@ -71,6 +73,9 @@ $(function() {
                     this.model.loadDetails();
                 }
 
+            }
+            else {
+                this.disableInputs();
             }
 
             this.disableButtons();
@@ -135,6 +140,22 @@ $(function() {
 
         onDetailsLoaded: function() {
             return this.render()
+        },
+
+        enableInputs: function() {
+            this.els.summaryInput.removeAttr('disabled');
+            this.els.dueDateInput.removeAttr('disabled');
+            this.els.tagsInput.removeAttr('disabled');
+            this.els.detailsInput.removeAttr('disabled');
+            return this;
+        },
+
+        disableInputs: function() {
+            this.els.summaryInput.attr('disabled', 'disabled');
+            this.els.dueDateInput.attr('disabled', 'disabled');
+            this.els.tagsInput.attr('disabled', 'disabled');
+            this.els.detailsInput.attr('disabled', 'disabled');
+            return this;
         },
 
     });

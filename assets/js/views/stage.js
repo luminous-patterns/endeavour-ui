@@ -67,13 +67,15 @@ $(function() {
                     break;
 
                 case 'add-new-list-item':
-                    console.log('show add new list item dialog');
                     this.newDialogContainer(new Endeavour.View.DialogAddNewListItem());
                     break;
 
                 case 'add-new-list':
-                    console.log('show add new list dialog');
                     this.newDialogContainer(new Endeavour.View.DialogAddNewList());
+                    break;
+
+                case 'feedback':
+                    this.newDialogContainer(new Endeavour.View.FeedbackDialog());
                     break;
 
             }

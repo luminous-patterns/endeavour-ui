@@ -58,6 +58,7 @@ $(function() {
             for (var i = 0; i < orderedFields.length; i++) {
 
                 var field = orderedFields[i];
+                var className = 'className' in field ? field.className : '';
 
                 switch (field.type) {
                     case 'plaintext':
@@ -74,9 +75,26 @@ $(function() {
                     case 'textarea':
                         field.containerEl = $('<div class="dialog-section">'
                             + '<label for="' + field.id + '">' + field.label + '</label>'
-                            + '<textarea id="' + field.id + '" class="full-width">' + field.value + '</textarea>'
+                            + '<textarea id="' + field.id + '" class="full-width ' + className + '">' + field.value + '</textarea>'
                             + '</div>');
                         field.$el = field.containerEl.find('#' + field.id);
+                        break;
+                    case 'rating':
+                        field.containerEl = $('<div class="dialog-section">'
+                            + '<label for="' + field.id + '">' + field.label + '</label>'
+                            + '<ol class="rating-stars">'
+                            + '<li class="rating-star"></li><li class="rating-star"></li><li class="rating-star"></li><li class="rating-star"></li><li class="rating-star"></li>'
+                            + '</ol>'
+                            + '<span class="rating-value">No rating</span>'
+                            + '<input type="hidden" id="' + field.id + '" value="' + field.value + '" />'
+                            + '</div>');
+                        field.containerEl.find('ol.rating-stars li.rating-star')
+                            .on('mouseover', $.proxy(this.onRatingStarMouseOver, field))
+                            .on('mouseout', $.proxy(this.onRatingStarMouseOut, field))
+                            .on('click', $.proxy(this.onRatingStarClick, field));
+                        field.$valueDisplayEl = field.containerEl.find('span.rating-value');
+                        field.$el = field.containerEl.find('#' + field.id);
+                        field.formDialog = this;
                         break;
                     case 'datetime':
                         field.containerEl = $('<div class="dialog-section">'
@@ -97,6 +115,11 @@ $(function() {
 
             return this;
 
+        },
+
+        setSubmitText: function(text) {
+            this.els.submitButton.html(text);
+            return this;
         },
 
         render: function() {
@@ -178,6 +201,36 @@ $(function() {
 
             field.$el.val(yyyy + '-' + mo + '-' + dd + ' ' + hh + ':' + mi + ':00');
 
+        },
+
+        onRatingStarMouseOver: function(ev) {
+            var rating = $(ev.target).prevAll('li').length+1;
+            this.formDialog.setRatingStars(rating, this);
+        },
+
+        onRatingStarMouseOut: function(ev) {
+            var rating = this.$el.val();
+            this.formDialog.setRatingStars(rating, this);
+        },
+
+        onRatingStarClick: function(ev) {
+            var rating = $(ev.target).prevAll('li').length+1;
+            this.$el.val(rating);
+            this.formDialog.setRatingStars(rating, this);
+        },
+
+        setRatingStars: function(num, field) {
+            var count = 1;
+            field.containerEl.find('.rating-stars .rating-star').each(function(i, el) {
+                $(el).removeClass('active');
+                if (count <= num) {
+                    $(el).addClass('active');
+                }
+                count++;
+            });
+            var ratingText = num ? num + ' out of 5' : 'No rating';
+            field.$valueDisplayEl.html(ratingText);
+            return this;
         },
 
     });

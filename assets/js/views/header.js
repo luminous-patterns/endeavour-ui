@@ -24,6 +24,7 @@ $(function() {
             this.addButton('left', 'my-lists', 'My Lists', '#/lists');
             this.addButton('left', 'calendar', 'Calendar', '#/calendar');
             this.addButton('left', 'today', 'Today', '#/today');
+            this.addButton('left', 'feedback', 'Feedback', $.proxy(this.onClickFeedback, this));
 
             this.addButton('right', 'my-account', 'My Account', this.onClickToday);
 
@@ -42,6 +43,7 @@ $(function() {
 
             if (typeof callback == 'function') {
                 // buttonEl.on('click', $.proxy(callback, this));
+                buttonEl.on('click', callback);
             }
             else {
                 buttonEl.find('a').attr('href', callback);
@@ -51,6 +53,12 @@ $(function() {
 
             return this;
 
+        },
+
+        onClickFeedback: function(ev) {
+            ev.preventDefault();
+            Endeavour.publish('show:dialog', 'feedback');
+            return this;
         },
 
     });
