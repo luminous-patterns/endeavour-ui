@@ -13,6 +13,14 @@ $(function() {
             pos: 1,
         }],
 
+        initialize: function() {
+
+            Endeavour.View.FormDialog.prototype.initialize.apply(this, arguments);
+
+            this.setTitle('Add New List');
+
+        },
+
         submit: function() {
             Endeavour.state.session.user.createList(this.getInputs());
             return this.closeDialog();

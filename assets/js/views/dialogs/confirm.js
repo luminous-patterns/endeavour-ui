@@ -16,12 +16,17 @@ $(function() {
 
             this.els.message = $('<p>' + this.options.message + '</p>');
 
-            this.els.yesButton = $('<button class="yes-button">Yes</button>');
+            this.els.buttonSection = $('<div class="dialog-section button-section"></div>');
+            this.els.yesButton = $('<button class="yes-button call-to-action">Yes</button>');
             this.els.noButton = $('<button class="no-button">No</button>');
 
+            this.setTitle('Confirm');
+
+            this.els.buttonSection.append(this.els.noButton)
+                .append(this.els.yesButton);
+
             this.$el.append(this.els.message)
-                .append(this.els.yesButton)
-                .append(this.els.noButton);
+                .append(this.els.buttonSection);
 
             // this.on('close', this.onClose, this);
 

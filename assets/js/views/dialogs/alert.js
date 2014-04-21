@@ -12,10 +12,15 @@ $(function() {
 
             this.els.message = $('<p>' + this.options.message + '</p>');
 
+            this.els.buttonSection = $('<div class="dialog-section button-section"></div>');
             this.els.okButton = $('<button class="ok-button">OK</button>');
 
+            this.setTitle('Alert');
+
+            this.els.buttonSection.append(this.els.okButton);
+
             this.$el.append(this.els.message)
-                .append(this.els.okButton);
+                .append(this.els.buttonSection);
 
             // this.on('close', this.onClose, this);
 

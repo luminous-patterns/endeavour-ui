@@ -37,6 +37,11 @@ $(function() {
             return this;
         },
 
+        setTitle: function(title) {
+            this.els.title.html(title);
+            return this;
+        },
+
     });
 
 });

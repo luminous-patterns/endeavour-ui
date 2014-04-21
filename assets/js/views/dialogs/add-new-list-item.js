@@ -29,6 +29,14 @@ $(function() {
             pos: 3,
         }],
 
+        initialize: function() {
+
+            Endeavour.View.FormDialog.prototype.initialize.apply(this, arguments);
+
+            this.setTitle('Add New List Item');
+
+        },
+
         submit: function() {
 
             var activeListModel = Endeavour.state.getActiveModel('list');
