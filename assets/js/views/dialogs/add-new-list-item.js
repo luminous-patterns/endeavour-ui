@@ -15,7 +15,7 @@ $(function() {
         {
             id: 'item-details',
             type: 'textarea',
-            label: 'Details (e.g. chocolate, with sprinkles)',
+            label: 'Details <span class="instructions">(e.g. chocolate, with sprinkles)</span>',
             value: '',
             inputKey: 'Details',
             pos: 2,
