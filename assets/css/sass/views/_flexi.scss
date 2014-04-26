@@ -1,0 +1,53 @@
+div.flexi-container {
+    
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    
+    &.vertical-cells {
+
+        > div.resize-handle {
+            top: 0;
+            bottom: 0;
+            left: auto;
+            right: auto;
+            width: 4px;
+            height: 100%;
+        }
+
+    }
+    &.horizontal-cells {
+
+        > div.resize-handle {
+            left: 0;
+            right: 0;
+            top: auto;
+            bottom: auto;
+            height: 4px;
+            width: 100%;
+        }
+
+    }
+    div.resize-handle {
+        position: absolute;
+        background-color: #ddd;
+    }
+    div.flexi-cell {
+        
+        display: block;
+        position: absolute;
+
+        div.flexi-content {
+            background-color: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+    }
+
+}

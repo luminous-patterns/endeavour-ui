@@ -16,8 +16,8 @@ $(function() {
             this.resizing = false;
             this.hasMoved = false;
             this.resizeCoords = {
-                initial: {y: 0},
-                last: {y: 0},
+                initial: {x: 0},
+                last: {x: 0},
             };
 
             this.emptyIndicatorExists = false;
@@ -42,17 +42,17 @@ $(function() {
 
         render: function() {
 
-            this.setDetailsHeight(300);
+            this.setDetailsWidth(($(window).width()/2.5));
 
             return this;
 
         },
 
-        setDetailsHeight: function(height) {
-            this.detailsHeight = height;
-            this.detailsView.$el.css({height: height + 'px'})
-            this.els.listContainer.css({bottom: height + 'px'});
-            this.els.detailsResizer.css({bottom: ( height - 2 ) + 'px'});
+        setDetailsWidth: function(width) {
+            this.detailsWidth = width;
+            this.detailsView.$el.css({width: width + 'px'})
+            this.els.listContainer.css({right: width + 'px'});
+            this.els.detailsResizer.css({right: ( width - 2 ) + 'px'});
             return this;
         },
 
@@ -246,20 +246,20 @@ $(function() {
 
         },
 
-        resizeMove: function(y) {
+        resizeMove: function(x) {
 
             if (!this.hasMoved) {
-                this.resizeCoords.initial.y = y;
-                this.resizeCoords.last.y = y;
+                this.resizeCoords.initial.x = x;
+                this.resizeCoords.last.x = x;
                 this.hasMoved = true;
                 return;
             }
 
-            var movedY = this.resizeCoords.last.y - y;
+            var movedX = this.resizeCoords.last.x - x;
 
-            this.resizeCoords.last.y = y;
+            this.resizeCoords.last.x = x;
 
-            this.setDetailsHeight(this.detailsHeight + movedY);
+            this.setDetailsWidth(this.detailsWidth + movedX);
 
         },
 
@@ -291,7 +291,7 @@ $(function() {
 
         onBodyMouseMove: function(ev) {
             ev.preventDefault();
-            this.resizeMove(ev.pageY);
+            this.resizeMove(ev.pageX);
         },
 
         onBodyMouseUp: function() {

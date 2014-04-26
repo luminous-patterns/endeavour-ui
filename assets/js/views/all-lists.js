@@ -67,13 +67,14 @@ $(function() {
 
         render: function() {
 
-            this.setListsListWidth(200);
+            this.setListsListWidth(250);
 
             return this;
 
         },
 
         setListsListWidth: function(width) {
+            width = parseInt(width);
             this.listWidth = width;
             this.els.list.css({width: width + 'px'});
             this.listItems.$el.css({left: width + 'px'})

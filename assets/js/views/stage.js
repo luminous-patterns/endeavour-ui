@@ -129,8 +129,13 @@ $(function() {
             // Set new view to `currentView`
             this.currentView = view;
 
-            // Render new view & append it to stage
-            return this.$el.append(view.render().$el);
+            // Append new view to stage
+            this.$el.append(view.$el)
+
+            // Render it
+            view.render();
+
+            return this;
 
         },
 
