@@ -35,7 +35,7 @@ $(function() {
         },
 
         setHeight: function(height) {
-            console.log('setting height', height);
+            this.$el.css({height: height});
             this.opt.height = height;
             if (this.container) {
                 this.container.setHeight(height);
@@ -57,7 +57,7 @@ $(function() {
         },
 
         setWidth: function(width) {
-            console.log('setting width', width);
+            this.$el.css({width: width});
             if (this.container) {
                 this.container.setWidth(width);
                 this.render();
@@ -101,8 +101,8 @@ $(function() {
         },
 
         setRight: function(right) {
-            this.$el.css('right', right);
-            this.opt.right = right;
+            // this.$el.css('right', right);
+            // this.opt.right = right;
             return this;
         },
 

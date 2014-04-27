@@ -25,11 +25,11 @@ $(function() {
         render: function() {
 
             if (!this.flexi) {
-                this.initFlexi(this.height, this.width);
+                this.initFlexi(this.height - 100, this.width);
             }
             else {
                 this.flexi
-                    .setDimensions(this.height, this.width)
+                    .setDimensions(this.height - 100, this.width)
                     .render();
             }
 
@@ -41,7 +41,7 @@ $(function() {
             console.log('resize dashboard',height,width);
             this.height = height;
             this.width = width;
-            if (this.flexi) this.flexi.setDimensions(height, width);
+            if (this.flexi) this.flexi.setDimensions(height - 100, width);
             return this;
         },
 
@@ -49,7 +49,7 @@ $(function() {
 console.log('init flexi',height,width);
             var flexi = this.flexi = new Endeavour.View.FlexiContainer({
                 containerID: 'main',
-                height: height,
+                height: height - 100,
                 width: width,
                 margin: 20,
             });

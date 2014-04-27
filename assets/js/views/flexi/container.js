@@ -19,6 +19,7 @@ $(function() {
 
             this.cells = [];
             this.cellPos = [];
+            this.cellPositionsSet = false;
             this.handleEls = [];
             this.handleTopPos = [];
             this.handleLeftPos = [];
@@ -47,18 +48,38 @@ $(function() {
         },
 
         setHeight: function(height) {
-            console.log('set height',height);
             var oldHeight = this.height;
             this.height = height;
             if (this.cellOrientation == 'horizontal') this.updateHorizontalCellPositions(oldHeight, height);
+            else this.updateHorizontalCellHeights(oldHeight, height);
             return this;
         },
 
         setWidth: function(width) {
-            console.log('set width',width);
             var oldWidth = this.width;
             this.width = width;
             if (this.cellOrientation == 'vertical') this.updateVerticalCellPositions(oldWidth, width);
+            else this.updateVerticalCellWidths(oldWidth, width);
+            return this;
+        },
+
+        updateHorizontalCellHeights: function(oldHeight, height) {
+            var changeHeight = height - oldHeight;
+            var heightIncreased = changeHeight > 0;
+            for (var i = 0; i < this.cells.length; i++) {
+                if (heightIncreased) this.addCellHeight(i, changeHeight);
+                else this.subCellHeight(i, Math.abs(changeHeight));
+            }
+            return this;
+        },
+
+        updateVerticalCellWidths: function(oldWidth, width) {
+            var changeWidth = width - oldWidth;
+            var widthIncreased = changeWidth > 0;
+            for (var i = 0; i < this.cells.length; i++) {
+                if (widthIncreased) this.addCellWidth(i, changeWidth);
+                else this.subCellWidth(i, Math.abs(changeWidth));
+            }
             return this;
         },
 
@@ -72,7 +93,9 @@ $(function() {
 
             var totalCells = this.cells.length;
 
-            if (totalCells < 1) return this;
+            if (totalCells < 1 || !this.height || this.cellPositionsSet) return this;
+
+            this.cellPositionsSet = true;
 
             for (var i = 0; i < totalCells; i++) {
                 this.renderCellPosition(i, totalCells);
@@ -108,23 +131,41 @@ $(function() {
             var heightIncreased = changeHeight > 0;
 
             console.log('updateHorizontalCellPositions',changeHeight,heightIncreased);
+
+            // Find the "primary" cell
+            var primaryCellIndex = this.getPrimaryCellIndex();
+
+            // Increase the primary cell
+            if (heightIncreased) this.addCellHeight(primaryCellIndex, changeHeight);
+            else this.subCellHeight(primaryCellIndex, Math.abs(changeHeight));
             
-            // For each pixel difference
-            for (var x = 0; x < Math.abs(changeHeight); x++) {
+            // Increase left and right For each cell after the primary
+            for (var i = primaryCellIndex + 1; i < this.cells.length; i++) {
+                
+                cell = this.cells[i];
+
+                isLastCell = i == this.cells.length - 1;
+                isFirstCell = i == 0;
+
                 if (heightIncreased) {
-                    if (this.getResizeCellIndex() != this.cells.length - 1) this.addCellBottom(this.getResizeCellIndex(), 1);
-                    this.nextResizeCell();
-                    if (this.getResizeCellIndex() != 0) this.subCellTop(this.getResizeCellIndex(), 1);
+
+                    this.addCellTop(i, changeHeight);
+                    this.addHandleTop(i-1, changeHeight);
+
                 }
                 else {
-                    if (this.getResizeCellIndex() != this.cells.length - 1) this.subCellBottom(this.getResizeCellIndex(), 1);
-                    this.prevResizeCell();
-                    if (this.getResizeCellIndex() != 0) this.addCellTop(this.getResizeCellIndex(), 1);
+
+                    this.subCellTop(i, Math.abs(changeHeight));
+                    this.subHandleTop(i-1, Math.abs(changeHeight));
+
                 }
+
             }
 
-            return this;
+        },
 
+        getPrimaryCellIndex: function() {
+            return 1;
         },
 
         updateVerticalCellPositions: function(oldWidth, newWidth) {
@@ -134,47 +175,46 @@ $(function() {
 
             console.log('updateVerticalCellPositions',changeWidth,widthIncreased);
 
-            // For each cell
-            // for (var i = 0; i < this.cells.length; i++) {
-                
-            //     cell = this.cells[i];
+            // Find the "primary" cell
+            var primaryCellIndex = this.getPrimaryCellIndex();
 
-            //     isLastCell = i == this.cells.length - 1;
-            //     isFirstCell = i == 0;
-
-            //     if (!isLastCell) {
-            //         if (widthIncreased) this.subCellRight(i, 1);
-            //         else this.addCellRight(i, 1);
-            //     }
-
-            // }
+            // Increase the primary cell right
+            if (widthIncreased) this.addCellWidth(primaryCellIndex, changeWidth);
+            else this.subCellWidth(primaryCellIndex, Math.abs(changeWidth));
             
-            // For each pixel difference
-            for (var x = 0; x < Math.abs(changeWidth); x++) {
+            // Increase left and right For each cell after the primary
+            for (var i = primaryCellIndex + 1; i < this.cells.length; i++) {
+                
+                cell = this.cells[i];
+
+                isLastCell = i == this.cells.length - 1;
+                isFirstCell = i == 0;
+
                 if (widthIncreased) {
-                    if (this.getResizeCellIndex() != this.cells.length - 1) this.addCellRight(this.getResizeCellIndex(), 1);
-                    this.nextResizeCell();
-                    if (this.getResizeCellIndex() != 0) this.subCellLeft(this.getResizeCellIndex(), 1);
+
+                    this.addCellLeft(i, changeWidth);
+                    this.addHandleLeft(i-1, changeWidth);
+
                 }
                 else {
-                    if (this.getResizeCellIndex() != this.cells.length - 1) this.subCellRight(this.getResizeCellIndex(), 1);
-                    this.prevResizeCell();
-                    if (this.getResizeCellIndex() != 0) this.addCellLeft(this.getResizeCellIndex(), 1);
+
+                    this.subCellLeft(i, Math.abs(changeWidth));
+                    this.subHandleLeft(i-1, Math.abs(changeWidth));
+
                 }
+
             }
-                
-            // }
 
             return this;
 
         },
 
         renderCellPosition: function(cellIndex, totalCells) {
-console.log('render cell position');
+
+            console.log('render cell position');
+
             var cell = this.cells[cellIndex];
             var handlePosition = 0;
-
-            if (!this.height) return this;
 
             if (this.cellOrientation == 'vertical') {
 
@@ -182,15 +222,14 @@ console.log('render cell position');
                 cellHeight = this.height - (this.margin*2);
 
                 this.setCellLeft(cellIndex, this.margin + (cellWidth*cellIndex) + (this.spacing*cellIndex));
-                this.setCellRight(cellIndex, this.margin + (cellWidth*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
+                // this.setCellRight(cellIndex, this.margin + (cellWidth*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
                 this.setCellTop(cellIndex, this.margin);
                 this.setCellBottom(cellIndex, this.margin);
 
-                cell.setWidth(cellWidth);
-                cell.setHeight(cellHeight);
+                this.setCellWidth(cellIndex, cellWidth);
+                this.setCellHeight(cellIndex, cellHeight);
 
                 handlePosition = this.margin + (cellWidth*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
-                if (this.containerID =='main') console.log(cellIndex,this.containerID,handlePosition,totalCells,cellWidth,(this.spacing*cellIndex));
 
             }
             else {
@@ -201,10 +240,10 @@ console.log('render cell position');
                 this.setCellLeft(cellIndex, this.margin);
                 this.setCellRight(cellIndex, this.margin);
                 this.setCellTop(cellIndex, this.margin + (cellHeight*cellIndex) + (this.spacing*cellIndex));
-                this.setCellBottom(cellIndex, this.margin + (cellHeight*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
+                // this.setCellBottom(cellIndex, this.margin + (cellHeight*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
                 
-                cell.setWidth(cellWidth);
-                cell.setHeight(cellHeight);
+                this.setCellWidth(cellIndex, cellWidth);
+                this.setCellHeight(cellIndex, cellHeight);
 
                 handlePosition = this.margin + (cellHeight*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
 
@@ -229,6 +268,8 @@ console.log('render cell position');
                 left: 0,
                 bottom: 0,
                 right: 0,
+                height: 0,
+                width: 0,
             };
 
             // Add resize handle for each cell not including the first
@@ -284,8 +325,9 @@ console.log('render cell position');
 
             this.resizeCoords.last.x = x;
 
-            this.addHandleLeft(this.resizeHandleIndex, movedX);
-            this.addCellRight(this.resizeHandleIndex, movedX);
+            this.subHandleLeft(this.resizeHandleIndex, movedX);
+            this.subCellWidth(this.resizeHandleIndex, movedX);
+            this.addCellWidth(this.resizeHandleIndex+1, movedX);
             this.subCellLeft(this.resizeHandleIndex+1, movedX);
 
         },
@@ -303,8 +345,9 @@ console.log('render cell position');
 
             this.resizeCoords.last.y = y;
 
-            this.addHandleTop(this.resizeHandleIndex, movedY);
-            this.addCellBottom(this.resizeHandleIndex, movedY);
+            this.subHandleTop(this.resizeHandleIndex, movedY);
+            this.subCellHeight(this.resizeHandleIndex, movedY);
+            this.addCellHeight(this.resizeHandleIndex+1, movedY);
             this.subCellTop(this.resizeHandleIndex+1, movedY);
 
         },
@@ -476,23 +519,82 @@ console.log('render cell position');
 
 
             ===================================
+            CELL HEIGHT
+            ===================================
+
+        */
+
+        addCellHeight: function(cellIndex, height) {
+            return this.setCellHeight(cellIndex, this.cellPos[cellIndex].height + height);
+        },
+
+        subCellHeight: function(cellIndex, height) {
+            return this.setCellHeight(cellIndex, this.cellPos[cellIndex].height - height);
+        },
+
+        setCellHeight: function(cellIndex, height) {
+            var cell = this.cells[cellIndex];
+            this.cellPos[cellIndex].height = height;
+            cell.setHeight(height);
+            return this;
+        },
+
+        /*
+
+
+
+
+            ===================================
+            CELL WIDTH
+            ===================================
+
+        */
+
+        addCellWidth: function(cellIndex, width) {
+            return this.setCellWidth(cellIndex, this.cellPos[cellIndex].width + width);
+        },
+
+        subCellWidth: function(cellIndex, width) {
+            return this.setCellWidth(cellIndex, this.cellPos[cellIndex].width - width);
+        },
+
+        setCellWidth: function(cellIndex, width) {
+            var cell = this.cells[cellIndex];
+            this.cellPos[cellIndex].width = width;
+            cell.setWidth(width);
+            return this;
+        },
+
+        /*
+
+
+
+
+            ===================================
             HANDLE POSITIONING
             ===================================
 
         */
 
         addHandleLeft: function(handleIndex, left) {
+            return this.setHandleLeft(handleIndex, this.handleLeftPos[handleIndex] + left);
+        },
+
+        subHandleLeft: function(handleIndex, left) {
             return this.setHandleLeft(handleIndex, this.handleLeftPos[handleIndex] - left);
         },
 
         setHandleLeft: function(handleIndex, left) {
-            console.log('set handle left',this.containerID,handleIndex,left);
             this.handleLeftPos[handleIndex] = left;
             this.handleEls[handleIndex].css('left', left);
             return this;
         },
 
         addHandleTop: function(handleIndex, top) {
+            return this.setHandleTop(handleIndex, this.handleTopPos[handleIndex] + top);
+        },
+
+        subHandleTop: function(handleIndex, top) {
             return this.setHandleTop(handleIndex, this.handleTopPos[handleIndex] - top);
         },
 
