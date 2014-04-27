@@ -41,6 +41,7 @@ $(function() {
             console.log('resize dashboard',height,width);
             this.height = height;
             this.width = width;
+            if (this.flexi) this.flexi.setDimensions(height, width);
             return this;
         },
 
