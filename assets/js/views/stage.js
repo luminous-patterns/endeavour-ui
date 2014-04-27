@@ -18,8 +18,18 @@ $(function() {
             this.headerOn = true;
             this.header = new Endeavour.View.Header;
 
+            if (!'height' in this.options) console.error("Stage height must be specified!");
+
+            this.height = this.options.height;
+            this.width = this.options.width;
+
+            this.els = {};
+
+            this.els.content = $('<div id="content"></div>');
+
             this.$el
-                .append(this.header.render().$el);
+                .append(this.header.render().$el)
+                .append(this.els.content);
 
             Endeavour.subscribe('show:dialog', this.showDialog, this);
             Endeavour.subscribe('drag:start', this.onDragStart, this);
@@ -30,6 +40,18 @@ $(function() {
         render: function() {
             console.log('### render stage view');
             return this;
+        },
+
+        resize: function(height, width) {
+            console.log('resize stage', height, width);
+            this.height = height;
+            this.width = width;
+            if (this.currentView) {
+                var currentView = this.currentView;
+                if ('resize' in currentView) {
+                    currentView.resize(this.getUseableHeight(), this.getUseableWidth());
+                }
+            }
         },
 
         newDialogContainer: function(dialog) {
@@ -88,35 +110,46 @@ $(function() {
 
             console.log('### stage view showSection:', what);
 
-            if (!(this.currentView instanceof Endeavour.Layout.Main)) {
-                console.log('### stage view load layout');
-                this.setCurrentView(new Endeavour.Layout.Main());
-            }
+            // if (!(this.currentView instanceof Endeavour.Layout.Main)) {
+            //     console.log('### stage view load layout');
+            //     this.setCurrentView(new Endeavour.Layout.Main());
+            // }
 
             if (Endeavour.state.isLoggedIn()) {
                 this.header.$el.show();
+                this.els.content.css({marginTop: this.header.$el.height()});
             }
             else {
                 this.header.$el.hide();
+                this.els.content.css({marginTop: 0});
             }
 
             switch(what) {
                 case 'dashboard':
-                    this.currentView.content.show(new Endeavour.View.Dashboard());
+                    this.setCurrentView(new Endeavour.View.Dashboard());
                     break;
                 case 'all-lists':
-                    this.currentView.content.show(new Endeavour.View.AllLists());
+                    this.setCurrentView(new Endeavour.View.AllLists());
                     break;
                 case 'calendar':
-                    this.currentView.content.show(new Endeavour.View.Calendar());
+                    this.setCurrentView(new Endeavour.View.Calendar());
                     break;
                 case 'today':
-                    this.currentView.content.show(new Endeavour.View.Today());
+                    this.setCurrentView(new Endeavour.View.Today());
                     break;
             }
 
             return this;
 
+        },
+
+        getUseableHeight: function() {
+            var headerHeight = this.header.$el.css('display') != 'none' ? this.header.$el.height() : 0;
+            return this.height - headerHeight;
+        },
+
+        getUseableWidth: function() {
+            return this.width;
         },
 
         setCurrentView: function(view) {
@@ -130,7 +163,9 @@ $(function() {
             this.currentView = view;
 
             // Append new view to stage
-            this.$el.append(view.$el)
+            this.els.content.html(view.$el);
+
+            if ('resize' in view) view.resize(this.getUseableHeight(), this.getUseableWidth());
 
             // Render it
             view.render();

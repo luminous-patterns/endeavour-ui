@@ -30,6 +30,10 @@ $(function() {
 
         },
 
+        getHeight: function() {
+            return this.opt.height;
+        },
+
         setHeight: function(height) {
             console.log('setting height', height);
             this.opt.height = height;
@@ -46,6 +50,10 @@ $(function() {
 
         subHeight: function(height) {
             return this.setHeight(this.opt.height - height);
+        },
+
+        getWidth: function() {
+            return this.opt.width;
         },
 
         setWidth: function(width) {

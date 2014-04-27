@@ -27,7 +27,10 @@ $(function() {
         window.Endeavour.subscribe('new:model:listItem', function(model) {Endeavour.collection.listItems.add(model)});
 
         // Load stage view
-        window.Endeavour.stage = new Endeavour.View.Stage;
+        window.Endeavour.stage = new Endeavour.View.Stage({
+            height: $(window).height(),
+            width: $(window).width(),
+        });
         $('body').prepend(window.Endeavour.stage.render().$el);
 
         $(document).ajaxError(function(event, jqxhr, settings, exception) {
@@ -120,6 +123,10 @@ $(function() {
             $('body').append(dialogContainer.render().$el);
 
         }
+
+        $(window).on('resize', function() {
+            Endeavour.stage.resize($(window).height(), $(window).width());
+        });
 
         // Start backbone history
         Backbone.history.start({pushState: false});

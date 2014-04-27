@@ -7,8 +7,6 @@ $(function() {
 
         initialize: function() {
 
-            this.collection = null;
-
             this.resizing = false;
             this.hasMoved = false;
             this.resizeCoords = {
@@ -48,11 +46,13 @@ $(function() {
         },
 
         setHeight: function(height) {
+            console.log('set height',height);
             this.height = height;
             return this;
         },
 
         setWidth: function(width) {
+            console.log('set width',width);
             this.width = width;
             return this;
         },
@@ -84,11 +84,9 @@ $(function() {
         },
 
         renderCellPosition: function(cellIndex, totalCells) {
-
+console.log('render cell position');
             var cell = this.cells[cellIndex];
             var handlePosition = 0;
-
-            console.log(this.height,this.width);
 
             if (!this.height) return this;
 
@@ -106,7 +104,7 @@ $(function() {
                 cell.setHeight(cellHeight);
 
                 handlePosition = this.margin + (cellWidth*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
-                console.log(this.containerID,handlePosition,totalCells,cellWidth,(this.spacing*cellIndex));
+                if (this.containerID =='main') console.log(cellIndex,this.containerID,handlePosition,totalCells,cellWidth,(this.spacing*cellIndex));
 
             }
             else {
@@ -149,10 +147,14 @@ $(function() {
 
             // Add resize handle for each cell not including the first
             if (this.cells.length > 1) {
+
                 var handleIndex = this.handleEls.length;
                 var handleEl = this.handleEls[handleIndex] = $('<div class="resize-handle" data-handle-index="' + handleIndex + '"></div>');
+                
                 handleEl.on('mousedown', $.proxy(this.onResizeMouseDown, this));
+
                 this.$el.append(handleEl);
+
             }
 
             // Append cell element to container
@@ -398,6 +400,7 @@ $(function() {
         },
 
         setHandleLeft: function(handleIndex, left) {
+            console.log('set handle left',this.containerID,handleIndex,left);
             this.handleLeftPos[handleIndex] = left;
             this.handleEls[handleIndex].css('left', left);
             return this;
