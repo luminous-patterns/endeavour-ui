@@ -19,7 +19,7 @@ $(function() {
 
             this.cells = [];
             this.cellPos = [];
-            this.cellPositionsSet = false;
+            this.cellPositionsSet = 0;
             this.handleEls = [];
             this.handleTopPos = [];
             this.handleLeftPos = [];
@@ -41,7 +41,7 @@ $(function() {
 
         render: function() {
 
-            this.renderCellPositions();
+            // this.renderCellPositions();
 
             return this;
 
@@ -93,9 +93,9 @@ $(function() {
 
             var totalCells = this.cells.length;
 
-            if (totalCells < 1 || !this.height || this.cellPositionsSet) return this;
+            if (totalCells < 1 || !this.height || this.cellPositionsSet == totalCells) return this;
 
-            this.cellPositionsSet = true;
+            this.cellPositionsSet = totalCells;
 
             for (var i = 0; i < totalCells; i++) {
                 this.renderCellPosition(i, totalCells);
@@ -129,8 +129,6 @@ $(function() {
 
             var changeHeight = newHeight - oldHeight;
             var heightIncreased = changeHeight > 0;
-
-            console.log('updateHorizontalCellPositions',changeHeight,heightIncreased);
 
             // Find the "primary" cell
             var primaryCellIndex = this.getPrimaryCellIndex();
@@ -173,8 +171,6 @@ $(function() {
             var changeWidth = newWidth - oldWidth;
             var widthIncreased = changeWidth > 0;
 
-            console.log('updateVerticalCellPositions',changeWidth,widthIncreased);
-
             // Find the "primary" cell
             var primaryCellIndex = this.getPrimaryCellIndex();
 
@@ -211,8 +207,6 @@ $(function() {
 
         renderCellPosition: function(cellIndex, totalCells) {
 
-            console.log('render cell position');
-
             var cell = this.cells[cellIndex];
             var handlePosition = 0;
 
@@ -226,8 +220,7 @@ $(function() {
                 this.setCellTop(cellIndex, this.margin);
                 this.setCellBottom(cellIndex, this.margin);
 
-                this.setCellWidth(cellIndex, cellWidth);
-                this.setCellHeight(cellIndex, cellHeight);
+                this.setCellDimensions(cellIndex, cellHeight, cellWidth);
 
                 handlePosition = this.margin + (cellWidth*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
 
@@ -242,8 +235,7 @@ $(function() {
                 this.setCellTop(cellIndex, this.margin + (cellHeight*cellIndex) + (this.spacing*cellIndex));
                 // this.setCellBottom(cellIndex, this.margin + (cellHeight*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
                 
-                this.setCellWidth(cellIndex, cellWidth);
-                this.setCellHeight(cellIndex, cellHeight);
+                this.setCellDimensions(cellIndex, cellHeight, cellWidth);
 
                 handlePosition = this.margin + (cellHeight*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
 
@@ -286,6 +278,10 @@ $(function() {
 
             // Append cell element to container
             this.$el.append(flexiCell.render().$el);
+
+            // Render cell positions
+            console.log('rrrrr',this.height,this.width);
+            this.renderCellPositions();
 
             return flexiCell;
 
@@ -562,6 +558,14 @@ $(function() {
             var cell = this.cells[cellIndex];
             this.cellPos[cellIndex].width = width;
             cell.setWidth(width);
+            return this;
+        },
+
+        setCellDimensions: function(cellIndex, height, width) {
+            var cell = this.cells[cellIndex];
+            this.cellPos[cellIndex].height = height;
+            this.cellPos[cellIndex].width = width;
+            cell.setDimensions(height, width);
             return this;
         },
 

@@ -30,14 +30,14 @@ li { cursor: default; }
 
 #main-sidebar { border-bottom: 1px solid #444; }
 
-#layout { position: absolute; top: 32px; left: 0; bottom: 0; right: 0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); }
-#layout .top-buttons { position: absolute; right: -2px; top: 0; border-left: 1px solid #ddd; border-right: 1px solid #fefefe; }
-#layout .top-buttons .top-button { display: inline-block; height: 100px; width: 100px; vertical-align: top; margin-left: 10px; text-align: center; font-size: 0.9em; position: relative; margin-left: 0; border-left: 1px solid #fefefe; border-right: 1px solid #ddd; }
-#layout .top-buttons .top-button:hover { background-color: rgba(255, 255, 255, 0.5); }
-#layout .top-buttons .top-button a { background-size: 50px; background-position: center 15px; background-repeat: no-repeat; color: #333; text-decoration: none; position: absolute; bottom: 0; left: 0; right: 0; top: 0; padding-top: 70px; }
-#layout .top-buttons .top-button a.add-new-list-button { background-image: url("../img/add-new-list.png"); }
-#layout .top-buttons .top-button a.add-new-list-item-button { background-image: url("../img/add-new.png"); }
-#layout .top-buttons .top-button a.share-list-button { background-image: url("../img/share-list.png"); }
+#content { position: absolute; top: 32px; left: 0; bottom: 0; right: 0; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25); }
+#content .top-buttons { position: absolute; right: -2px; top: 0; border-left: 1px solid #ddd; border-right: 1px solid #fefefe; }
+#content .top-buttons .top-button { display: inline-block; height: 100px; width: 100px; vertical-align: top; margin-left: 10px; text-align: center; font-size: 0.9em; position: relative; margin-left: 0; border-left: 1px solid #fefefe; border-right: 1px solid #ddd; }
+#content .top-buttons .top-button:hover { background-color: rgba(255, 255, 255, 0.5); }
+#content .top-buttons .top-button a { background-size: 50px; background-position: center 15px; background-repeat: no-repeat; color: #333; text-decoration: none; position: absolute; bottom: 0; left: 0; right: 0; top: 0; padding-top: 70px; }
+#content .top-buttons .top-button a.add-new-list-button { background-image: url("../img/add-new-list.png"); }
+#content .top-buttons .top-button a.add-new-list-item-button { background-image: url("../img/add-new.png"); }
+#content .top-buttons .top-button a.share-list-button { background-image: url("../img/share-list.png"); }
 
 #content { overflow: hidden; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding: 20px; background: #eeeeee -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.6)), color-stop(100%, rgba(255, 255, 255, 0))); background: #eeeeee -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100px); background: #eeeeee -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100px); background: #eeeeee -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100px); background: #eeeeee linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100px); }
 #content h1 { color: #777; font-weight: normal; text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.7); background: transparent url("../img/logo.png") no-repeat top left; padding-left: 80px; margin: 5px 0 0 5px; line-height: 44px; height: 50px; }
@@ -146,9 +146,10 @@ li { cursor: default; }
 #calendar .calendar-month .month-grid .day-cell.today { z-index: 2; box-shadow: 0 0 0 2px rgba(30, 100, 180, 0.5); font-weight: bold; color: #1e64b4; }
 
 div.flexi-container { position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; }
-div.flexi-container.vertical-cells > div.resize-handle { top: 0; bottom: 0; left: auto; right: auto; width: 4px; height: 100%; }
-div.flexi-container.horizontal-cells > div.resize-handle { left: 0; right: 0; top: auto; bottom: auto; height: 4px; width: 100%; }
+div.flexi-container.vertical-cells > div.resize-handle { top: 0; bottom: 0; left: auto; right: auto; width: 4px; height: 100%; cursor: ew-resize; }
+div.flexi-container.horizontal-cells > div.resize-handle { left: 0; right: 0; top: auto; bottom: auto; height: 4px; width: 100%; cursor: ns-resize; }
 div.flexi-container div.resize-handle { position: absolute; background-color: #ddd; }
+div.flexi-container div.resize-handle:hover { background-color: #555; }
 div.flexi-container div.flexi-cell { display: block; position: absolute; }
 div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; position: absolute; top: 0; left: 0; bottom: 0; right: 0; }
 

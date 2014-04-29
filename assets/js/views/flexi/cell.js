@@ -30,6 +30,19 @@ $(function() {
 
         },
 
+        setDimensions: function(height, width) {
+            this.$el.css({height: height});
+            this.opt.height = height;
+            this.$el.css({width: width});
+            this.opt.width = width;
+            if (this.container) {
+                this.container.setHeight(height);
+                this.container.setWidth(width);
+                this.render();
+            }
+            return this;
+        },
+
         getHeight: function() {
             return this.opt.height;
         },
@@ -58,11 +71,11 @@ $(function() {
 
         setWidth: function(width) {
             this.$el.css({width: width});
+            this.opt.width = width;
             if (this.container) {
                 this.container.setWidth(width);
                 this.render();
             }
-            this.opt.width = width;
             return this;
         },
 
