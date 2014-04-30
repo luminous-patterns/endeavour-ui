@@ -148,10 +148,10 @@ li { cursor: default; }
 div.flexi-container { position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; }
 div.flexi-container.vertical-cells > div.resize-handle { top: 0; bottom: 0; left: auto; right: auto; width: 4px; height: 100%; cursor: ew-resize; }
 div.flexi-container.horizontal-cells > div.resize-handle { left: 0; right: 0; top: auto; bottom: auto; height: 4px; width: 100%; cursor: ns-resize; }
-div.flexi-container div.resize-handle { position: absolute; background-color: #ddd; }
+div.flexi-container div.resize-handle { position: absolute; background-color: transparent; }
 div.flexi-container div.resize-handle:hover { background-color: #555; }
 div.flexi-container div.flexi-cell { display: block; position: absolute; }
-div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; position: absolute; top: 0; left: 0; bottom: 0; right: 0; }
+div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; position: absolute; top: 0; left: 0; bottom: 0; right: 0; border-radius: 3px; text-align: center; padding-top: 20px; }
 
 #dashboard div.dashboard-flexi { position: absolute; top: 100px; left: 0; bottom: 0; right: 0; }
 
