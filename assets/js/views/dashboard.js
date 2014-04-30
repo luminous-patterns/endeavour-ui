@@ -59,75 +59,76 @@ console.log('init flexi',height,width);
             flexi.render();
 
             // Add left cell
-            var leftCell = flexi.addCell(new Endeavour.View.FlexiCell({
+            var leftCell = flexi.addCell({
                 type: 'container',
-            }));
-            
-            var middleLeftCell = flexi.addCell(new Endeavour.View.FlexiCell);
-            var middleRightCell = flexi.addCell(new Endeavour.View.FlexiCell);
-            var rightCell = flexi.addCell(new Endeavour.View.FlexiCell);
+            });
+            var middleCell = flexi.addCell({
+                weight: 2,
+            });
+            var rightCell = flexi.addCell({
+                weight: 2,
+            });
 
-            middleLeftCell.addContent(new Endeavour.View.FlexiContent({
+            middleCell.addContent({
                 html: 'Middle left cell',
-            }));
+            });
 
-            middleRightCell.addContent(new Endeavour.View.FlexiContent({
-                html: 'Middle right cell',
-            }));
-
-            rightCell.addContent(new Endeavour.View.FlexiContent({
+            rightCell.addContent({
                 html: 'Right cell',
-            }));
+            });
 
             console.log('left container init', leftCell.getHeight(), leftCell.getWidth());
 
-                var leftContainer = leftCell.addContainer(new Endeavour.View.FlexiContainer({
+                var leftContainer = leftCell.addContainer({
                     containerID: 'left',
                     height: leftCell.getHeight(),
                     width: leftCell.getWidth(),
                     margin: 0,
                     cellOrientation: 'horizontal',
-                }));
+                });
 
-                var leftTopCell = leftContainer.addCell(new Endeavour.View.FlexiCell);
-                var leftMiddleCell = leftContainer.addCell(new Endeavour.View.FlexiCell);
-                var leftBottomCell = leftContainer.addCell(new Endeavour.View.FlexiCell({
+                var leftTopCell = leftContainer.addCell();
+                var leftMiddleCell = leftContainer.addCell({
+                    weight: 2,
+                });
+                var leftBottomCell = leftContainer.addCell({
                     type: 'container',
-                }));
+                    weight: 2,
+                });
 
-                leftTopCell.addContent(new Endeavour.View.FlexiContent({
+                leftTopCell.addContent({
                     html: 'Left top cell',
-                }));
+                });
 
-                leftMiddleCell.addContent(new Endeavour.View.FlexiContent({
+                leftMiddleCell.addContent({
                     html: 'Left middle cell',
-                }));
+                });
 
                 console.log('left bottom container init', leftBottomCell.getHeight(), leftBottomCell.getWidth());
 
-                    var leftBottomContainer = leftBottomCell.addContainer(new Endeavour.View.FlexiContainer({
+                    var leftBottomContainer = leftBottomCell.addContainer({
                         containerID: 'left-bottom',
                         height: leftBottomCell.getHeight(),
                         width: leftBottomCell.getWidth(),
                         margin: 0,
                         cellOrientation: 'vertical',
-                    }));
+                    });
 
-                    var leftBottomLeftCell = leftBottomContainer.addCell(new Endeavour.View.FlexiCell);
-                    var leftBottomMiddleCell = leftBottomContainer.addCell(new Endeavour.View.FlexiCell);
-                    var leftBottomRightCell = leftBottomContainer.addCell(new Endeavour.View.FlexiCell);
+                    var leftBottomLeftCell = leftBottomContainer.addCell();
+                    var leftBottomMiddleCell = leftBottomContainer.addCell();
+                    var leftBottomRightCell = leftBottomContainer.addCell();
 
-                    leftBottomLeftCell.addContent(new Endeavour.View.FlexiContent({
+                    leftBottomLeftCell.addContent({
                         html: 'Left bottom left cell',
-                    }));
+                    });
 
-                    leftBottomMiddleCell.addContent(new Endeavour.View.FlexiContent({
+                    leftBottomMiddleCell.addContent({
                         html: 'Left bottom middle cell',
-                    }));
+                    });
 
-                    leftBottomRightCell.addContent(new Endeavour.View.FlexiContent({
+                    leftBottomRightCell.addContent({
                         html: 'Right bottom right cell',
-                    }));
+                    });
 
             this.render();
 

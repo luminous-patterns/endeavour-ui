@@ -105,6 +105,26 @@ $(function() {
 
         },
 
+        getTotalCells: function() {
+            return this.cells.length;
+        },
+
+        getTotalCellWeights: function() {
+            var totalWeights = 0;
+            _.each(this.cellPos, function(cellPos) {
+                totalWeights += cellPos.weight;
+            });
+            return totalWeights;
+        },
+
+        getTotalCellWeightsUntil: function(cellIndex) {
+            var totalWeights = 0;
+            _.each(this.cellPos, function(cellPos) {
+                if (cellPos.index < cellIndex) totalWeights += cellPos.weight;
+            });
+            return totalWeights;
+        },
+
         setHandlePosition: function(handleIndex, position) {
             if (this.cellOrientation == 'vertical') this.setHandleLeft(handleIndex, position);
             else this.setHandleTop(handleIndex, position);
@@ -208,36 +228,39 @@ $(function() {
         renderCellPosition: function(cellIndex, totalCells) {
 
             var cell = this.cells[cellIndex];
+            var cellWeight = this.cellPos[cellIndex].weight;
+            var totalCellWeights = this.getTotalCellWeights();
+            var totalCellWeightsBeforeThis = this.getTotalCellWeightsUntil(cellIndex);
             var handlePosition = 0;
+
+            console.log(this.getTotalCellWeights(),totalCellWeightsBeforeThis,'Total weights');
 
             if (this.cellOrientation == 'vertical') {
 
-                cellWidth = Math.round((this.width - ((this.spacing * (totalCells-1)) + (this.margin * 2))) / totalCells);
+                cellWidth = Math.round((this.width - ((this.spacing * (totalCells-1)) + (this.margin * 2))) / totalCellWeights);
                 cellHeight = this.height - (this.margin*2);
 
-                this.setCellLeft(cellIndex, this.margin + (cellWidth*cellIndex) + (this.spacing*cellIndex));
-                // this.setCellRight(cellIndex, this.margin + (cellWidth*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
+                this.setCellLeft(cellIndex, this.margin + (cellWidth*totalCellWeightsBeforeThis) + (this.spacing*cellIndex));
                 this.setCellTop(cellIndex, this.margin);
                 this.setCellBottom(cellIndex, this.margin);
 
-                this.setCellDimensions(cellIndex, cellHeight, cellWidth);
+                this.setCellDimensions(cellIndex, cellHeight, cellWidth * cellWeight);
 
-                handlePosition = this.margin + (cellWidth*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
+                handlePosition = this.margin + (cellWidth*totalCellWeightsBeforeThis) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
 
             }
             else {
 
                 cellWidth = this.width - (this.margin*2);
-                cellHeight = Math.round((this.height - ((this.spacing * (totalCells-1)) + (this.margin * 2))) / totalCells);
+                cellHeight = Math.round((this.height - ((this.spacing * (totalCells-1)) + (this.margin * 2))) / totalCellWeights);
 
                 this.setCellLeft(cellIndex, this.margin);
                 this.setCellRight(cellIndex, this.margin);
-                this.setCellTop(cellIndex, this.margin + (cellHeight*cellIndex) + (this.spacing*cellIndex));
-                // this.setCellBottom(cellIndex, this.margin + (cellHeight*(totalCells-(cellIndex+1))) + (this.spacing*(totalCells-(cellIndex+1))));
+                this.setCellTop(cellIndex, this.margin + (cellHeight*totalCellWeightsBeforeThis) + (this.spacing*cellIndex));
                 
-                this.setCellDimensions(cellIndex, cellHeight, cellWidth);
+                this.setCellDimensions(cellIndex, cellHeight * cellWeight, cellWidth);
 
-                handlePosition = this.margin + (cellHeight*cellIndex) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
+                handlePosition = this.margin + (cellHeight*totalCellWeightsBeforeThis) + (this.spacing*cellIndex) - (this.spacing/2) - 2;
 
             }
 
@@ -247,12 +270,15 @@ $(function() {
 
         },
 
-        addCell: function(flexiCell) {
+        addCell: function(flexiCellOptions) {
 
             var cellIndex = this.cells.length;
 
+            if (!flexiCellOptions) flexiCellOptions = {};
+
             // Add cell to container array
-            this.cells[cellIndex] = flexiCell;
+            var flexiCell = this.cells[cellIndex] = new Endeavour.View.FlexiCell(flexiCellOptions);
+            var cellWeight = 'weight' in flexiCellOptions ? flexiCellOptions.weight : 1;
 
             // Set cell position defaults
             this.cellPos[cellIndex] = {
@@ -262,6 +288,8 @@ $(function() {
                 right: 0,
                 height: 0,
                 width: 0,
+                weight: cellWeight,
+                index: cellIndex,
             };
 
             // Add resize handle for each cell not including the first

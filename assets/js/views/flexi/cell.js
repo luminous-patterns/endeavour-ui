@@ -151,61 +151,39 @@ $(function() {
             return this;
         },
 
-        // setWidth: function(width) {
-
-        //     if (this.type != 'vertical') {
-        //         console.error('FlexiCell must be have orientation "vertical" for height resize');
-        //         return;
-        //     }
-
-        //     this.$el.css({width: width});
-
-        //     return this;
-
-        // },
-
-        // setHeight: function(width) {
-
-        //     if (this.type != 'horizontal') {
-        //         console.error('FlexiCell must be have orientation "horizontal" for height resize');
-        //         return;
-        //     }
-
-        //     this.$el.css({height: height});
-
-        //     return this;
-
-        // },
-
-        addContent: function(flexiContent) {
+        addContent: function(flexiContentOptions) {
 
             if (this.opt.type != 'content') {
                 console.error('FlexiCell must be of type "content"');
                 return;
             }
 
+            if (!flexiContentOptions) flexiContentOptions = {};
+
             // Set a reference to FlexiContent view
-            this.content = flexiContent;
+            var flexiContent = this.content = new Endeavour.View.FlexiContent(flexiContentOptions);
 
             // Set cell HTML to FlexiContent $el
-            this.$el.html(this.content.render().$el);
+            this.$el.html(flexiContent.render().$el);
 
             return flexiContent;
 
         },
 
-        addContainer: function(flexiContainer) {
+        addContainer: function(flexiContainerOptions) {
 
             if (this.opt.type != 'container') {
                 console.error('FlexiCell must be of type "container"');
                 return;
             }
 
+            if (!flexiContainerOptions) flexiContainerOptions = {};
+
             // Set a reference to FlexiContainer view
-            this.container = flexiContainer;
+            var flexiContainer = this.container = new Endeavour.View.FlexiContainer(flexiContainerOptions);
 
             // Set cell HTML to FlexiContainer $el
-            this.$el.html(this.container.render().$el);
+            this.$el.html(flexiContainer.render().$el);
 
             return flexiContainer;
 
