@@ -23,18 +23,13 @@ $(function() {
             this.emptyIndicatorExists = false;
             this.loadingIndicatorExists = false;
 
-            this.detailsView = new Endeavour.View.ListItemDetails;
-
             this.views = [];
             this.els = {};
 
             this.els.listContainer = $('<div class="list-items-container"><ul class="list-items"></ul></div>');
             this.els.list = this.els.listContainer.find('ul.list-items');
-            this.els.detailsResizer = $('<div class="details-resizer"></div>');
 
-            this.$el.append(this.els.listContainer)
-                .append(this.els.detailsResizer)
-                .append(this.detailsView.render().$el);
+            this.$el.append(this.els.listContainer);
 
             if (this.options.collection) this.setCollection(this.options.collection);
 
@@ -42,18 +37,8 @@ $(function() {
 
         render: function() {
 
-            this.setDetailsWidth(($(window).width()/2.5));
-
             return this;
 
-        },
-
-        setDetailsWidth: function(width) {
-            this.detailsWidth = width;
-            this.detailsView.$el.css({width: width + 'px'})
-            this.els.listContainer.css({right: width + 'px'});
-            this.els.detailsResizer.css({right: ( width - 2 ) + 'px'});
-            return this;
         },
 
         /*
@@ -124,7 +109,7 @@ $(function() {
         },
 
         onSingleItemClick: function(view) {
-            this.detailsView.setModel(view.model);
+            Endeavour.stage.currentView.listItemDetails.setModel(view.model);
             return this;
         },
 

@@ -13,7 +13,10 @@ $(function() {
 
             this.collection = Endeavour.state.session.user.lists;
 
+            this.flexi = null;
+
             this.listItems = new Endeavour.View.ListItemsSection;
+            this.listItemDetails = new Endeavour.View.ListItemDetails;
 
             this.resizing = false;
             this.hasMoved = false;
@@ -24,6 +27,11 @@ $(function() {
 
             this.views = [];
             this.els = {};
+
+            this.els.main = $('<div class="all-lists-flexi"></div>');
+
+            this.height = 'height' in this.options ? this.options.height : 0;
+            this.width = 'width' in this.options ? this.options.width : 0;
 
             this.activeSingleList = null;
 
@@ -43,15 +51,16 @@ $(function() {
 
             this.els.mainArea = $('<div class="main-area"></div>');
 
-            this.els.mainArea
-                .append(this.els.list)
-                .append(this.els.listResizer)
-                .append(this.listItems.render().$el);
+            // this.els.mainArea
+            //     .append(this.els.list)
+            //     .append(this.els.listResizer)
+            //     .append(this.listItems.render().$el);
 
             this.$el
                 .append(this.els.topButtons)
                 .append("<h1>My Lists</h1>")
-                .append(this.els.mainArea);
+                .append(this.els.main);
+                // .append(this.els.mainArea);
 
             for (var i = 0; i < this.collection.length; i++) {
                 this.addSingleList(this.collection.at(i));
@@ -67,9 +76,70 @@ $(function() {
 
         render: function() {
 
-            this.setListsListWidth(250);
+            // this.setListsListWidth(250);
+
+            if (!this.flexi) {
+                this.initFlexi(this.height - 100, this.width);
+            }
+            else {
+                this.flexi
+                    .setDimensions(this.height - 100, this.width)
+                    .render();
+            }
 
             return this;
+
+        },
+
+        resize: function(height, width) {
+            this.height = height;
+            this.width = width;
+            if (this.flexi) this.flexi.setDimensions(height - 100, width);
+            return this;
+        },
+
+        initFlexi: function(height, width) {
+
+            var flexi = this.flexi = new Endeavour.View.FlexiContainer({
+                containerID: 'main',
+                height: height - 100,
+                width: width,
+                margin: 10,
+                spacing: 10,
+            });
+
+            this.els.main.append(flexi.$el);
+
+            flexi.render();
+
+            // Add left cell
+            var leftCell = flexi.addCell({
+                weight: 1,
+            });
+            var middleCell = flexi.addCell({
+                weight: 1.5,
+            });
+            var rightCell = flexi.addCell({
+                weight: 2.5,
+            });
+
+            leftCell.addContent({
+                html: this.els.list,
+            });
+
+            middleCell.addContent({
+                html: this.listItems.render().$el,
+            });
+
+            rightCell.addContent({
+                html: this.listItemDetails.render().$el,
+            });
+
+            // rightCell.addContent({
+            //     html: 'Right cell',
+            // });
+
+            this.render();
 
         },
 
