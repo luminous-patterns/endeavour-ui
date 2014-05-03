@@ -129,7 +129,8 @@ $(function() {
             return this;
         },
 
-        onClickDelete: function() {
+        onClickDelete: function(ev) {
+            ev.stopImmediatePropagation();
             Endeavour.confirm({
                 message: 'Delete list \'' + this.model.get('Title') + '\'',
                 onConfirm: $.proxy(this.onConfirmDelete, this),

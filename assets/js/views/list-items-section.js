@@ -41,6 +41,12 @@ $(function() {
 
         },
 
+        reset: function() {
+            if (this.collection) this.unsetCollection();
+            this.clearList();
+            return this;
+        },
+
         /*
 
 
@@ -52,18 +58,32 @@ $(function() {
 
         */
 
+        unbindCollectionEvents: function() {
+            this.collection.off('add', this.onCollectionAdd, this);
+            this.collection.off('remove', this.onCollectionRemove, this);
+            this.collection.off('sync', this.onCollectionSync, this);
+            return this;
+        },
+
+        bindCollectionEvents: function() {
+            this.collection.on('add', this.onCollectionAdd, this);
+            this.collection.on('remove', this.onCollectionRemove, this);
+            this.collection.on('sync', this.onCollectionSync, this);
+            return this;
+        },
+
+        unsetCollection: function() {
+            this.unbindCollectionEvents();
+            this.collection = null;
+            return this;
+        },
+
         setCollection: function(collection) {
 
-            if (this.collection) {
-                this.collection.off('add', this.onCollectionAdd, this);
-                this.collection.off('remove', this.onCollectionRemove, this);
-                this.collection.off('sync', this.onCollectionSync, this);
-            }
+            if (this.collection) this.unsetCollection();
             
-            collection.on('add', this.onCollectionAdd, this);
-            collection.on('remove', this.onCollectionRemove, this);
-            collection.on('sync', this.onCollectionSync, this);
             this.collection = collection;
+            this.bindCollectionEvents();
 
             this.clearList();
 

@@ -5,10 +5,6 @@ $(function() {
         id: 'all-lists',
         tagName: 'div',
 
-        events: {
-            'mousedown .list-resizer':     'onResizeMouseDown',
-        },
-
         initialize: function() {
 
             this.collection = Endeavour.state.session.user.lists;
@@ -18,12 +14,7 @@ $(function() {
             this.listItems = new Endeavour.View.ListItemsSection;
             this.listItemDetails = new Endeavour.View.ListItemDetails;
 
-            this.resizing = false;
-            this.hasMoved = false;
-            this.resizeCoords = {
-                initial: {x: 0},
-                last: {x: 0},
-            };
+            this.activeList = null;
 
             this.views = [];
             this.els = {};
@@ -47,20 +38,11 @@ $(function() {
             this.els.addNewListItemButton = this.els.topButtons.find('.add-new-list-item-button');
 
             this.els.list = $('<ul class="lists"></ul>');
-            this.els.listResizer = $('<div class="list-resizer"></div>');
-
-            this.els.mainArea = $('<div class="main-area"></div>');
-
-            // this.els.mainArea
-            //     .append(this.els.list)
-            //     .append(this.els.listResizer)
-            //     .append(this.listItems.render().$el);
 
             this.$el
                 .append(this.els.topButtons)
                 .append("<h1>My Lists</h1>")
                 .append(this.els.main);
-                // .append(this.els.mainArea);
 
             for (var i = 0; i < this.collection.length; i++) {
                 this.addSingleList(this.collection.at(i));
@@ -76,13 +58,33 @@ $(function() {
 
         },
 
-        onListModelChange: function() {
+        onListModelChange: function(model) {
             this.listItemDetails.reset();
+            if (this.activeList) this.clearActiveListModel();
+            this.activeList = model;
+            this.bindListModelEvents();
+        },
+
+        clearActiveListModel: function() {
+            this.unbindListModelEvents();
+            this.activeList = null;
+        },
+
+        onActiveListModelDestroy: function() {
+            this.listItemDetails.reset();
+            this.listItems.reset();
+            this.clearActiveListModel();
+        },
+
+        unbindListModelEvents: function() {
+            this.activeList.off('destroy', this.onActiveListModelDestroy, this);
+        },
+
+        bindListModelEvents: function() {
+            this.activeList.on('destroy', this.onActiveListModelDestroy, this);
         },
 
         render: function() {
-
-            // this.setListsListWidth(250);
 
             if (!this.flexi) {
                 this.initFlexi(this.height - 100, this.width);
@@ -118,7 +120,6 @@ $(function() {
 
             flexi.render();
 
-            // Add left cell
             var leftCell = flexi.addCell({
                 weight: 1,
             });
@@ -141,21 +142,8 @@ $(function() {
                 html: this.listItemDetails.render().$el,
             });
 
-            // rightCell.addContent({
-            //     html: 'Right cell',
-            // });
-
             this.render();
 
-        },
-
-        setListsListWidth: function(width) {
-            width = parseInt(width);
-            this.listWidth = width;
-            this.els.list.css({width: width + 'px'});
-            this.listItems.$el.css({left: width + 'px'})
-            this.els.listResizer.css({left: width + 'px'});
-            return this;
         },
 
         onClickAddNewList: function(ev) {
@@ -250,78 +238,6 @@ $(function() {
 
             return _.find(this.views, predicate);
 
-        },
-
-        /*
-
-
-
-
-            ===================================
-            RESIZE FUNCTIONS
-            ===================================
-
-        */
-
-        resizeStart: function() {
-
-            this.resizing = true;
-            this.hasMoved = false;
-            this.bindDragEvents();
-            this.els.listResizer.addClass('resizing');
-
-        },
-
-        resizeMove: function(x) {
-
-            if (!this.hasMoved) {
-                this.resizeCoords.initial.x = x;
-                this.resizeCoords.last.x = x;
-                this.hasMoved = true;
-                return;
-            }
-
-            var movedX = this.resizeCoords.last.x - x;
-
-            this.resizeCoords.last.x = x;
-
-            this.setListsListWidth(this.listWidth - movedX);
-
-        },
-
-        resizeEnd: function() {
-
-            this.els.listResizer.removeClass('resizing');
-            this.unbindDragEvents();
-            this.resizing = false;
-
-        },
-
-        bindDragEvents: function() {
-
-            $('body').on('mousemove', $.proxy(this.onBodyMouseMove, this));
-            $('body').on('mouseup', $.proxy(this.onBodyMouseUp, this));
-
-        },
-
-        unbindDragEvents: function() {
-
-            $('body').off('mousemove', $.proxy(this.onBodyMouseMove, this));
-            $('body').off('mouseup', $.proxy(this.onBodyMouseUp, this));
-
-        },
-
-        onResizeMouseDown: function() {
-            this.resizeStart();
-        },
-
-        onBodyMouseMove: function(ev) {
-            ev.preventDefault();
-            this.resizeMove(ev.pageX);
-        },
-
-        onBodyMouseUp: function() {
-            this.resizeEnd();
         },
 
     });
