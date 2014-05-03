@@ -27,6 +27,7 @@ $(function() {
             this.addButton('left', 'feedback', 'Feedback', $.proxy(this.onClickFeedback, this));
 
             this.addButton('right', 'my-account', 'My Account', this.onClickToday);
+            this.addButton('right', 'logout', 'Log out', $.proxy(this.onClickLogout, this));
 
             Endeavour.subscribe('change:user', this.render, this);
 
@@ -58,6 +59,11 @@ $(function() {
         onClickFeedback: function(ev) {
             ev.preventDefault();
             Endeavour.publish('show:dialog', 'feedback');
+            return this;
+        },
+
+        onClickLogout: function() {
+            Endeavour.state.logout();
             return this;
         },
 

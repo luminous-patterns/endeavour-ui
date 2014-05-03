@@ -21,7 +21,7 @@ $(function() {
             this.els.passwordInput = this.els.passwordSection.find('#password');
             this.els.rememberCheckbox = this.els.rememberSection.find('#remember')
 
-            this.els.buttonSection = $('<div class="dialog-section button-section"><button class="call-to-action">Log in</button></div>');
+            this.els.buttonSection = $('<div class="dialog-section button-section"><div class="create-account-link"><span class="short-message">New user?</span><a href="#/create-account">Create an account</a></div><button class="call-to-action">Log in</button></div>');
             this.els.submitButton = this.els.buttonSection.find('.call-to-action');
 
             this.els.errorMessage = $('<div class="error-message"></div>');

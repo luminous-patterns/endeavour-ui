@@ -57,7 +57,7 @@ li { cursor: default; }
 .dialog label { display: block; margin-bottom: 10px; }
 .dialog p { margin-top: 0; }
 .dialog .dialog-title { position: absolute; top: -40px; line-height: 30px; font-weight: 600; text-transform: uppercase; font-size: 0.8em; left: 0px; background: #222222 -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0))); background: #222222 -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); background: #222222 -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); background: #222222 -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); background: #222222 linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50px); border-top: 1px solid #333; border-left: 1px solid #333; border-right: 1px solid #111; right: 0; padding: 5px 20px; border-radius: 4px 4px 0 0; text-align: center; color: #eee; border-bottom: 3px solid #ddd; }
-.dialog .dialog-section { margin-bottom: 20px; }
+.dialog .dialog-section { margin-bottom: 20px; position: relative; }
 .dialog .dialog-section input[type=text], .dialog .dialog-section input[type=email], .dialog .dialog-section input[type=password], .dialog .dialog-section select, .dialog .dialog-section textarea, .dialog .dialog-section .input { border: 1px solid #ccc; border-radius: 2px; box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1); line-height: 20px; margin: 0; padding: 6px 10px; width: 100%; }
 .dialog .dialog-section .input { padding: 0 4px; display: inline-block; width: auto; }
 .dialog .dialog-section .input input[type=text] { background: transparent; border: none; box-shadow: none; font-family: monospace; outline: none; padding: 0; text-align: center; width: 25px; }
@@ -71,8 +71,14 @@ li { cursor: default; }
 .dialog .dialog-section .instructions { font-size: 0.75em; color: #aaa; margin-left: 10px; }
 .dialog .dialog-section.error-section { color: #a21; }
 .dialog .dialog-section.button-section { left: 0; right: 0; position: absolute; background-color: #eee; border-top: 1px solid #ddd; padding: 15px; border-radius: 0 0 4px 4px; text-align: right; margin-bottom: 0px; }
+.dialog .dialog-section.button-section .create-account-link { position: absolute; left: 20px; top: 15px; line-height: 20px; font-size: 0.9em; text-align: left; }
+.dialog .dialog-section.button-section .create-account-link .short-message { font-size: 0.8em; display: block; line-height: 1; }
+.dialog .dialog-section.button-section .create-account-link a { color: #059; font-weight: bold; }
+.dialog .dialog-section.button-section .create-account-link a:hover { color: #333; }
 .dialog .dialog-section.button-section button { background: #dddddd -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.5)), color-stop(100%, rgba(255, 255, 255, 0))); background: #dddddd -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #dddddd -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #dddddd -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #dddddd linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); border: 1px solid #ccc; border-radius: 2px; box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.4), inset -1px -1px 0 rgba(255, 255, 255, 0.2); color: #555; cursor: pointer; font-weight: 400; height: 34px; margin-left: 10px; padding: 0 15px; text-align: right; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3); font-size: 1em; line-height: 26px; }
+.dialog .dialog-section.button-section button:hover { background: #e5e5e5 -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.5)), color-stop(100%, rgba(255, 255, 255, 0))); background: #e5e5e5 -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #e5e5e5 -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #e5e5e5 -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); background: #e5e5e5 linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0px, rgba(255, 255, 255, 0) 50px); }
 .dialog .dialog-section.button-section .call-to-action { background: #2299dd -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(255, 255, 255, 0))); background: #2299dd -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0px, rgba(255, 255, 255, 0) 50px); background: #2299dd -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0px, rgba(255, 255, 255, 0) 50px); background: #2299dd -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0px, rgba(255, 255, 255, 0) 50px); background: #2299dd linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0px, rgba(255, 255, 255, 0) 50px); border: 1px solid #2288dd; box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.2), inset -1px -1px 0 rgba(255, 255, 255, 0.1); color: #fff; text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5); }
+.dialog .dialog-section.button-section .call-to-action:hover { background: #2299dd -webkit-gradient(linear, to bottom, to top, color-stop(0%, rgba(255, 255, 255, 0.4)), color-stop(100%, rgba(255, 255, 255, 0.2))); background: #2299dd -webkit-linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0px, rgba(255, 255, 255, 0.2) 50px); background: #2299dd -moz-linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0px, rgba(255, 255, 255, 0.2) 50px); background: #2299dd -o-linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0px, rgba(255, 255, 255, 0.2) 50px); background: #2299dd linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 0px, rgba(255, 255, 255, 0.2) 50px); }
 
 #add-new-dialog.dialog { width: auto; bottom: initial; position: absolute; left: 25%; right: 25%; }
 
@@ -156,6 +162,8 @@ div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; p
 .drag-view { background-color: #fff; border: 1px solid #ddd; font-size: 0.8em; line-height: 35px; opacity: 0.75; overflow: hidden; padding: 0 10px; position: absolute; text-overflow: ellipsis; white-space: nowrap; width: 200px; }
 
 html { font-size: 16px; font-family: "Exo2"; }
+
+a { -webkit-transition: color 100ms; transition: color 100ms; }
 
 button, input, textarea, select { font-family: "Exo2"; }
 

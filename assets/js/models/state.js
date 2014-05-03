@@ -22,6 +22,9 @@ $(function() {
 
             this.session.on('login:success', this.onLoginSuccess, this);
             this.session.on('login:failure', this.onLoginFailure, this);
+            this.session.on('logout:success', this.onLogoutSuccess, this);
+            this.session.on('logout:failure', this.onLogoutFailure, this);
+
 
         },
 
@@ -95,6 +98,18 @@ $(function() {
             Endeavour.publish('session:unset');
             Endeavour.publish('session:login:failure', jsonResponse);
             return this.clearSavedSessionKey();
+        },
+
+        onLogoutSuccess: function(jsonResponse) {
+            Endeavour.publish('session:unset');
+            this.clearSavedSessionKey();
+            window.location.reload();
+        },
+
+        onLogoutFailure: function(jsonResponse) {
+            Endeavour.publish('session:unset');
+            this.clearSavedSessionKey();
+            window.location.reload();
         },
 
         onLoadSessionFailure: function(jsonResponse) {

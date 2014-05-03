@@ -66,7 +66,6 @@ $(function() {
 
             var xhr = Endeavour.post({
                 url:         '/logout',
-                data:        data,
                 success:     $.proxy(that.onLogoutSuccess, that),
                 error:       $.proxy(that.onLogoutFailure, that),
                 beforeSend:  function (xhr) {
