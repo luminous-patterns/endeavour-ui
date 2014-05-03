@@ -111,7 +111,8 @@ $(function() {
             return this;
         },
 
-        onClickDelete: function() {
+        onClickDelete: function(ev) {
+            ev.stopImmediatePropagation();
             this.deleteModel();
             return this;
         },

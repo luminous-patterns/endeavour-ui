@@ -72,6 +72,12 @@ $(function() {
             this.els.addNewListButton.on('click', $.proxy(this.onClickAddNewList, this));
             this.els.addNewListItemButton.on('click', $.proxy(this.onClickAddNewListItem, this));
 
+            Endeavour.subscribe('list:active-model:changed', this.onListModelChange, this);
+
+        },
+
+        onListModelChange: function() {
+            this.listItemDetails.reset();
         },
 
         render: function() {

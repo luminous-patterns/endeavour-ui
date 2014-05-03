@@ -84,6 +84,13 @@ $(function() {
 
         },
 
+        reset: function() {
+            console.log('resetting');
+            this.unsetModel();
+            this.clearInputs();
+            return this.render();
+        },
+
         save: function() {
 
             // Save ListItem model
@@ -98,16 +105,39 @@ $(function() {
 
         },
 
+        unsetModel: function() {
+            if (this.model) this.unbindModelEvents();
+            this.model = null;
+            return this;
+        },
+
+        onListItemDestroy: function() {
+            console.log('onListItemDestroy');
+            return this.reset();
+        },
+
+        unbindModelEvents: function() {
+            this.model.off('loaded:details', this.onDetailsLoaded, this);
+            this.model.off('destroy', this.onListItemDestroy, this);
+            return this;
+        },
+
+        bindModelEvents: function() {
+            this.model.on('loaded:details', this.onDetailsLoaded, this);
+            this.model.on('destroy', this.onListItemDestroy, this);
+            return this;
+        },
+
         setModel: function(model) {
 
             if (this.model) {
-                this.model.off('loaded:details', this.onDetailsLoaded, this);
+                this.unbindModelEvents();
             }
 
             this.model = model;
             this.render();
 
-            model.on('loaded:details', this.onDetailsLoaded, this);
+            this.bindModelEvents();
 
             return this;
 
@@ -140,6 +170,14 @@ $(function() {
 
         onDetailsLoaded: function() {
             return this.render()
+        },
+
+        clearInputs: function() {
+            this.els.summaryInput.val('');
+            this.els.dueDateInput.val('');
+            this.els.tagsInput.val('');
+            this.els.detailsInput.val('');
+            return this;
         },
 
         enableInputs: function() {

@@ -166,6 +166,8 @@ $(function() {
 
             this.activeModel[type] = model;
 
+            Endeavour.publish(type + ':active-model:changed', model);
+
             return this;
 
         },
