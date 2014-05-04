@@ -8,17 +8,20 @@ $(function() {
         initialize: function() {
 
             this.defaults = {
-                type:         'content',     // content or container
-                orientation:  'vertical',    // vertical or horizontal
-                left:         0,
-                right:        0,
-                top:          0,
-                bottom:       0,
-                height:       0,
-                width:        0,
+                type:            'content',     // content or container
+                orientation:     'vertical',    // vertical or horizontal
+                left:            0,
+                right:           0,
+                top:             0,
+                bottom:          0,
+                height:          0,
+                width:           0,
+                extraClassName:  '',
             };
 
             this.opt = _.extend(this.defaults, this.options);
+
+            if (this.opt.extraClassName) this.$el.addClass(this.opt.extraClassName);
 
         },
 

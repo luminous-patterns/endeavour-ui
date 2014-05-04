@@ -122,6 +122,7 @@ $(function() {
 
             var leftCell = flexi.addCell({
                 weight: 1,
+                extraClassName: 'list-tree-cell',
             });
             var middleCell = flexi.addCell({
                 weight: 1.5,

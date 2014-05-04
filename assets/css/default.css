@@ -84,12 +84,13 @@ li { cursor: default; }
 
 #all-lists { color: #333; }
 #all-lists .all-lists-flexi { position: absolute; top: 100px; left: 0; right: 0; bottom: 0; }
-#all-lists .all-lists-flexi .flexi-cell { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
-#all-lists .all-lists-flexi ul.lists { background-color: transparent; position: absolute; top: 0; left: 0; right: 0; bottom: 0; list-style-type: none; overflow-y: auto; padding: 10px 0; margin: 0; }
-#all-lists .all-lists-flexi ul.lists li.single-list.active > div.title { background-color: #eee; }
+#all-lists .all-lists-flexi .flexi-cell .flexi-content { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+#all-lists .all-lists-flexi .flexi-cell.list-tree-cell .flexi-content { box-shadow: none; background-color: transparent; }
+#all-lists .all-lists-flexi ul.lists { background-color: transparent; position: absolute; top: 0; left: 0; right: 0; bottom: 0; list-style-type: none; overflow-y: auto; padding: 0; margin: 0; }
+#all-lists .all-lists-flexi ul.lists li.single-list.active > div.title { background-color: #ddd; }
 #all-lists .all-lists-flexi ul.lists li.single-list.shared div.title { background: transparent url(../img/shared-folder-24.png) no-repeat; background-size: 24px; background-position: 30px 8px; }
 #all-lists .all-lists-flexi ul.lists li.single-list { cursor: pointer; font-size: 0.9em; line-height: 2em; overflow-x: hidden; position: relative; text-overflow: ellipsis; white-space: nowrap; }
-#all-lists .all-lists-flexi ul.lists li.single-list div.title { background: transparent url(../img/folder-24.png) no-repeat; background-size: 24px; background-position: 30px 8px; padding: 5px 20px 5px 60px; position: relative; }
+#all-lists .all-lists-flexi ul.lists li.single-list div.title { background: transparent url(../img/folder-24.png) no-repeat; background-size: 24px; background-position: 30px 8px; padding: 5px 20px 5px 60px; position: relative; border-radius: 2px; }
 #all-lists .all-lists-flexi ul.lists li.single-list div.title div.title-text { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 #all-lists .all-lists-flexi ul.lists li.single-list div.title div.title-text div.owner-label { display: inline-block; font-size: 0.8em; font-style: italic; color: rgba(0, 0, 0, 0.5); margin-left: 5px; }
 #all-lists .all-lists-flexi ul.lists li.single-list div.title .delete { background: transparent url("/assets/img/cross-white-24.png") no-repeat center; background-size: 12px; cursor: pointer; display: none; opacity: 0.2; position: absolute; right: 5px; top: 2px; bottom: 2px; width: 30px; }
@@ -142,7 +143,8 @@ li { cursor: default; }
 
 #calendar { color: #333; }
 #calendar .calendar-month { position: absolute; top: 100px; left: 0; right: 0; bottom: 30px; }
-#calendar .calendar-month .month-header { display: block; height: 50px; background: white -webkit-gradient(linear, to top, to bottom, color-stop(0%, rgba(0, 0, 0, 0.05)), color-stop(100%, rgba(0, 0, 0, 0))); background: white -webkit-linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); background: white -moz-linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); background: white -o-linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); background: white linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); font-size: 1.5em; text-align: center; line-height: 50px; border-top: 1px solid #ddd; border-bottom: 1px solid #eee; }
+#calendar .calendar-month .month-header { display: block; height: 50px; background: white -webkit-gradient(linear, to top, to bottom, color-stop(0%, rgba(0, 0, 0, 0.05)), color-stop(100%, rgba(0, 0, 0, 0))); background: white -webkit-linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); background: white -moz-linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); background: white -o-linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); background: white linear-gradient(to top, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0) 50px); font-size: 1.5em; text-align: center; line-height: 50px; border-top: 1px solid #ddd; border-bottom: 1px solid #eee; position: relative; }
+#calendar .calendar-month .month-header .month-controls { position: absolute; top: 9px; right: 15px; line-height: 1; }
 #calendar .calendar-month .col-titles .title-cell { width: 14.28%; display: inline-block; text-align: center; line-height: 40px; background: #fafafa -webkit-gradient(linear, to top, to bottom, color-stop(0%, rgba(0, 0, 0, 0.035)), color-stop(100%, rgba(0, 0, 0, 0))); background: #fafafa -webkit-linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); background: #fafafa -moz-linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); background: #fafafa -o-linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); background: #fafafa linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); border-bottom: 1px solid #eee; font-size: 0.9em; color: #555; }
 #calendar .calendar-month .month-grid .day-cell { display: inline-block; width: 14.28%; position: relative; border-style: solid; background-color: #fefefe; border-width: 0 1px 1px 0; border-color: #eee; height: 90px; padding: 10px; font-size: 0.8em; vertical-align: top; cursor: pointer; }
 #calendar .calendar-month .month-grid .day-cell:hover { z-index: 3; box-shadow: 0 0 0 2px rgba(30, 180, 30, 0.5); font-weight: bold; color: #1eb41e; }

@@ -5,10 +5,16 @@ $(function() {
         tagName: 'div',
         className: 'calendar-month',
 
+        events: {
+            'click .prev-month':      'onClickPrevMonth',
+            'click .next-month':      'onClickNextMonth',
+        },
+
         initialize: function() {
 
             this.els = {};
             this.els.header = $('<div class="month-header"></div>');
+            this.els.controls = $('<div class="month-controls"><button class="prev-month">Prev</button><button class="next-month">Next</button></div>');
             this.els.headerText = $('<div class="header-text"></div>');
             this.els.columnTitles = $('<div class="col-titles">'
                 + '<div class="title-cell">Sunday</div>'
@@ -21,10 +27,46 @@ $(function() {
                 + '</div>');
             this.els.grid = $('<div class="month-grid"></div>');
 
-            this.els.header.append(this.els.headerText);
+            this.els.header
+                .append(this.els.headerText)
+                .append(this.els.controls);
 
+            this.cells = [];
             this.calendar = this.options.calendar;
-            this.date = this.calendar.getCurrentDate();
+            this.date = null;
+            this.todaysDate = new Date;
+
+            this.setMonth(this.calendar.getCurrentDate());
+
+            this.$el
+                .append(this.els.header)
+                .append(this.els.columnTitles)
+                .append(this.els.grid);
+
+            console.log('calendar month view instantiated', this.calendar.getCurrentDate(), this.calendar);
+
+        },
+
+        render: function() {
+
+            this.renderHeaderText();
+
+            return this;
+
+        },
+
+        renderHeaderText: function() {
+            this.els.headerText.html(this.getMonthText(this.date.getMonth()) + ' ' + this.date.getFullYear());
+            return this;
+        },
+
+        setMonth: function(date) {
+
+            this.date = date;
+
+            this.renderHeaderText();
+
+            this.clearCells();
 
             for (var i = 0; i < this.firstDayOffset(); i++) {
                 secondsUntilMonthStart = 86400 * (this.firstDayOffset() - (i + 1));
@@ -56,24 +98,19 @@ $(function() {
                 }));
             }
 
-            this.$el
-                .append(this.els.header)
-                .append(this.els.columnTitles)
-                .append(this.els.grid);
-
-            console.log('calendar month view instantiated', this.calendar.getCurrentDate(), this.calendar);
-
         },
 
-        render: function() {
-
-            this.els.headerText.html(this.getMonthText(this.date.getMonth()) + ' ' + this.date.getFullYear());
-
+        clearCells: function() {
+            for (var i = 0; i < this.cells.length; i++) {
+                cell = this.cells[i];
+                cell.close();
+            }
+            this.cells = [];
             return this;
-
         },
 
         addCell: function(view) {
+            this.cells[this.cells.length] = view;
             this.els.grid.append(view.render().$el);
             return this;
         },
@@ -94,7 +131,10 @@ $(function() {
         },
 
         firstDayOffset: function() {
-            return this.date.getDay();
+            // return this.date.getDay();
+            var newDate = new Date(this.date);
+            newDate.setDate(1);
+            return newDate.getDay();
         },
 
         getMonthText: function(month) {
@@ -126,6 +166,18 @@ $(function() {
                 0: 'Saturday',
             };
             return dayTexts[day];
+        },
+
+        onClickNextMonth: function() {
+            var nextMonth = new Date(this.date);
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            this.setMonth(nextMonth);
+        },
+
+        onClickPrevMonth: function() {
+            var lastMonth = new Date(this.date);
+            lastMonth.setMonth(lastMonth.getMonth() - 1);
+            this.setMonth(lastMonth);
         },
 
     });

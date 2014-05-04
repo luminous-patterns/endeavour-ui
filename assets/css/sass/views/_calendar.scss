@@ -11,6 +11,7 @@
         bottom: 30px;
 
         .month-header {
+
             display: block;
             height: 50px;
             @include background(#fff linear-gradient(to top, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0) 50px));
@@ -19,6 +20,15 @@
             line-height: 50px;
             border-top: 1px solid #ddd;
             border-bottom: 1px solid #eee;
+            position: relative;
+
+            .month-controls {
+                position: absolute;
+                top: 9px;
+                right: 15px;
+                line-height: 1;
+            }
+
         }
 
         .col-titles .title-cell {
