@@ -13,17 +13,24 @@ $(function() {
         initialize: function() {
 
             this.els = {};
+            this.cells = [];
+            this.date = null;
+            this.todaysDate = new Date;
+            this.shortenDayNames = 'shortenDayNames' in this.options ? this.options.shortenDayNames : false;
+
+            var dayColumnTitles = this.getDayColumnTitles();
+
             this.els.header = $('<div class="month-header"></div>');
             this.els.controls = $('<div class="month-controls"><button class="prev-month">Prev</button><button class="next-month">Next</button></div>');
             this.els.headerText = $('<div class="header-text"></div>');
             this.els.columnTitles = $('<div class="col-titles">'
-                + '<div class="title-cell">Sunday</div>'
-                + '<div class="title-cell">Monday</div>'
-                + '<div class="title-cell">Tuesday</div>'
-                + '<div class="title-cell">Wednesday</div>'
-                + '<div class="title-cell">Thursday</div>'
-                + '<div class="title-cell">Friday</div>'
-                + '<div class="title-cell">Saturday</div>'
+                + '<div class="title-cell">' + dayColumnTitles[0] + '</div>'
+                + '<div class="title-cell">' + dayColumnTitles[1] + '</div>'
+                + '<div class="title-cell">' + dayColumnTitles[2] + '</div>'
+                + '<div class="title-cell">' + dayColumnTitles[3] + '</div>'
+                + '<div class="title-cell">' + dayColumnTitles[4] + '</div>'
+                + '<div class="title-cell">' + dayColumnTitles[5] + '</div>'
+                + '<div class="title-cell">' + dayColumnTitles[6] + '</div>'
                 + '</div>');
             this.els.grid = $('<div class="month-grid"></div>');
 
@@ -31,19 +38,12 @@ $(function() {
                 .append(this.els.headerText)
                 .append(this.els.controls);
 
-            this.cells = [];
-            this.calendar = this.options.calendar;
-            this.date = null;
-            this.todaysDate = new Date;
-
-            this.setMonth(this.calendar.getCurrentDate());
+            this.setMonth('date' in this.options ? this.options.date : new Date);
 
             this.$el
                 .append(this.els.header)
                 .append(this.els.columnTitles)
                 .append(this.els.grid);
-
-            console.log('calendar month view instantiated', this.calendar.getCurrentDate(), this.calendar);
 
         },
 
@@ -76,6 +76,7 @@ $(function() {
                 this.addCell(new Endeavour.View.CalendarMonthDay({
                     date: newDate,
                     extra: true,
+                    onClick: $.proxy(this.onClickDay, this),
                 }));
             }
 
@@ -84,6 +85,7 @@ $(function() {
                 newDate.setDate(i+1);
                 this.addCell(new Endeavour.View.CalendarMonthDay({
                     date: newDate,
+                    onClick: $.proxy(this.onClickDay, this),
                 }));
             }
 
@@ -95,6 +97,7 @@ $(function() {
                 this.addCell(new Endeavour.View.CalendarMonthDay({
                     date: newDate,
                     extra: true,
+                    onClick: $.proxy(this.onClickDay, this),
                 }));
             }
 
@@ -155,17 +158,52 @@ $(function() {
             return monthTexts[month];
         },
 
-        getDayText: function(day) {
-            var dayTexts = {
-                0: 'Sunday',
-                0: 'Monday',
-                0: 'Tuesday',
-                0: 'Wednesday',
-                0: 'Thursday',
-                0: 'Friday',
-                0: 'Saturday',
+        getDayFirstLetters: function() {
+            return {
+                0: 'S',
+                1: 'M',
+                2: 'T',
+                3: 'W',
+                4: 'T',
+                5: 'F',
+                6: 'S',
             };
-            return dayTexts[day];
+        },
+
+        getShortDayNames: function() {
+            return {
+                0: 'Sun',
+                1: 'Mon',
+                2: 'Tue',
+                3: 'Wed',
+                4: 'Thu',
+                5: 'Fri',
+                6: 'Sat',
+            };
+        },
+
+        getFullDayNames: function() {
+            return {
+                0: 'Sunday',
+                1: 'Monday',
+                2: 'Tuesday',
+                3: 'Wednesday',
+                4: 'Thursday',
+                5: 'Friday',
+                6: 'Saturday',
+            };
+        },
+
+        getDayColumnTitles: function() {
+            if (this.shortenDayNames) {
+                if (this.shortenDayNames === 'letters') return this.getDayFirstLetters();
+                else return this.getShortDayNames();
+            }
+            else return this.getFullDayNames();
+        },
+
+        getDayColumnTitle: function(day) {
+            return this.getDayColumnTitles()[day];
         },
 
         onClickNextMonth: function() {
@@ -178,6 +216,10 @@ $(function() {
             var lastMonth = new Date(this.date);
             lastMonth.setMonth(lastMonth.getMonth() - 1);
             this.setMonth(lastMonth);
+        },
+
+        onClickDay: function(date) {
+            Endeavour.alert({message: date.toString()});
         },
 
     });
