@@ -28,6 +28,8 @@ $(function() {
             this.els.dueDateContainer = $('<div class="item-due input-row"><label>Due Date</label><div class="input-container"><input type="text" class="fullwidth" /><input type="hidden" /></div></div>');
             this.els.dueDateInput = this.els.dueDateContainer.find('input[type=text]');
             this.els.dueDateValue = this.els.dueDateContainer.find('input[type=hidden]');
+            
+            this.els.dueDateContainer.on('click', function(ev){ev.stopImmediatePropagation();});
             this.els.dueDateInput.on('focus', $.proxy(this.onDueDateFocus, this))
                                  .on('blur', $.proxy(this.onDueDateBlur, this));
 
