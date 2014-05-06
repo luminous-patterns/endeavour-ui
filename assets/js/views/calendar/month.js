@@ -21,7 +21,7 @@ $(function() {
             var dayColumnTitles = this.getDayColumnTitles();
 
             this.els.header = $('<div class="month-header"></div>');
-            this.els.controls = $('<div class="month-controls"><button class="prev-month">Prev</button><button class="next-month">Next</button></div>');
+            this.els.controls = $('<div class="month-controls"><button type="button" class="prev-month">Prev</button><button type="button" class="next-month">Next</button></div>');
             this.els.headerText = $('<div class="header-text"></div>');
             this.els.columnTitles = $('<div class="col-titles">'
                 + '<div class="title-cell">' + dayColumnTitles[0] + '</div>'
