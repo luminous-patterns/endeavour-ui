@@ -24,8 +24,12 @@ $(function() {
             this.els.summaryContainer = $('<div class="item-summary input-row"><label>Summary</label><div class="input-container"><input class="fullwidth" /></div></div>');
             this.els.summaryInput = this.els.summaryContainer.find('input');
 
-            this.els.dueDateContainer = $('<div class="item-due input-row"><label>Due Date</label><div class="input-container"><input class="fullwidth" /></div></div>');
-            this.els.dueDateInput = this.els.dueDateContainer.find('input');
+            this.datePicker = null;
+            this.els.dueDateContainer = $('<div class="item-due input-row"><label>Due Date</label><div class="input-container"><input type="text" class="fullwidth" /><input type="hidden" /></div></div>');
+            this.els.dueDateInput = this.els.dueDateContainer.find('input[type=text]');
+            this.els.dueDateValue = this.els.dueDateContainer.find('input[type=hidden]');
+            this.els.dueDateInput.on('focus', $.proxy(this.onDueDateFocus, this))
+                                 .on('blur', $.proxy(this.onDueDateBlur, this));
 
             this.els.tagsContainer = $('<div class="item-tags input-row"><label>Tags</label><div class="input-container"><input class="fullwidth" /></div></div>');
             this.els.tagsInput = this.els.tagsContainer.find('input');
@@ -62,8 +66,15 @@ $(function() {
 
                 this.els.summaryInput.val(this.model.get('Summary'));
 
-                if (this.model.due) this.els.dueDateInput.val(this.model.due.toString());
-                else this.els.dueDateInput.val('');
+                var dueDate = this.model.getDueDate();
+                if (dueDate) {
+                    this.els.dueDateInput.val(dueDate.toDateString());
+                    this.els.dueDateValue.val(dueDate.toJSON());
+                }
+                else {
+                    this.els.dueDateInput.val('');
+                    this.els.dueDateValue.val('');
+                }
 
                 if (this.model.detailsLoaded) {
                     this.els.detailsInput.val(this.model.details.get('Body'))
@@ -94,9 +105,11 @@ $(function() {
         save: function() {
 
             // Save ListItem model
-            this.model.save({
+            var props = {
                 Summary: this.els.summaryInput.val(),
-            }, {patch: true})
+                Due: this.els.dueDateValue.val(),
+            };
+            this.model.save(props, {patch: true})
 
             // Save ListItemDetails model
             this.model.details.save({Body: this.els.detailsInput.val()}, {patch: true});
@@ -172,9 +185,53 @@ $(function() {
             return this.render()
         },
 
+        onDueDateFocus: function(ev) {
+
+            if (this.datePicker) return;
+
+            var datePicker = this.datePicker = new Endeavour.View.DatePicker;
+
+            this.els.dueDateContainer.append(datePicker.render().$el);
+
+            datePicker.on('date-selected', function(date) {
+                this.els.dueDateInput.val(date.toDateString());
+                this.els.dueDateValue.val(date.toJSON());
+                this.closeDatePicker();
+                this.enableButtons();
+            }, this);
+
+            this.bindBodyClickEvents();
+
+        },
+
+        onDueDateBlur: function() {
+
+        },
+
+        onBodyClick: function(ev) {
+            console.log($(ev.target), this.els.dueDateInput)
+            if ($(ev.target)[0] === this.els.dueDateInput[0]) return;
+            this.unbindBodyClickEvents();
+            this.closeDatePicker();
+        },
+
+        closeDatePicker: function() {
+            this.datePicker.close();
+            this.datePicker = null;
+        },
+        
+        bindBodyClickEvents: function() {
+            $('body').on('click', $.proxy(this.onBodyClick, this));
+        },
+
+        unbindBodyClickEvents: function() {
+            $('body').off('click', $.proxy(this.onBodyClick, this));
+        },
+
         clearInputs: function() {
             this.els.summaryInput.val('');
             this.els.dueDateInput.val('');
+            this.els.dueDateValue.val('');
             this.els.tagsInput.val('');
             this.els.detailsInput.val('');
             return this;

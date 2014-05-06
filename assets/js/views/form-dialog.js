@@ -99,12 +99,15 @@ $(function() {
                     case 'datetime':
                         field.containerEl = $('<div class="dialog-section">'
                             + '<label for="' + field.id + '-year">Due on</label>'
-                            + '<div class="input date-input"><input type="text" id="' + field.id + '-year" value="YYYY" /><span>-</span><input type="text" id="' + field.id + '-month" value="MM" /><span>-</span><input type="text" id="' + field.id + '-date" value="DD" /></div>'
-                            + ' @ '
-                            + '<div class="input time-input"><input type="text" id="' + field.id + '-hour" value="HH" /><span>:</span><input type="text" id="' + field.id + '-minute" value="MM" /></div>'
+                            + '<div class="input date-input"><input type="text" id="' + field.id + '-year" class="date-year" value="YYYY" /><span>-</span><input type="text" id="' + field.id + '-month" value="MM" /><span>-</span><input type="text" id="' + field.id + '-date" value="DD" /></div>'
+                            // + ' @ '
+                            // + '<div class="input time-input"><input type="text" id="' + field.id + '-hour" value="HH" /><span>:</span><input type="text" id="' + field.id + '-minute" value="MM" /></div>'
                             + '<input type="hidden" id="' + field.id + '" value="' + field.value + '" />'
                             + '</div>');
-                        field.containerEl.find('input').on('change', $.proxy(this.onDateTimeInputChange, field));
+                        field.containerEl.find('input')
+                            .on('change', $.proxy(this.onDateTimeInputChange, field))
+                            .on('focus', $.proxy(this.onDateTimeInputFocus, field))
+                            .on('blur', $.proxy(this.onDateTimeInputBlur, field));
                         field.$el = field.containerEl.find('#' + field.id);
                         break;
                 }
@@ -138,6 +141,7 @@ $(function() {
 
             _.each(this.fields, function(field) {
                 inputs[field.inputKey] = field.$el.val();
+                if (field.type == 'datetime' && field.$el.val()) inputs[field.inputKey] = new Date(field.$el.val());
             });
 
             return inputs;
@@ -175,31 +179,48 @@ $(function() {
             return this.submit();
         },
 
-        onDateTimeInputChange: function(ev) {
+        onDateTimeInputFocus: function(ev) {
 
             // Context of a field item
             var field = this;
 
-            // The changed el
-            var el = $(ev.target);
-            console.log(field,this,el);
+            // The specific input el
+            var el = $(ev.delegateTarget);
 
-            if (el.attr('id') == field.id) return;
+            if ('datePicker' in field && field.datePicker) return;
 
-            var yearEl = field.$el.find('#' + field.id + '-year');
-            var monthEl = field.$el.find('#' + field.id + '-month');
-            var dateEl = field.$el.find('#' + field.id + '-date');
+            var datePicker = field.datePicker = new Endeavour.View.DatePicker;
 
-            var hourEl = field.$el.find('#' + field.id + '-hour');
-            var minuteEl = field.$el.find('#' + field.id + '-minute');
+            el.parent().append(datePicker.render().$el);
 
-            var yyyy = !yearEl.val() || yearEl.val() == 'YYYY' ? '2014' : yearEl.val();
-            var mo = !monthEl.val() || monthEl.val() == 'MM' ? '01' : monthEl.val();
-            var dd = !dateEl.val() || dateEl.val() == 'DD' ? '01' : dateEl.val();
-            var hh = !hourEl.val() || hourEl.val() == 'HH' ? '00' : hourEl.val();
-            var mi = !minuteEl.val() || minuteEl.val() == 'MM' ? '00' : minuteEl.val();
+            datePicker.on('date-selected', function(date) {
+                field.$el.val(date.toJSON());
+                var dateTimeArray = date.toJSON().split('T');
+                var dateArray = dateTimeArray[0].split('-');
+                field.containerEl.find('#' + field.id + '-year').val(dateArray[0]);
+                field.containerEl.find('#' + field.id + '-month').val(dateArray[1]);
+                field.containerEl.find('#' + field.id + '-date').val(dateArray[2]);
+                datePicker.close();
+                delete field.datePicker;
+            });
 
-            field.$el.val(yyyy + '-' + mo + '-' + dd + ' ' + hh + ':' + mi + ':00');
+        },
+
+        onDateTimeInputBlur: function(ev) {
+
+            // Context of a field item
+            var field = this;
+
+            // if (!('datePicker' in field) || !field.datePicker) return;
+
+            // field.datePicker.close();
+            // delete field.datePicker;
+
+        },
+
+        onDateTimeInputChange: function(ev) {
+
+            Endeavour.alert({message:'dont do that...'});
 
         },
 

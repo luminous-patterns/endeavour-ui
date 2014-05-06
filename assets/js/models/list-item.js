@@ -19,13 +19,11 @@ $(function() {
         },
 
         created: null,
-        due: null,
         completed: null,
 
         initialize: function() {
 
             this.on('change:Created', this.onChangeCreated, this);
-            this.on('change:Due', this.onChangeDue, this);
             this.on('change:Completed', this.onChangeCompleted, this);
 
             this.on('sync', this.onSync, this);
@@ -58,12 +56,12 @@ $(function() {
             return this;
         },
 
-        onChangeDue: function() {
-            var due = this.get('Due');
-            if (due && typeof due == 'object') {
-                this.due = Endeavour.newDate(due.date);
-            }
-            return this;
+        getDueDate: function() {
+            
+            if (!this.get('Due')) return null;
+
+            return typeof this.get('Due') == 'object' ? Endeavour.newDate(this.get('Due').date) : new Date(this.get('Due'));
+
         },
 
         onChangeCompleted: function() {

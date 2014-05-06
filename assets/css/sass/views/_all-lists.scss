@@ -228,6 +228,15 @@
                             text-transform: uppercase;
                             color: #ccc;
                         }
+                        &.item-due {
+
+                            .date-picker {
+                                z-index: 10;
+                                top: 30px;
+                                left: 100px;
+                            }
+
+                        }
                         .input-container {
 
                             position: absolute;

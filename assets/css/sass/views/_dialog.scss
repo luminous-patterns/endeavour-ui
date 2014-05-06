@@ -71,9 +71,17 @@
                 text-align: center;
                 width: 25px;
             }
-
-            input.year {
+            input.date-year {
                 width: 45px;
+            }
+            &.date-input {
+
+                .date-picker {
+                    top: 60px;
+                    z-index: 100;
+                    left: 0;
+                }
+                
             }
 
         }
@@ -85,7 +93,6 @@
         textarea.tall {
             height: 200px;
         }
-
         .rating-stars {
 
             list-style-type: none;

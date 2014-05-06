@@ -13,6 +13,8 @@ $(function() {
 
             this.$el.append(this.calendarMonth.render().$el);
 
+            this.calendarMonth.on('date-selected', this.onCalendarDateSelected, this);
+
         },
 
         render: function() {
@@ -21,6 +23,10 @@ $(function() {
 
             return this;
 
+        },
+
+        onCalendarDateSelected: function(date) {
+            this.trigger('date-selected', date);
         },
 
         setPosition: function(x, y) {

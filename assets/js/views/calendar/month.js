@@ -219,7 +219,7 @@ $(function() {
         },
 
         onClickDay: function(date) {
-            Endeavour.alert({message: date.toString()});
+            this.trigger('date-selected', date);
         },
 
     });
