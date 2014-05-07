@@ -7,9 +7,17 @@ $(function() {
 
         initialize: function() {
 
-            this.calendarMonth = new Endeavour.View.CalendarMonth({
+            var monthOptions = {
                 shortenDayNames: 'letters',
-            });
+            };
+
+            var selectedDate = this.selectedDate = 'selectedDate' in this.options ? this.options.selectedDate : null;
+
+            if (selectedDate) {
+                monthOptions.date = selectedDate;
+            }
+
+            this.calendarMonth = new Endeavour.View.CalendarMonth(monthOptions);
 
             this.$el.append(this.calendarMonth.render().$el);
 
@@ -18,8 +26,6 @@ $(function() {
         },
 
         render: function() {
-
-            
 
             return this;
 

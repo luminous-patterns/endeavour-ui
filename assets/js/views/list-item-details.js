@@ -191,7 +191,13 @@ $(function() {
 
             if (this.datePicker) return;
 
-            var datePicker = this.datePicker = new Endeavour.View.DatePicker;
+            var datePickerOptions = {
+
+            };
+
+            if (this.els.dueDateValue.val()) datePickerOptions.selectedDate = new Date(this.els.dueDateValue.val());
+
+            var datePicker = this.datePicker = new Endeavour.View.DatePicker(datePickerOptions);
 
             this.els.dueDateContainer.append(datePicker.render().$el);
 

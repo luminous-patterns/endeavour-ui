@@ -15,8 +15,10 @@ $(function() {
             this.els = {};
             this.cells = [];
             this.date = null;
+            this.selectedDate = null;
             this.todaysDate = new Date;
             this.shortenDayNames = 'shortenDayNames' in this.options ? this.options.shortenDayNames : false;
+            this.selectedDate = null;
 
             var dayColumnTitles = this.getDayColumnTitles();
 
@@ -37,6 +39,10 @@ $(function() {
             this.els.header
                 .append(this.els.headerText)
                 .append(this.els.controls);
+
+            if ('date' in this.options) {
+                this.selectedDate = this.options.date;
+            }
 
             this.setMonth('date' in this.options ? this.options.date : new Date);
 
@@ -83,9 +89,14 @@ $(function() {
             for (var i = 0; i < this.daysInMonth(); i++) {
                 newDate = new Date(this.date.getTime());
                 newDate.setDate(i+1);
+                addClasses = [];
+                if (this.selectedDate && newDate.toDateString() === this.selectedDate.toDateString()) {
+                    addClasses[addClasses.length] = 'selected';
+                }
                 this.addCell(new Endeavour.View.CalendarMonthDay({
                     date: newDate,
                     onClick: $.proxy(this.onClickDay, this),
+                    addClasses: addClasses,
                 }));
             }
 

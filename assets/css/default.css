@@ -155,9 +155,9 @@ li { cursor: default; }
 .calendar-month .month-header .month-controls { position: absolute; top: 9px; right: 15px; line-height: 1; }
 .calendar-month .col-titles .title-cell { width: 14.28%; display: inline-block; text-align: center; line-height: 40px; background: #fafafa -webkit-gradient(linear, to top, to bottom, color-stop(0%, rgba(0, 0, 0, 0.035)), color-stop(100%, rgba(0, 0, 0, 0))); background: #fafafa -webkit-linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); background: #fafafa -moz-linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); background: #fafafa -o-linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); background: #fafafa linear-gradient(to top, rgba(0, 0, 0, 0.035) 0px, rgba(0, 0, 0, 0) 30px); border-bottom: 1px solid #eee; font-size: 0.9em; color: #555; }
 .calendar-month .month-grid .day-cell { display: inline-block; width: 14.28%; position: relative; border-style: solid; background-color: #fefefe; border-width: 0 1px 1px 0; border-color: #eee; height: 90px; padding: 10px; font-size: 0.8em; vertical-align: top; cursor: pointer; }
-.calendar-month .month-grid .day-cell:hover { z-index: 3; box-shadow: 0 0 0 2px rgba(30, 180, 30, 0.5); font-weight: bold; color: #1eb41e; }
+.calendar-month .month-grid .day-cell:hover, .calendar-month .month-grid .day-cell.selected { z-index: 3; box-shadow: 0 0 6px rgba(30, 180, 30, 0.9); font-weight: bold; color: #1eb41e; border: 1px solid; }
 .calendar-month .month-grid .day-cell.extra { background: #fafafa; color: #999; font-size: 0.7em; }
-.calendar-month .month-grid .day-cell.today { z-index: 2; box-shadow: 0 0 0 2px rgba(30, 100, 180, 0.5); font-weight: bold; color: #1e64b4; }
+.calendar-month .month-grid .day-cell.today { z-index: 2; box-shadow: 0 0 6px rgba(30, 100, 180, 0.9); font-weight: bold; color: #1e64b4; border: 1px solid; }
 
 div.flexi-container { position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; }
 div.flexi-container.vertical-cells > div.resize-handle { top: 0; bottom: 0; left: auto; right: auto; width: 4px; height: 100%; cursor: ew-resize; }

@@ -179,6 +179,22 @@ $(function() {
             return this.submit();
         },
 
+        onClose: function() {
+
+            var orderedFields = this.orderedFields = _.sortBy(this.fields, this.sortFields);
+
+            for (var i = 0; i < orderedFields.length; i++) {
+
+                var field = orderedFields[i];
+                if (field.type == 'datetime' && field.datePicker)  {
+                    field.datePicker.close();
+                    delete field.datePicker;
+                }
+
+            }
+
+        },
+
         onDateTimeInputFocus: function(ev) {
 
             // Context of a field item
@@ -186,10 +202,16 @@ $(function() {
 
             // The specific input el
             var el = $(ev.delegateTarget);
-
+console.log('datetimeinputfocus',field.datePicker);
             if ('datePicker' in field && field.datePicker) return;
 
-            var datePicker = field.datePicker = new Endeavour.View.DatePicker;
+            var datePickerOptions = {
+
+            };
+
+            if (field.$el.val()) datePickerOptions.selectedDate = new Date(field.$el.val());
+
+            var datePicker = field.datePicker = new Endeavour.View.DatePicker(datePickerOptions);
 
             el.parent().append(datePicker.render().$el);
 

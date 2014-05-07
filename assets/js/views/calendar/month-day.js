@@ -20,6 +20,10 @@ $(function() {
                 this.$el.addClass('today');
             }
 
+            if ('addClasses' in this.options && this.options.addClasses.length > 0) {
+                this.$el.addClass(this.options.addClasses.join(' '));
+            }
+
             if (this.options.extra) {
                 this.$el.addClass('extra');
                 // this.$el.append(this.date.getDate() + '/' + (this.date.getMonth() + 1));

@@ -103,26 +103,26 @@
             vertical-align: top;
             cursor: pointer;
 
-            &:hover {
+            &:hover, &.selected {
                 z-index: 3;
-                box-shadow: 0 0 0 2px rgba(30,180,30,.5);
+                box-shadow: 0 0 6px rgba(30,180,30,.9);
                 font-weight: bold;
                 color: rgb(30,180,30);
+                border: 1px solid;
+            }
+            &.extra {
+                background: #fafafa;
+                color: #999;
+                font-size: 0.7em;
+            }
+            &.today {
+                z-index: 2;
+                box-shadow: 0 0 6px rgba(30,100,180,.9);
+                font-weight: bold;
+                color: rgb(30,100,180);
+                border: 1px solid;
             }
 
-        }
-
-        .day-cell.extra {
-            background: #fafafa;
-            color: #999;
-            font-size: 0.7em;
-        }
-
-        .day-cell.today {
-            z-index: 2;
-            box-shadow: 0 0 0 2px rgba(30,100,180,.5);
-            font-weight: bold;
-            color: rgb(30,100,180);
         }
 
     }
