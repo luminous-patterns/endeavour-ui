@@ -71,7 +71,7 @@ $(function() {
             return this;
         },
 
-        showDialog: function(what) {
+        showDialog: function(what, options) {
 
             console.log('### stage view showDialog:', what);
 
@@ -82,22 +82,24 @@ $(function() {
                 this.header.$el.hide();
             }
 
+            if (!options) options = {};
+
             switch(what) {
 
                 case 'login':
-                    this.setCurrentView(new Endeavour.View.Login());
+                    this.setCurrentView(new Endeavour.View.Login(options));
                     break;
 
                 case 'add-new-list-item':
-                    this.newDialogContainer(new Endeavour.View.DialogAddNewListItem());
+                    this.newDialogContainer(new Endeavour.View.DialogAddNewListItem(options));
                     break;
 
                 case 'add-new-list':
-                    this.newDialogContainer(new Endeavour.View.DialogAddNewList());
+                    this.newDialogContainer(new Endeavour.View.DialogAddNewList(options));
                     break;
 
                 case 'feedback':
-                    this.newDialogContainer(new Endeavour.View.FeedbackDialog());
+                    this.newDialogContainer(new Endeavour.View.FeedbackDialog(options));
                     break;
 
             }

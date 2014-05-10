@@ -5,10 +5,17 @@ $(function() {
         tagName: 'div',
         className: 'list-items-section',
 
+        events: {
+            'click .add-list':                'onClickAddList',
+            'click .add-item':                'onClickAddListItem',
+            'submit .list-item-quick-add':    'onSubmitListItemQuickForm',
+        },
+
         initialize: function() {
 
             this.itemCollection = null;
             this.listCollection = null;
+            this.addListItemInputVisible = false;
 
             this.emptyIndicatorExists = false;
             this.loadingIndicatorExists = false;
@@ -19,11 +26,22 @@ $(function() {
 
             this.activeSingleList = null;
 
-            this.els.header = $('<div class="list-items-section-header"><h3></h3></div>');
+            this.els.header = $('<div class="list-items-section-header">'
+                + '<h3></h3>'
+                + '<div class="buttons">'
+                + '<button type="button" class="add-item">+ Item</button>'
+                + '<button type="button" class="add-list">+ List</button>'
+                + '</buttons></div>');
+            this.els.addListItemInputContainer = $('<div class="list-item-input-container"><form class="list-item-quick-add">'
+                + '<label for="list-items-section-input">Item Summary</label>'
+                + '<div class="list-items-section-input-container"><input id="list-items-section-input" class="list-item-input" /></div>'
+                + '<button type="submit">Enter</button>'
+                + '</form></div>');
             this.els.listContainer = $('<div class="list-items-container"></div>');
 
             this.els.headerTitle = this.els.header.find('h3');
             this.els.list = this.els.listContainer.find('ul.list-items');
+            this.els.addListItemInput = this.els.addListItemInputContainer.find('input');
 
             this.els.listList = $('<ul class="list-contents lists"></ul>');
             this.els.listItemList = $('<ul class="list-contents list-items"></ul>');
@@ -34,7 +52,10 @@ $(function() {
 
             this.$el
                 .append(this.els.header)
+                .append(this.els.addListItemInputContainer)
                 .append(this.els.listContainer);
+
+            this.hideHeaderButtons();
 
             if (this.model) this.model.on('change', this.render, this);
 
@@ -59,6 +80,91 @@ $(function() {
             if (this.model) this.unsetModel();
             this.clearList();
             return this;
+        },
+
+        /*
+
+
+
+
+            ===================================
+            HEADER BUTTON EVENT CALLBACKS
+            ===================================
+
+        */
+
+        onClickAddList: function() {
+            if (this.model) Endeavour.publish('show:dialog', 'add-new-list', {ParentID: this.model.get('ID')});
+            return this;
+        },
+
+        onClickAddListItem: function() {
+            return this.toggleAddListItemInput();
+        },
+
+        toggleAddListItemInput: function() {
+            if (this.addListItemInputVisible) {
+                return this.hideAddListItemInput();
+            }
+            else {
+                return this.showAddListItemInput();
+            }
+        },
+
+        showAddListItemInput: function() {
+            this.addListItemInputVisible = true;
+            this.$el.addClass('item-input-field-visible');
+            return this.focusAddListItemInput();
+        },
+
+        hideAddListItemInput: function() {
+            this.addListItemInputVisible = false;
+            this.$el.removeClass('item-input-field-visible');
+            return this;
+        },
+
+        focusAddListItemInput: function() {
+            this.els.addListItemInput.focus();
+            return this;
+        },
+
+        getListItemInputVal: function() {
+            return this.els.addListItemInput.val();
+        },
+
+        clearListItemInputVal: function() {
+            return this.els.addListItemInput.val('');
+        },
+
+        onSubmitListItemQuickForm: function(ev) {
+            
+            ev.preventDefault();
+            var value = this.getListItemInputVal();
+            
+            if (!value) {
+                Endeavour.alert({message:"Type something first!"});
+                return this;
+            }
+
+            this.clearListItemInputVal();
+            this.focusAddListItemInput();
+
+            var activeListModel = this.model;
+
+            if (activeListModel) {
+                activeListModel.createItem({Summary: value});
+            }
+
+            return this;
+
+        },
+
+        hideHeaderButtons: function() {
+            this.els.header.find('button').hide();
+        },
+
+        showHeaderButtons: function() {
+            this.els.header.find('button').show();
         },
 
         /*
@@ -93,7 +199,11 @@ $(function() {
         },
 
         unsetModel: function() {
+            this.hideHeaderButtons();
             this.unbindModelEvents();
+            this.els.headerTitle.html('');
+            this.hideAddListItemInput();
+            this.setHeader
             this.itemCollection = null;
             this.listCollection = null;
             this.model = null;
@@ -108,6 +218,7 @@ $(function() {
             this.listCollection = model.lists;
             this.model = model;
             this.bindModelEvents();
+            this.showHeaderButtons();
 
             this.els.headerTitle.html(this.model.get('Title'));
 
@@ -130,28 +241,6 @@ $(function() {
 
             return this;
         },
-
-        // setCollection: function(collection) {
-
-        //     if (this.collection) this.unsetCollection();
-            
-        //     this.collection = collection;
-        //     this.bindCollectionEvents();
-
-        //     this.clearList();
-
-        //     if (collection.length < 1) {
-        //         this.addLoadingIndicator();
-        //         if (collection.url) collection.fetch();
-        //     }
-        //     else this.onCollectionSync();
-
-        //     for (var i = 0; i < this.collection.length; i++) {
-        //         this.addSingleListItem(this.collection.at(i));
-        //     }
-
-        //     return this;
-        // },
 
         onModelCollectionsSync: function(collection) {
             if (this.loadingIndicatorExists) this.removeLoadingIndicator();
@@ -239,6 +328,8 @@ $(function() {
         */
 
         addSingleList: function(model) {
+
+            if (this.emptyIndicatorExists) this.removeEmptyIndicator();
 
             var view = new Endeavour.View.SingleList({
                 model: model,

@@ -1,10 +1,11 @@
 #header {
 
-    height: 32px;
+    height: 52px;
     border-top: 1px solid #000;
     border-bottom: 1px solid #333;
     @include background(linear-gradient(to bottom, #555 0%, #333 100%));
     position: relative;
+    z-index: 5;
 
     .left-buttons {
         position: absolute;
@@ -35,10 +36,11 @@
                 border-right: 1px solid rgba(0,0,0,0.5);
                 display: inline-block;
                 color: #eee;
-                line-height: 30px;
-                padding: 0 10px;
+                line-height: 50px;
+                padding: 0 20px;
                 font-size: 0.9em;
                 text-decoration: none;
+                text-shadow: -1px -1px 0 rgba(0,0,0,0.8);
 
                 &:hover {
                     @include background(#81b2cb linear-gradient(to bottom,rgba(255,255,255,.2) 0,rgba(255,255,255,0) 50px));

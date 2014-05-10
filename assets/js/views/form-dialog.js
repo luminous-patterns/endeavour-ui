@@ -72,6 +72,12 @@ $(function() {
                             + '</div>');
                         field.$el = field.containerEl.find('#' + field.id);
                         break;
+                    case 'hidden':
+                        field.containerEl = $('<div>'
+                            + '<input type="hidden" id="' + field.id + '" class="full-width" value="' + field.value + '" />'
+                            + '</div>');
+                        field.$el = field.containerEl.find('#' + field.id);
+                        break;
                     case 'textarea':
                         field.containerEl = $('<div class="dialog-section">'
                             + '<label for="' + field.id + '">' + field.label + '</label>'

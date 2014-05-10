@@ -40,8 +40,8 @@ $(function() {
             this.els.list = $('<ul class="lists"></ul>');
 
             this.$el
-                .append(this.els.topButtons)
-                .append("<h1>My Lists</h1>")
+                // .append(this.els.topButtons)
+                // .append("<h1>My Lists</h1>")
                 .append(this.els.main);
 
             for (var i = 0; i < this.collection.length; i++) {
@@ -87,11 +87,11 @@ $(function() {
         render: function() {
 
             if (!this.flexi) {
-                this.initFlexi(this.height - 100, this.width);
+                this.initFlexi(this.height - 5, this.width);
             }
             else {
                 this.flexi
-                    .setDimensions(this.height - 100, this.width)
+                    .setDimensions(this.height - 5, this.width)
                     .render();
             }
 
@@ -102,7 +102,7 @@ $(function() {
         resize: function(height, width) {
             this.height = height;
             this.width = width;
-            if (this.flexi) this.flexi.setDimensions(height - 100, width);
+            if (this.flexi) this.flexi.setDimensions(height - 5, width);
             return this;
         },
 
@@ -110,7 +110,7 @@ $(function() {
 
             var flexi = this.flexi = new Endeavour.View.FlexiContainer({
                 containerID: 'main',
-                height: height - 100,
+                height: height - 5,
                 width: width,
                 margin: 10,
                 spacing: 10,
