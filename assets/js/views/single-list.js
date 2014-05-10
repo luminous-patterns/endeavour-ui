@@ -35,6 +35,8 @@ $(function() {
                 last: {x: 0, y: 0},
             };
 
+            this.showSubLists = 'showSubLists' in this.options ? this.options.showSubLists : true;
+
             this.$el.addClass('list-item-' + this.model.id);
 
             this.els.title = $('<div class="title"></div>');
@@ -42,19 +44,22 @@ $(function() {
             this.els.titleInput = $('<input class="title-input-inline" value="" />');
             this.els.ownerLabel = $('<div class="owner-label"></div>');
             this.els.deleteButton = $('<div class="delete"></div>');
-            this.els.subListIndicator = $('<div class="sublist-indicator"></div>');
-            this.els.subList = $('<ul class="sub-lists"></ul>');
 
-            this.els.title.append(this.els.titleText)
+            this.els.title
+                .append(this.els.titleText)
                 .append(this.els.titleInput.hide())
-                .append(this.els.deleteButton)
-                .append(this.els.subListIndicator);
+                .append(this.els.deleteButton);
 
             this.$el
-                .append(this.els.title)
-                .append(this.els.subList);
+                .append(this.els.title);
 
-            this.els.subList.hide();
+            if (this.showSubLists) {
+                this.els.subListIndicator = $('<div class="sublist-indicator"></div>');
+                this.els.subList = $('<ul class="sub-lists"></ul>');
+                this.els.title.append(this.els.subListIndicator);
+                this.$el.append(this.els.subList);
+                this.els.subList.hide();
+            }
 
             for (var i = 0; i < this.model.lists.length; i++) {
                 this.addSingleList(this.model.lists.at(i));
@@ -67,6 +72,7 @@ $(function() {
             this.els.titleInput.bind('mousedown', $.proxy(this.onTitleInputMousedown, this));
 
             this.model.on('change', this.render, this);
+            this.model.on('active-model:set', this.onActiveModelSet, this);
             this.model.lists.on('add', this.onModelListAdd, this);
             this.model.lists.on('remove', this.onModelListRemove, this);
 
@@ -78,8 +84,10 @@ $(function() {
             this.els.titleInput.val(this.model.get('Title'));
             this.els.titleInput.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, this.els.titleInput.val().length + Number(this.els.titleInput.val().length * 0.1))));
 
-            if (!this.model.hasLists()) this.els.subListIndicator.hide();
-            else this.els.subListIndicator.show();
+            if (this.showSubLists) {
+                if (!this.model.hasLists()) this.els.subListIndicator.hide();
+                else this.els.subListIndicator.show();
+            }
 
             if (this.model.owner) {
                 this.els.ownerLabel.html(this.model.owner.get('FirstName'));
@@ -117,15 +125,24 @@ $(function() {
             return this;
         },
 
+        canToggleSubList: function() {
+            return this.showSubLists && this.model.hasLists() && !this.els.subListIndicator.hasClass('expanded');
+        },
+
+        onActiveModelSet: function(ev) {
+            if (this.canToggleSubList()) this.showSubList();
+            return this;
+        },
+
         onClick: function(ev) {
             ev.stopImmediatePropagation();
-            if (this.model.hasLists() && !this.els.subListIndicator.hasClass('expanded')) this.toggleSubList();
+            if (this.canToggleSubList()) this.toggleSubList();
             return this.trigger('click', this);
         },
 
         onClickSubListIndicator: function(ev) {
             ev.stopImmediatePropagation();
-            if (this.model.hasLists()) this.toggleSubList();
+            if (this.model.hasLists() && this.showSubLists) this.toggleSubList();
             return this;
         },
 
@@ -183,12 +200,14 @@ $(function() {
         },
 
         showSubList: function() {
+            if (!this.showSubLists) return;
             this.els.subList.show();
             this.els.subListIndicator.addClass('expanded');
             return this;
         },
 
         hideSubList: function() {
+            if (!this.showSubLists) return;
             this.els.subList.hide();
             this.els.subListIndicator.removeClass('expanded');
             return this;
@@ -217,7 +236,9 @@ $(function() {
 
             this.views[this.views.length] = view;
 
-            this.els.subList.append(view.render().$el);
+            if (this.showSubLists) {
+                this.els.subList.append(view.render().$el);
+            }
 
             return this;
 

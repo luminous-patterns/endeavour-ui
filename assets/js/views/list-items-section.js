@@ -5,44 +5,58 @@ $(function() {
         tagName: 'div',
         className: 'list-items-section',
 
-        events: {
-            'mousedown .details-resizer':     'onResizeMouseDown',
-        },
-
         initialize: function() {
 
-            this.collection = null;
-
-            this.resizing = false;
-            this.hasMoved = false;
-            this.resizeCoords = {
-                initial: {x: 0},
-                last: {x: 0},
-            };
+            this.itemCollection = null;
+            this.listCollection = null;
 
             this.emptyIndicatorExists = false;
             this.loadingIndicatorExists = false;
 
-            this.views = [];
+            this.singleListItemViews = [];
+            this.singleListViews = [];
             this.els = {};
 
-            this.els.listContainer = $('<div class="list-items-container"><ul class="list-items"></ul></div>');
+            this.activeSingleList = null;
+
+            this.els.header = $('<div class="list-items-section-header"><h3></h3></div>');
+            this.els.listContainer = $('<div class="list-items-container"></div>');
+
+            this.els.headerTitle = this.els.header.find('h3');
             this.els.list = this.els.listContainer.find('ul.list-items');
 
-            this.$el.append(this.els.listContainer);
+            this.els.listList = $('<ul class="list-contents lists"></ul>');
+            this.els.listItemList = $('<ul class="list-contents list-items"></ul>');
 
-            if (this.options.collection) this.setCollection(this.options.collection);
+            this.els.listContainer
+                .append(this.els.listList)
+                .append(this.els.listItemList);
+
+            this.$el
+                .append(this.els.header)
+                .append(this.els.listContainer);
+
+            if (this.model) this.model.on('change', this.render, this);
 
         },
 
         render: function() {
+
+            if (this.model) {
+
+                this.els.headerTitle.html(this.model.get('Title'));
+
+                this.model.loadLists();
+                this.model.loadItems();
+
+            }
 
             return this;
 
         },
 
         reset: function() {
-            if (this.collection) this.unsetCollection();
+            if (this.model) this.unsetModel();
             this.clearList();
             return this;
         },
@@ -53,60 +67,111 @@ $(function() {
 
 
             ===================================
-            COLLECTION FUNCTIONS
+            MODEL FUNCTIONS
             ===================================
 
         */
 
-        unbindCollectionEvents: function() {
-            this.collection.off('add', this.onCollectionAdd, this);
-            this.collection.off('remove', this.onCollectionRemove, this);
-            this.collection.off('sync', this.onCollectionSync, this);
+        unbindModelEvents: function() {
+            this.listCollection.off('add', this.onListCollectionAdd, this);
+            this.listCollection.off('remove', this.onListCollectionRemove, this);
+            this.listCollection.off('sync', this.onModelCollectionsSync, this);
+            this.itemCollection.off('add', this.onItemCollectionAdd, this);
+            this.itemCollection.off('remove', this.onItemCollectionRemove, this);
+            this.itemCollection.off('sync', this.onModelCollectionsSync, this);
             return this;
         },
 
-        bindCollectionEvents: function() {
-            this.collection.on('add', this.onCollectionAdd, this);
-            this.collection.on('remove', this.onCollectionRemove, this);
-            this.collection.on('sync', this.onCollectionSync, this);
+        bindModelEvents: function() {
+            this.listCollection.on('add', this.onListCollectionAdd, this);
+            this.listCollection.on('remove', this.onListCollectionRemove, this);
+            this.listCollection.on('sync', this.onModelCollectionsSync, this);
+            this.itemCollection.on('add', this.onItemCollectionAdd, this);
+            this.itemCollection.on('remove', this.onItemCollectionRemove, this);
+            this.itemCollection.on('sync', this.onModelCollectionsSync, this);
             return this;
         },
 
-        unsetCollection: function() {
-            this.unbindCollectionEvents();
-            this.collection = null;
+        unsetModel: function() {
+            this.unbindModelEvents();
+            this.itemCollection = null;
+            this.listCollection = null;
+            this.model = null;
             return this;
         },
 
-        setCollection: function(collection) {
+        setModel: function(model) {
 
-            if (this.collection) this.unsetCollection();
-            
-            this.collection = collection;
-            this.bindCollectionEvents();
+            if (this.model) this.unsetModel();
+
+            this.itemCollection = model.items;
+            this.listCollection = model.lists;
+            this.model = model;
+            this.bindModelEvents();
+
+            this.els.headerTitle.html(this.model.get('Title'));
 
             this.clearList();
 
-            if (collection.length < 1) {
+            if (this.listCollection.length + this.itemCollection.length < 1) {
                 this.addLoadingIndicator();
-                if (collection.url) collection.fetch();
+                if (!this.model.listLoaded) this.model.loadLists();
+                if (!this.model.itemsLoaded) this.model.loadItems();
             }
-            else this.onCollectionSync();
+            else this.onModelCollectionsSync();
 
-            for (var i = 0; i < this.collection.length; i++) {
-                this.addSingleListItem(this.collection.at(i));
+            for (var i = 0; i < this.listCollection.length; i++) {
+                this.addSingleList(this.listCollection.at(i));
             }
 
+            for (var i = 0; i < this.itemCollection.length; i++) {
+                this.addSingleListItem(this.itemCollection.at(i));
+            }
+
+            return this;
+        },
+
+        // setCollection: function(collection) {
+
+        //     if (this.collection) this.unsetCollection();
+            
+        //     this.collection = collection;
+        //     this.bindCollectionEvents();
+
+        //     this.clearList();
+
+        //     if (collection.length < 1) {
+        //         this.addLoadingIndicator();
+        //         if (collection.url) collection.fetch();
+        //     }
+        //     else this.onCollectionSync();
+
+        //     for (var i = 0; i < this.collection.length; i++) {
+        //         this.addSingleListItem(this.collection.at(i));
+        //     }
+
+        //     return this;
+        // },
+
+        onModelCollectionsSync: function(collection) {
+            if (this.loadingIndicatorExists) this.removeLoadingIndicator();
+            if (collection && collection.length + this.listCollection.length + this.itemCollection.length < 1) this.addEmptyIndicator();
             return this;
         },
 
         clearList: function() {
 
-            for (var i = 0; i < this.views.length; i++) {
-                this.views[i].close();
+            for (var i = 0; i < this.singleListViews.length; i++) {
+                this.singleListViews[i].close();
             }
 
-            this.views = [];
+            this.singleListViews = [];
+
+            for (var i = 0; i < this.singleListItemViews.length; i++) {
+                this.singleListItemViews[i].close();
+            }
+
+            this.singleListItemViews = [];
 
             this.els.list.html('');
 
@@ -114,23 +179,93 @@ $(function() {
 
         },
 
-        onCollectionAdd: function(model) {
+        /*
+
+
+
+
+            ===================================
+            MODEL COLLECTION EVENT HANDLER FUNCTIONS
+            ===================================
+
+        */
+
+        onListCollectionAdd: function(model) {
+            return this.addSingleList(model);
+        },
+
+        onListCollectionRemove: function(model) {
+            return this.removeSingleList(model);
+        },
+
+        onItemCollectionAdd: function(model) {
             return this.addSingleListItem(model);
         },
 
-        onCollectionRemove: function(model) {
+        onItemCollectionRemove: function(model) {
             return this.removeSingleListItem(model);
         },
 
-        onCollectionSync: function() {
-            if (this.loadingIndicatorExists) this.removeLoadingIndicator();
-            if (this.collection.length < 1) this.addEmptyIndicator();
+        /*
+
+
+
+
+            ===================================
+            ON CLICK CALLBACKS
+            ===================================
+
+        */
+
+        onSingleListItemClick: function(view) {
+            Endeavour.stage.currentView.listItemDetails.setModel(view.model);
             return this;
         },
 
-        onSingleItemClick: function(view) {
-            Endeavour.stage.currentView.listItemDetails.setModel(view.model);
+        onSingleListClick: function(view) {
+            Endeavour.stage.currentView.onSingleListClick(view);
             return this;
+        },
+
+        /*
+
+
+
+
+            ===================================
+            ADD / REMOVE LIST & ITEM FUNCTIONS
+            ===================================
+
+        */
+
+        addSingleList: function(model) {
+
+            var view = new Endeavour.View.SingleList({
+                model: model,
+                showSubLists: false,
+            });
+
+            view.on('click', this.onSingleListClick, this);
+
+            this.singleListViews[this.singleListViews.length] = view;
+
+            this.els.listList.append(view.render().$el);
+
+            return this;
+
+        },
+
+        removeSingleList: function(model) {
+
+            var modelView = this.getSingleListViewByModelID(model.id);
+
+            if (modelView) {
+                this.singleListViews.splice(this.singleListViews.indexOf(modelView), 1);
+                modelView.close();
+            }
+
+            return this;
+
         },
 
         addSingleListItem: function(model) {
@@ -141,11 +276,11 @@ $(function() {
                 model: model,
             });
 
-            view.on('click', this.onSingleItemClick, this);
+            view.on('click', this.onSingleListItemClick, this);
 
-            this.views[this.views.length] = view;
+            this.singleListItemViews[this.singleListItemViews.length] = view;
 
-            this.els.list.append(view.render().$el);
+            this.els.listItemList.append(view.render().$el);
 
             return this;
 
@@ -153,10 +288,10 @@ $(function() {
 
         removeSingleListItem: function(model) {
 
-            var modelView = this.getViewByModelID(model.id);
+            var modelView = this.getSingleListItemViewByModelID(model.id);
 
             if (modelView) {
-                this.views.splice(this.views.indexOf(modelView), 1);
+                this.singleListItemViews.splice(this.singleListItemViews.indexOf(modelView), 1);
                 modelView.close();
             }
 
@@ -164,13 +299,34 @@ $(function() {
 
         },
 
-        getViewByModelID: function(modelID) {
+        /*
+
+
+
+
+            ===================================
+            VIEW FINDING FUNCTIONS
+            ===================================
+
+        */
+
+        getSingleListViewByModelID: function(modelID) {
 
             var predicate = function(view) { 
                 return view.model.id == modelID; 
             };
 
-            return _.find(this.views, predicate);
+            return _.find(this.singleListViews, predicate);
+
+        },
+
+        getSingleListItemViewByModelID: function(modelID) {
+
+            var predicate = function(view) { 
+                return view.model.id == modelID; 
+            };
+
+            return _.find(this.singleListItemViews, predicate);
 
         },
 
@@ -229,78 +385,6 @@ $(function() {
 
             return this;
             
-        },
-
-        /*
-
-
-
-
-            ===================================
-            RESIZE FUNCTIONS
-            ===================================
-
-        */
-
-        resizeStart: function() {
-
-            this.resizing = true;
-            this.hasMoved = false;
-            this.bindDragEvents();
-            this.els.detailsResizer.addClass('resizing');
-
-        },
-
-        resizeMove: function(x) {
-
-            if (!this.hasMoved) {
-                this.resizeCoords.initial.x = x;
-                this.resizeCoords.last.x = x;
-                this.hasMoved = true;
-                return;
-            }
-
-            var movedX = this.resizeCoords.last.x - x;
-
-            this.resizeCoords.last.x = x;
-
-            this.setDetailsWidth(this.detailsWidth + movedX);
-
-        },
-
-        resizeEnd: function() {
-
-            this.els.detailsResizer.removeClass('resizing');
-            this.unbindDragEvents();
-            this.resizing = false;
-
-        },
-
-        bindDragEvents: function() {
-
-            $('body').on('mousemove', $.proxy(this.onBodyMouseMove, this));
-            $('body').on('mouseup', $.proxy(this.onBodyMouseUp, this));
-
-        },
-
-        unbindDragEvents: function() {
-
-            $('body').off('mousemove', $.proxy(this.onBodyMouseMove, this));
-            $('body').off('mouseup', $.proxy(this.onBodyMouseUp, this));
-
-        },
-
-        onResizeMouseDown: function() {
-            this.resizeStart();
-        },
-
-        onBodyMouseMove: function(ev) {
-            ev.preventDefault();
-            this.resizeMove(ev.pageX);
-        },
-
-        onBodyMouseUp: function() {
-            this.resizeEnd();
         },
 
     });

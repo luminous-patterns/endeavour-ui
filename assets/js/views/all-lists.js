@@ -190,12 +190,14 @@ $(function() {
 
             this.activeSingleList = view;
 
-            this.listItems.setCollection(view.model.items);
+            this.listItems.setModel(view.model);
 
             if (!view.model.itemsLoaded) view.model.loadItems();
+            if (!view.model.listsLoaded) view.model.loadLists();
 
             Endeavour.publish('active-model:set', 'list', view.model);
 
+            view.model.trigger('active-model:set');
             view.setActiveClass();
 
             return this;
