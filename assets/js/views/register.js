@@ -1,8 +1,8 @@
 $(function() {
 
-    window.Endeavour.View.Login = Backbone.Marionette.View.extend({
+    window.Endeavour.View.Register = Backbone.Marionette.View.extend({
 
-        id: 'login',
+        id: 'register',
         tagName: 'div',
         className: 'dialog',
 
