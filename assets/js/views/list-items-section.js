@@ -152,7 +152,8 @@ $(function() {
             var activeListModel = this.model;
 
             if (activeListModel) {
-                activeListModel.createItem({Summary: value});
+                activeListModel.createItem({Summary: value, Details: ''});
+                this.els.listContainer.scrollTop(this.els.listContainer.height());
             }
 
             return this;
