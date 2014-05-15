@@ -7,6 +7,30 @@
     position: relative;
     z-index: 5;
 
+    .button.my-account {
+        
+        position: relative;
+        
+        a {
+            
+            position: relative;
+            padding-left: 55px;
+            
+            img.avatar {
+                height: 32px;
+                width: 32px;
+                vertical-align: middle;
+                position: absolute;
+                top: 8px;
+                left: 10px;
+                box-shadow: 0 1px 3px 1px rgba(0,0,0,0.5);
+                border: 1px solid #111;
+                border-radius: 3px;
+            }
+
+        }
+
+    }
     .left-buttons {
         position: absolute;
         top: 0;

@@ -30,8 +30,16 @@
         
         h3 {
             margin: 0;
-            padding: 10px 15px;
+            padding: 10px 15px 10px 50px;
             line-height: 30px;
+            background: transparent url("../img/folder-24.png") no-repeat;
+            background-size: 32px;
+            background-position: 10px 10px;
+            font-size: 1.1em;
+            font-weight: normal;
+            color: #555;
+            text-shadow: -1px -1px 0 rgba(255,255,255,0.5);
+            cursor: default;
         }
         .buttons {
             position: absolute;

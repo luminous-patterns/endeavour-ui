@@ -9,6 +9,7 @@ $(function() {
         defaults: {
             'ID':                 null, // int
             'EmailAddress':       null, // str
+            'AvatarURL':          null, // str
             'FirstName':          null, // str
             'LastName':           null, // str
             'Created':            null, // str - ISO-8601 date

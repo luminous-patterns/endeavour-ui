@@ -34,13 +34,19 @@ $(function() {
         },
 
         render: function() {
-            if (Endeavour.state.session.user) this.$el.find('.button.my-account a').html(Endeavour.state.session.user.getFullName());
+            if (Endeavour.state.session.user) {
+                this.$el.find('.button.my-account a').html('')
+                    .append('<img src="" class="avatar" />')
+                    .append(Endeavour.state.session.user.getFullName());
+                this.$el.find('.button.my-account a img.avatar').attr('src', Endeavour.state.session.user.get('AvatarURL'));
+            }
             return this;
         },
 
         addButton: function(side, tagClass, label, callback) {
 
-            var buttonEl = $('<li class="button ' + tagClass + '"><a href="#">' + label + '</a></li>');
+            var buttonEl = $('<li class="button ' + tagClass + '"><a href="#"></a></li>');
+            buttonEl.find('a').append(label);
 
             if (typeof callback == 'function') {
                 // buttonEl.on('click', $.proxy(callback, this));

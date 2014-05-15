@@ -3,6 +3,13 @@ endeavour-ui
 
 Endeavour - aka TaskEvo v5
 
+TIME ENTRIES
+** TIME ENTRY LIST
+** TIME SPENT IN MEETINGS
+
+?? APPOINTMENTS & MEETINGS
+
+
 Copyright (c) 2014 Cal Milne
 
 ALL RIGHTS STRICTLY RESERVED
