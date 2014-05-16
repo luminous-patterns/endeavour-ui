@@ -14,7 +14,7 @@ $(function() {
 
             '':                            'showIndex',
             'login':                       'showLogin',
-            'register':                    'showRegister',
+            'create-account':              'showRegister',
             'login/lost-password':         'showLostPassword',
             'logout':                      'handleLogout',
             '*route':                      'handleUnknown',
@@ -34,7 +34,7 @@ $(function() {
 
             var onSessionUnset = function() {
                 Endeavour.unsubscribe('session:unset', onSessionUnset, that);
-                if (window.location.hash == '#register') that.showRegister();
+                if (window.location.hash == '#/create-account') that.showRegister();
                 else that.showLogin();
                 // that.navigate('login', {trigger: true, replace: true});
             };
@@ -90,7 +90,7 @@ $(function() {
         showIndex: function() {
 
             if (Endeavour.state.isLoggedIn()) {
-                return this.navigate('lists', {trigger: true, replace: true});
+                return this.navigate('#/lists', {trigger: true, replace: true});
             }
             
         },
@@ -98,7 +98,7 @@ $(function() {
         showLogin: function() {
 
             if (Endeavour.state.isLoggedIn()) {
-                return this.navigate('dashboard', {trigger: true, replace: true});
+                return this.navigate('#/lists', {trigger: true, replace: true});
             }
 
             console.log('***LOGIN REQUIRED***');
@@ -110,7 +110,7 @@ $(function() {
         showRegister: function() {
 
             if (Endeavour.state.isLoggedIn()) {
-                return this.navigate('dashboard', {trigger: true, replace: true});
+                return this.navigate('#/lists', {trigger: true, replace: true});
             }
 
             Endeavour.stage.showDialog('register');
