@@ -143,6 +143,9 @@ $(function() {
                 case 'today':
                     this.setCurrentView(new Endeavour.View.Today());
                     break;
+                case 'my-account':
+                    this.setCurrentView(new Endeavour.View.MyAccount());
+                    break;
             }
 
             return this;

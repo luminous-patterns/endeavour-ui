@@ -22,11 +22,11 @@ $(function() {
 
             this.addButton('left', 'home', 'Dashboard', '#/dashboard');
             this.addButton('left', 'my-lists', 'My Lists', '#/lists');
-            this.addButton('left', 'calendar', 'Calendar', '#/calendar');
-            this.addButton('left', 'today', 'Today', '#/today');
+            // this.addButton('left', 'calendar', 'Calendar', '#/calendar');
+            // this.addButton('left', 'today', 'Today', '#/today');
             this.addButton('left', 'feedback', 'Feedback', $.proxy(this.onClickFeedback, this));
 
-            this.addButton('right', 'my-account', 'My Account', this.onClickToday);
+            this.addButton('right', 'my-account', 'My Account', '#/my-account');
             this.addButton('right', 'logout', 'Log out', $.proxy(this.onClickLogout, this));
 
             Endeavour.subscribe('change:user', this.render, this);

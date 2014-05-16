@@ -192,6 +192,8 @@ div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; p
 
 #dashboard div.dashboard-flexi { position: absolute; top: 100px; left: 0; bottom: 0; right: 0; }
 
+#my-account div.my-account-flexi { position: absolute; top: 100px; left: 0; bottom: 0; right: 0; }
+
 .drag-view { background-color: #fff; border: 1px solid #ddd; font-size: 0.8em; line-height: 35px; opacity: 0.75; overflow: hidden; padding: 0 10px; position: absolute; text-overflow: ellipsis; white-space: nowrap; width: 200px; }
 
 html { font-size: 16px; font-family: "Exo2"; }

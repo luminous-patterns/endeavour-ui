@@ -46,7 +46,7 @@ $(function() {
         },
 
         initFlexi: function(height, width) {
-console.log('init flexi',height,width);
+
             var flexi = this.flexi = new Endeavour.View.FlexiContainer({
                 containerID: 'main',
                 height: height - 100,
@@ -77,8 +77,6 @@ console.log('init flexi',height,width);
                 html: 'Right cell',
             });
 
-            console.log('left container init', leftCell.getHeight(), leftCell.getWidth());
-
                 var leftContainer = leftCell.addContainer({
                     containerID: 'left',
                     height: leftCell.getHeight(),
@@ -103,8 +101,6 @@ console.log('init flexi',height,width);
                 leftMiddleCell.addContent({
                     html: 'Left middle cell',
                 });
-
-                console.log('left bottom container init', leftBottomCell.getHeight(), leftBottomCell.getWidth());
 
                     var leftBottomContainer = leftBottomCell.addContainer({
                         containerID: 'left-bottom',

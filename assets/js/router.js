@@ -8,6 +8,7 @@ $(function() {
             'lists':                       'showAllLists',
             'calendar':                    'showCalendar',
             'today':                       'showToday',
+            'my-account':                  'showMyAccount',
             'list/:ID':                    'showList',
             'list/:ListID/item/:ID':       'showListItem',
             'user/:ID':                    'showUserProfile',
@@ -68,6 +69,10 @@ $(function() {
 
         showToday: function() {
             Endeavour.stage.showSection('today');
+        },
+
+        showMyAccount: function() {
+            Endeavour.stage.showSection('my-account');
         },
 
         showList: function(ID) {
