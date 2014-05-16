@@ -88,14 +88,30 @@ module.exports = function(grunt) {
         src: 'tmp/app.js',
         dest: 'build/<%= pkg.name %>.min.js'
       }
+    },
+
+    watch: {
+      scripts: {
+        files: ['assets/js/**/*'],
+        tasks: ['concat','uglify'],
+        options: {
+          spawn: false,
+        },
+      },
     }
 
   });
 
+  grunt.event.on('watch', function(action, filepath, target) {
+    grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
+  });
+
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task(s).
-  grunt.registerTask('default', ['concat','uglify']);
+  grunt.registerTask('default', ['watch']);
+  // grunt.registerTask('default', ['concat','uglify']);
 
 };
