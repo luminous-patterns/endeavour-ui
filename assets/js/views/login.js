@@ -44,12 +44,9 @@ $(function() {
 
             Endeavour.subscribe('session:login:failure', this.onInvalidLogin, this);
 
-            console.log('### initialize stage view');
-
         },
 
         render: function() {
-            console.log('### render stage view');
             return this;
         },
 
@@ -98,14 +95,17 @@ $(function() {
 
         onClickSubmit: function() {
 
-            console.log('login submit',this.getInputs());
-
             if (this.validInputs()) {
-                this.hideError();
                 Endeavour.state.login(this.getInputs());
             }
             else {
-                this.showError(this.validationErrorMessage);
+                var that = this;
+                Endeavour.alert({
+                    message: this.validationErrorMessage,
+                    callback: function() {
+                        that.els.emailInput.val('').focus();
+                    },
+                });
             }
 
             return this;
@@ -113,10 +113,14 @@ $(function() {
         },
 
         onInvalidLogin: function(jsonResponse) {
-            console.log('### invalid login', jsonResponse.responseJSON.error);
             if (jsonResponse.responseJSON.error == 'invalid_login') {
-                this.showError('Invalid login');
-                this.els.passwordInput.val('').focus();
+                var that = this;
+                Endeavour.alert({
+                    message:'Invalid login',
+                    callback: function() {
+                        that.els.passwordInput.val('').focus();
+                    },
+                });
             }
             return this;
         },

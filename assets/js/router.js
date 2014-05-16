@@ -34,7 +34,8 @@ $(function() {
 
             var onSessionUnset = function() {
                 Endeavour.unsubscribe('session:unset', onSessionUnset, that);
-                that.showLogin();
+                if (window.location.hash == '#register') that.showRegister();
+                else that.showLogin();
                 // that.navigate('login', {trigger: true, replace: true});
             };
 
@@ -107,6 +108,12 @@ $(function() {
         },
 
         showRegister: function() {
+
+            if (Endeavour.state.isLoggedIn()) {
+                return this.navigate('dashboard', {trigger: true, replace: true});
+            }
+
+            Endeavour.stage.showDialog('register');
             
         },
 

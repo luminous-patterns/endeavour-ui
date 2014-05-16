@@ -51,12 +51,9 @@ $(function() {
             this.els.submitButton
                 .on('click', $.proxy(this.onClickSubmit, this));
 
-            console.log('### initialize stage view');
-
         },
 
         render: function() {
-            console.log('### render stage view');
             return this;
         },
 

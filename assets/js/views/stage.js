@@ -90,6 +90,10 @@ $(function() {
                     this.setCurrentView(new Endeavour.View.Login(options));
                     break;
 
+                case 'register':
+                    this.setCurrentView(new Endeavour.View.Register(options));
+                    break;
+
                 case 'add-new-list-item':
                     this.newDialogContainer(new Endeavour.View.DialogAddNewListItem(options));
                     break;
