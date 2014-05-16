@@ -2,7 +2,7 @@ $(function() {
 
     var Endeavour = window.Endeavour = new Backbone.Marionette.Application();
 
-    Endeavour.serverURL = 'https://api.endeavourapp.com';
+    Endeavour.serverURL = window.location.hostname.match(/endeavourapp\.com$/) ? 'https://api.endeavourapp.com' : 'http://api.endeavour.local';
 
     Endeavour.publish = Backbone.Events.trigger;
     Endeavour.subscribe = Backbone.Events.on;
