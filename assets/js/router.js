@@ -77,7 +77,7 @@ $(function() {
 
         showList: function(ID) {
             Endeavour.publish('active-model:set', 'list', ID);
-            Endeavour.stage.showSection('list');
+            Endeavour.stage.showSection('all-lists');
         },
 
         showListItem: function(ListID, ID) {

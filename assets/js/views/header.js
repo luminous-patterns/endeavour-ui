@@ -10,7 +10,7 @@ $(function() {
 
             this.els = {};
 
-            this.els.leftButtonsContainer = $('<div class="left-buttons"><ul></ul></div>');
+            this.els.leftButtonsContainer = $('<div class="left-buttons"><div class="logo"></div><ul></ul></div>');
             this.els.leftButtons = this.els.leftButtonsContainer.find('ul');
             this.els.rightButtonsContainer = $('<div class="right-buttons"><ul></ul></div>');
             this.els.rightButtons = this.els.rightButtonsContainer.find('ul');

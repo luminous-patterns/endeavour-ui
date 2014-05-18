@@ -13,9 +13,9 @@ $(function() {
             pos: 1,
         },
         {
-            id: 'list-title',
+            id: 'parent-id',
             type: 'hidden',
-            label: 'Title',
+            label: 'Parent ID',
             value: '',
             inputKey: 'ParentID',
             pos: 1,
@@ -35,7 +35,7 @@ $(function() {
 
         submit: function() {
             var inputs = this.getInputs();
-            if ('ParentID' in inputs) {
+            if ('ParentID' in inputs && inputs.ParentID) {
                 parentID = inputs.ParentID;
                 parentModel = Endeavour.collection.lists.get(parentID);
                 if (parentModel) {

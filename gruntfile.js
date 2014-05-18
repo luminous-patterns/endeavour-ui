@@ -73,7 +73,7 @@ module.exports = function(grunt) {
           'tmp/remainingViews.js',
           'tmp/start.js',
         ],
-        dest: 'tmp/app.js',
+        dest: 'build/<%= pkg.name %>.js',
       },
 
     },
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
         mangle: true,
       },
       build: {
-        src: 'tmp/app.js',
+        src: 'build/<%= pkg.name %>.js',
         dest: 'build/<%= pkg.name %>.min.js'
       }
     },
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task(s).
-  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('default', ['concat','uglify','watch']);
   // grunt.registerTask('default', ['concat','uglify']);
 
 };

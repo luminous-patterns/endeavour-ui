@@ -17,6 +17,8 @@ $(function() {
 
             this.headerOn = true;
             this.header = new Endeavour.View.Header;
+            
+            this.currentViewName = null;
 
             if (!'height' in this.options) console.error("Stage height must be specified!");
 
@@ -129,6 +131,12 @@ $(function() {
                 this.header.$el.hide();
                 this.els.content.css({marginTop: 0});
             }
+
+            if (what == this.currentViewName) {
+                return this;
+            }
+
+            this.currentViewName = what;
 
             switch(what) {
                 case 'dashboard':

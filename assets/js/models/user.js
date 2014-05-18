@@ -19,7 +19,7 @@ $(function() {
         initialize: function() {
 
             this.lists = new Endeavour.Collection.Lists;
-            this.lists.url = Endeavour.serverURL + '/lists';
+            this.listsLoaded = false;
 
             this.on('sync', this.onSync, this);
 
@@ -29,6 +29,22 @@ $(function() {
             this.lists.fetch();
             Endeavour.publish('change:user');
             return this;
+        },
+
+        loadLists: function() {
+            this.lists.url = Endeavour.serverURL + '/lists';
+            this.lists.fetch({success: $.proxy(this.onListsLoaded, this)});
+            return this;
+        },
+
+        onListsLoaded: function() {
+            this.listsLoaded = true;
+            return this;
+        },
+
+        getLists: function() {
+            if (this.lists.length < 1) return null;
+            return this.lists;
         },
 
         getFullName: function() {

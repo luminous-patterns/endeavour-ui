@@ -68,7 +68,7 @@ $(function() {
 
             });
             var rightCell = flexi.addCell({
-                weight: 2,
+                weight: 3,
             });
 
             leftCell.addContent({

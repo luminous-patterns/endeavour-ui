@@ -27,8 +27,9 @@ $(function() {
             this.els.timeZoneSelect = this.els.timeZoneSection.find('#time-zone');
             this.els.newsletterCheckbox = this.els.newsletterSection.find('#newsletter')
 
-            this.els.buttonSection = $('<div class="dialog-section button-section"><button class="call-to-action">Complete registration</button></div>');
+            this.els.buttonSection = $('<div class="dialog-section button-section"><div class="loading hidden"></div><button class="call-to-action">Complete registration</button></div>');
             this.els.submitButton = this.els.buttonSection.find('.call-to-action');
+            this.els.loadingIndicator = this.els.buttonSection.find('.loading');
 
             this.els.errorMessage = $('<div class="error-message"></div>');
             this.els.errorContainer = $('<div class="dialog-section error-section"></div>');
@@ -51,9 +52,36 @@ $(function() {
             this.els.submitButton
                 .on('click', $.proxy(this.onClickSubmit, this));
 
+            this.hideLoading();
+
+            this.loadTimeZones();
+
         },
 
         render: function() {
+            return this;
+        },
+
+        loadTimeZones: function() {
+
+            Endeavour.get({
+                url: '/timezones',
+                success: $.proxy(this.onTimeZoneDataReturn, this),
+                error: function(){ Endeavour.alert({message:"Failed to retreive time zones list"}) },
+            });
+
+        },
+
+        onTimeZoneDataReturn: function(timeZones) {
+
+            for (var i = 0; i < timeZones.length; i++) {
+                this.addTimeZoneOption(timeZones[i]);
+            }
+
+        },
+
+        addTimeZoneOption: function(timeZone) {
+            this.els.timeZoneSelect.append('<option>' + timeZone + '</option>');
             return this;
         },
 
@@ -117,24 +145,97 @@ $(function() {
 
             console.log('login submit',this.getInputs());
 
-            // if (this.validInputs()) {
-            //     this.hideError();
-            //     Endeavour.state.login(this.getInputs());
-            // }
-            // else {
-            //     this.showError(this.validationErrorMessage);
-            // }
+            this.submitRegistration();
 
             return this;
 
         },
 
-        onInvalidSubmission: function(jsonResponse) {
-            console.log('### invalid registration', jsonResponse.responseJSON.error);
-            // if (jsonResponse.responseJSON.error == 'invalid_login') {
-            //     this.showError('Invalid login');
-            //     this.els.passwordInput.val('').focus();
-            // }
+        onInvalidSubmission: function(jqxhr) {
+
+            var self = this;
+            var response = jqxhr.responseJSON;
+
+            this.hideLoading();
+            this.enableSubmit();
+
+            console.log('### invalid registration', response.error);
+
+            var message = 'Invalid registration';
+            var callback = function() {};
+
+            switch (response.error) {
+                case 'fields_missing':
+                    message = "Please complete all fields";
+                    break;
+                case 'invalid_email':
+                    message = "Please enter a valid email address";
+                    callback = function() {
+                        self.els.emailAddressInput.focus();
+                    }
+                    break;
+                case 'email_mismatch':
+                    message = "E-mail addresses do not match";
+                    callback = function() {
+                        self.els.confirmEmailInput.focus();
+                    }
+                    break;
+                case 'email_already_registered':
+                    message = "E-mail address is already registered";
+                    callback = function() {
+                        self.els.emailAddressInput.focus();
+                    }
+                    break;
+            }
+
+            Endeavour.alert({
+                message: message,
+                callback: callback,
+            });
+
+            return this;
+
+        },
+
+        submitRegistration: function() {
+
+            this.showLoading();
+            this.disableSubmit();
+
+            Endeavour.post({
+                url: '/register',
+                data: this.getInputs(),
+                success: $.proxy(this.onValidSubmission, this),
+                error: $.proxy(this.onInvalidSubmission, this),
+            });
+
+        },
+
+        onValidSubmission: function(jsonResponse) {
+            this.hideLoading();
+            Endeavour.alert({message:"all good!"});
+            console.log('****************registered');
+            console.log(jsonResponse);
+            return this;
+        },
+
+        showLoading: function() {
+            this.els.loadingIndicator.show();
+            return this;
+        },
+
+        hideLoading: function() {
+            this.els.loadingIndicator.hide();
+            return this;
+        },
+
+        disableSubmit: function() {
+            this.els.submitButton.attr('disabled', 'disabled');
+            return this;
+        },
+
+        enableSubmit: function() {
+            this.els.submitButton.removeAttr('disabled');
             return this;
         },
 

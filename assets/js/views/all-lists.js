@@ -17,6 +17,7 @@ $(function() {
             this.activeList = null;
 
             this.views = [];
+            this.viewsByModelID = {};
             this.els = {};
 
             this.els.main = $('<div class="all-lists-flexi"></div>');
@@ -56,13 +57,26 @@ $(function() {
 
             Endeavour.subscribe('list:active-model:changed', this.onListModelChange, this);
 
+            if (Endeavour.state.getActiveModel('list')) {
+                this.setListModel(Endeavour.state.getActiveModel('list'));
+            }
+
+            Endeavour.state.session.user.loadLists();
+
         },
 
         onListModelChange: function(model) {
+            // return this.setListModel(model);
+            this.setListItemsModel(model);
+        },
+
+        setListModel: function(model) {
             this.listItemDetails.reset();
             if (this.activeList) this.clearActiveListModel();
             this.activeList = model;
             this.bindListModelEvents();
+            this.setListItemsModel(model);
+            return this;
         },
 
         clearActiveListModel: function() {
@@ -183,24 +197,47 @@ $(function() {
 
         onSingleListClick: function(view) {
 
+            Endeavour.router.navigate('#/list/' + view.model.id, {trigger: true});
+
+            // if (this.activeSingleList) {
+            //     if (view.model.id == this.activeSingleList.model.id) return this;
+            //     this.activeSingleList.clearActiveClass();
+            // }
+
+            // this.activeSingleList = view;
+
+            // this.setListItemsModel(view.model);
+
+            // view.setActiveClass();
+
+            return this;
+
+        },
+
+        setListItemsModel: function(model) {
+
+            this.listItems.setModel(model);
+
+            if ('itemsLoaded' in model && !model.itemsLoaded) model.loadItems();
+            if (!model.listsLoaded) model.loadLists();
+
+            // Endeavour.publish('active-model:set', 'list', model);
+
+            // model.trigger('active-model:set');
+
             if (this.activeSingleList) {
-                if (view.model.id == this.activeSingleList.model.id) return this;
+                if (model.id == this.activeSingleList.model.id) return this;
                 this.activeSingleList.clearActiveClass();
             }
 
-            this.activeSingleList = view;
+            if (this.viewsByModelID[model.id]) {
 
-            this.listItems.setModel(view.model);
+                var view = this.viewsByModelID[model.id];
 
-            if (!view.model.itemsLoaded) view.model.loadItems();
-            if (!view.model.listsLoaded) view.model.loadLists();
+                this.activeSingleList = view;
+                view.setActiveClass();
 
-            Endeavour.publish('active-model:set', 'list', view.model);
-
-            view.model.trigger('active-model:set');
-            view.setActiveClass();
-
-            return this;
+            }
 
         },
 
@@ -213,6 +250,7 @@ $(function() {
             view.on('click', this.onSingleListClick, this);
 
             this.views[this.views.length] = view;
+            this.viewsByModelID[view.model.id] = view;
 
             this.els.list.append(view.render().$el);
 

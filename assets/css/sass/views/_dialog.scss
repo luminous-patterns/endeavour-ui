@@ -150,6 +150,12 @@
             text-align: right;
             margin-bottom: 0px;
 
+            .loading {
+                position: absolute;
+                background: transparent url('../img/loading-ff.gif') no-repeat center;
+                width: 32px;
+                height: 35px;
+            }
             .create-account-link {
 
                 position: absolute;

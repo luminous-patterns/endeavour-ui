@@ -27,7 +27,7 @@ $(function() {
             this.activeSingleList = null;
 
             this.els.header = $('<div class="list-items-section-header">'
-                + '<h3></h3>'
+                + '<h3>My Lists</h3>'
                 + '<div class="buttons">'
                 + '<button type="button" class="add-item">+ Item</button>'
                 + '<button type="button" class="add-list">+ List</button>'
@@ -57,18 +57,28 @@ $(function() {
 
             this.hideHeaderButtons();
 
-            if (this.model) this.model.on('change', this.render, this);
-
         },
 
         render: function() {
 
             if (this.model) {
 
-                this.els.headerTitle.html(this.model.get('Title'));
+                if (this.model instanceof Endeavour.Model.List) {
 
-                this.model.loadLists();
-                this.model.loadItems();
+                    this.setTitle(this.model.get('Title'));
+
+                    this.model.loadLists();
+                    this.model.loadItems();
+                    this.showAddListItemButton();
+
+                }
+                else if (this.model instanceof Endeavour.Model.User) {
+
+                    this.setTitle('My Lists');
+                    this.model.loadLists();
+                    this.hideAddListItemButton();
+
+                }
 
             }
 
@@ -79,6 +89,11 @@ $(function() {
         reset: function() {
             if (this.model) this.unsetModel();
             this.clearList();
+            return this;
+        },
+
+        setTitle: function(title) {
+            this.els.headerTitle.html(title ? title : 'My Lists');
             return this;
         },
 
@@ -94,7 +109,10 @@ $(function() {
         */
 
         onClickAddList: function() {
-            if (this.model) Endeavour.publish('show:dialog', 'add-new-list', {ParentID: this.model.get('ID')});
+            if (this.model) {
+                if (this.model instanceof Endeavour.Model.List) Endeavour.publish('show:dialog', 'add-new-list', {ParentID: this.model.get('ID')});
+                else if (this.model instanceof Endeavour.Model.User) Endeavour.publish('show:dialog', 'add-new-list');
+            }
             return this;
         },
 
@@ -160,6 +178,14 @@ $(function() {
 
         },
 
+        hideAddListItemButton: function() {
+            this.els.header.find('button.add-item').hide();
+        },
+
+        showAddListItemButton: function() {
+            this.els.header.find('button.add-item').show();
+        },
+
         hideHeaderButtons: function() {
             this.els.header.find('button').hide();
         },
@@ -180,22 +206,28 @@ $(function() {
         */
 
         unbindModelEvents: function() {
+            this.model.off('change', this.render, this);
             this.listCollection.off('add', this.onListCollectionAdd, this);
             this.listCollection.off('remove', this.onListCollectionRemove, this);
             this.listCollection.off('sync', this.onModelCollectionsSync, this);
-            this.itemCollection.off('add', this.onItemCollectionAdd, this);
-            this.itemCollection.off('remove', this.onItemCollectionRemove, this);
-            this.itemCollection.off('sync', this.onModelCollectionsSync, this);
+            if (typeof this.itemCollection == 'object' && this.itemCollection.off) {
+                this.itemCollection.off('add', this.onItemCollectionAdd, this);
+                this.itemCollection.off('remove', this.onItemCollectionRemove, this);
+                this.itemCollection.off('sync', this.onModelCollectionsSync, this);
+            }
             return this;
         },
 
         bindModelEvents: function() {
+            this.model.on('change', this.render, this);
             this.listCollection.on('add', this.onListCollectionAdd, this);
             this.listCollection.on('remove', this.onListCollectionRemove, this);
             this.listCollection.on('sync', this.onModelCollectionsSync, this);
-            this.itemCollection.on('add', this.onItemCollectionAdd, this);
-            this.itemCollection.on('remove', this.onItemCollectionRemove, this);
-            this.itemCollection.on('sync', this.onModelCollectionsSync, this);
+            if (typeof this.itemCollection == 'object' && this.itemCollection.on) {
+                this.itemCollection.on('add', this.onItemCollectionAdd, this);
+                this.itemCollection.on('remove', this.onItemCollectionRemove, this);
+                this.itemCollection.on('sync', this.onModelCollectionsSync, this);
+            }
             return this;
         },
 
@@ -204,7 +236,6 @@ $(function() {
             this.unbindModelEvents();
             this.els.headerTitle.html('');
             this.hideAddListItemInput();
-            this.setHeader
             this.itemCollection = null;
             this.listCollection = null;
             this.model = null;
@@ -215,20 +246,20 @@ $(function() {
 
             if (this.model) this.unsetModel();
 
-            this.itemCollection = model.items;
+            this.itemCollection = 'items' in model ? model.items : [];
             this.listCollection = model.lists;
             this.model = model;
             this.bindModelEvents();
             this.showHeaderButtons();
 
-            this.els.headerTitle.html(this.model.get('Title'));
+            this.render();
 
             this.clearList();
 
             if (this.listCollection.length + this.itemCollection.length < 1) {
                 this.addLoadingIndicator();
                 if (!this.model.listLoaded) this.model.loadLists();
-                if (!this.model.itemsLoaded) this.model.loadItems();
+                if ('itemsLoaded' in this.model && !this.model.itemsLoaded) this.model.loadItems();
             }
             else this.onModelCollectionsSync();
 
