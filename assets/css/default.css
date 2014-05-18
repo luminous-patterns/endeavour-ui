@@ -46,7 +46,7 @@ li { cursor: default; }
 #header .logo { background: transparent url("../img/header-logo.png") no-repeat top left; height: 50px; width: 200px; display: inline-block; vertical-align: top; }
 #header .button.my-account { position: relative; }
 #header .button.my-account a { position: relative; padding-left: 55px; }
-#header .button.my-account a img.avatar { height: 32px; width: 32px; vertical-align: middle; position: absolute; top: 8px; left: 10px; box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.5); border: 1px solid #111; border-radius: 3px; }
+#header .button.my-account a img.avatar { height: 32px; width: 32px; vertical-align: middle; position: absolute; top: 8px; left: 10px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); border: 1px solid #ddd; border-radius: 3px; }
 #header .left-buttons { position: absolute; top: 0; left: 0; }
 #header .right-buttons { position: absolute; top: 0; right: 0; right: 0; }
 #header ul { list-style-type: none; margin: 0; padding: 0; border-right: 1px solid rgba(255, 255, 255, 0.1); border-left: 1px solid rgba(0, 0, 0, 0.5); display: inline-block; vertical-align: top; }
@@ -148,7 +148,7 @@ li { cursor: default; }
 .list-items-section ul.list-contents { margin: 0; list-style-type: none; padding: 0; }
 .list-items-section ul.list-contents.lists li.single-list { cursor: pointer; line-height: 2em; overflow-x: hidden; position: relative; text-overflow: ellipsis; white-space: nowrap; }
 .list-items-section ul.list-contents.lists li.single-list.active > div.title { background-color: #ddd; }
-.list-items-section ul.list-contents.lists li.single-list.shared div.title { background: transparent url(../img/shared-folder-24.png) no-repeat; background-size: 24px; background-position: 30px 8px; }
+.list-items-section ul.list-contents.lists li.single-list.shared div.title { background: transparent url(../img/shared-folder-24.png) no-repeat; background-size: 24px; background-position: 10px 8px; }
 .list-items-section ul.list-contents.lists li.single-list div.title { background: transparent url(../img/folder-24.png) no-repeat; background-size: 24px; background-position: 10px 8px; padding: 5px 20px 5px 45px; position: relative; border-bottom: 1px solid #eee; }
 .list-items-section ul.list-contents.lists li.single-list div.title div.title-text { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .list-items-section ul.list-contents.lists li.single-list div.title div.title-text div.owner-label { display: inline-block; font-size: 0.8em; font-style: italic; color: rgba(0, 0, 0, 0.5); margin-left: 5px; }
@@ -195,9 +195,12 @@ div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; p
 #dashboard div.dashboard-flexi { position: absolute; top: 100px; left: 0; bottom: 0; right: 0; }
 
 #my-account div.my-account-flexi { position: absolute; top: 100px; left: 0; bottom: 0; right: 0; }
-#my-account ul.side-menu { list-style-type: none; padding: 0; margin: 0; }
+#my-account div.my-account-flexi div.flexi-container div.flexi-cell div.flexi-content { background-color: transparent; }
+#my-account ul.side-menu { background-color: #fff; border-radius: 5px; list-style-type: none; padding: 0; margin: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
 #my-account ul.side-menu li.menu-item a { line-height: 20px; padding: 10px 15px; border-bottom: 1px solid #ddd; display: block; text-decoration: none; color: #333; }
 #my-account ul.side-menu li.menu-item a:hover { background-color: #f5f5f5; }
+#my-account ul.side-menu li.menu-item:first-of-type a { border-radius: 3px 3px 0 0; }
+#my-account ul.side-menu li.menu-item:last-of-type a { border-bottom: none; border-radius: 0 0 3px 3px; }
 
 .drag-view { background-color: #fff; border: 1px solid #ddd; font-size: 0.8em; line-height: 35px; opacity: 0.75; overflow: hidden; padding: 0 10px; position: absolute; text-overflow: ellipsis; white-space: nowrap; width: 200px; }
 

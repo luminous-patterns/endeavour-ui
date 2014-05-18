@@ -41,8 +41,6 @@ $(function() {
             this.els.list = $('<ul class="lists"></ul>');
 
             this.$el
-                // .append(this.els.topButtons)
-                // .append("<h1>My Lists</h1>")
                 .append(this.els.main);
 
             for (var i = 0; i < this.collection.length; i++) {
@@ -196,22 +194,8 @@ $(function() {
         },
 
         onSingleListClick: function(view) {
-
             Endeavour.router.navigate('#/list/' + view.model.id, {trigger: true});
-
-            // if (this.activeSingleList) {
-            //     if (view.model.id == this.activeSingleList.model.id) return this;
-            //     this.activeSingleList.clearActiveClass();
-            // }
-
-            // this.activeSingleList = view;
-
-            // this.setListItemsModel(view.model);
-
-            // view.setActiveClass();
-
             return this;
-
         },
 
         setListItemsModel: function(model) {

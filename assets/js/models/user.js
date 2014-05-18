@@ -26,7 +26,7 @@ $(function() {
         },
 
         onSync: function() {
-            this.lists.fetch();
+            this.loadLists();
             Endeavour.publish('change:user');
             return this;
         },

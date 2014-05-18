@@ -17,7 +17,7 @@ $(function() {
 
             this.headerOn = true;
             this.header = new Endeavour.View.Header;
-            
+
             this.currentViewName = null;
 
             if (!'height' in this.options) console.error("Stage height must be specified!");
@@ -118,10 +118,11 @@ $(function() {
 
             console.log('### stage view showSection:', what);
 
-            // if (!(this.currentView instanceof Endeavour.Layout.Main)) {
-            //     console.log('### stage view load layout');
-            //     this.setCurrentView(new Endeavour.Layout.Main());
-            // }
+            if (what == this.currentViewName) {
+                return this;
+            }
+
+            this.currentViewName = what;
 
             if (Endeavour.state.isLoggedIn()) {
                 this.header.$el.show();
@@ -131,12 +132,6 @@ $(function() {
                 this.header.$el.hide();
                 this.els.content.css({marginTop: 0});
             }
-
-            if (what == this.currentViewName) {
-                return this;
-            }
-
-            this.currentViewName = what;
 
             switch(what) {
                 case 'dashboard':
