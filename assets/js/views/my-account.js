@@ -10,21 +10,42 @@ $(function() {
             this.flexi = null;
 
             this.els = {};
+            this.sections = {};
 
             this.els.main = $('<div class="my-account-flexi"></div>');
             this.els.menu = $('<ul class="side-menu"></ul>');
+            this.els.sectionContainer = $('<div class="section-container"></div>');
 
             this.height = 'height' in this.options ? this.options.height : 0;
             this.width = 'width' in this.options ? this.options.width : 0;
 
-            this.addMenuItem('profile', 'Profile', $.proxy(this.onClickMyInfo, this));
-            this.addMenuItem('preferences', 'Preferences', $.proxy(this.onClickMyInfo, this));
-            this.addMenuItem('settings', 'Account Settings', $.proxy(this.onClickMyInfo, this));
-            this.addMenuItem('security', 'Security', $.proxy(this.onClickMyInfo, this));
+            this.addSection('profile', 'Profile & Preferences', Endeavour.View.MyAccountProfile);
+            this.addSection('change-password', 'Change Password', Endeavour.View.MyAccountPassword);
+            this.addSection('change-email', 'Change Email', Endeavour.View.MyAccountEmail);
+
+            this.setCurrentSection(_.keys(this.sections)[0]);
 
             this.$el
                 .append("<h1>My Account</h1>")
                 .append(this.els.main);
+
+        },
+
+        addSection: function(id, title, viewType) {
+
+            this.sections[id] = {
+                'title':      title,
+                'viewType':   viewType,
+            };
+
+            var onMenuItemClick = function(ev) {
+                ev.preventDefault();
+                this.setCurrentSection(id);
+            };
+
+            this.addMenuItem(id, title, $.proxy(onMenuItemClick, this));
+
+            return this;
 
         },
 
@@ -68,7 +89,7 @@ $(function() {
 
             });
             var rightCell = flexi.addCell({
-                weight: 3,
+                weight: 4,
             });
 
             leftCell.addContent({
@@ -76,7 +97,7 @@ $(function() {
             });
 
             rightCell.addContent({
-                html: 'Right cell',
+                html: this.els.sectionContainer,
             });
 
             this.render();
@@ -99,6 +120,31 @@ $(function() {
 
             return this;
 
+        },
+
+        setCurrentSection: function(id) {
+            return this.setCurrentView(new this.sections[id].viewType);
+        },
+
+        setCurrentView: function(view) {
+
+            if (this.currentView) {
+                this.closeCurrentView();
+            }
+
+            this.currentView = view;
+
+            this.els.sectionContainer.html(view.render().$el);
+
+            return this;
+
+        },
+
+        closeCurrentView: function() {
+            this.currentView.close();
+            this.currentView = null;
+            this.els.sectionContainer.html('');
+            return this;
         },
 
     });

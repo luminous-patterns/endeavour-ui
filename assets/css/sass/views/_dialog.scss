@@ -54,6 +54,10 @@
             padding: 6px 10px;
             width: 100%;
         }
+        input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, select:focus, textarea:focus, .input:focus {
+            border-color: #35ace5;
+            outline: none;
+        }
 
         .input {
 

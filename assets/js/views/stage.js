@@ -90,10 +90,14 @@ $(function() {
 
                 case 'login':
                     this.setCurrentView(new Endeavour.View.Login(options));
+                    var currentEl = this.currentView.$el;
+                    currentEl.css({marginTop: ( this.getUseableHeight() - currentEl.outerHeight() ) / 2 });
                     break;
 
                 case 'register':
                     this.setCurrentView(new Endeavour.View.Register(options));
+                    var currentEl = this.currentView.$el;
+                    currentEl.css({marginTop: ( this.getUseableHeight() - currentEl.outerHeight() ) / 2 });
                     break;
 
                 case 'add-new-list-item':
@@ -102,10 +106,14 @@ $(function() {
 
                 case 'add-new-list':
                     this.newDialogContainer(new Endeavour.View.DialogAddNewList(options));
+                    var currentEl = this.dialogContainer.dialog.$el;
+                    currentEl.css({marginTop: ( this.getUseableHeight() - currentEl.outerHeight() ) / 2 });
                     break;
 
                 case 'feedback':
                     this.newDialogContainer(new Endeavour.View.FeedbackDialog(options));
+                    var currentEl = this.dialogContainer.dialog.$el;
+                    currentEl.css({marginTop: ( this.getUseableHeight() - currentEl.outerHeight() ) / 2 });
                     break;
 
             }

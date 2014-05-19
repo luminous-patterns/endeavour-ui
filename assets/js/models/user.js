@@ -12,6 +12,7 @@ $(function() {
             'AvatarURL':          null, // str
             'FirstName':          null, // str
             'LastName':           null, // str
+            'TimeZone':           null, // str
             'Created':            null, // str - ISO-8601 date
             'Modified':           null, // str - ISO-8601 date
         },

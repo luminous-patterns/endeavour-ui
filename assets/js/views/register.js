@@ -142,13 +142,8 @@ $(function() {
         },
 
         onClickSubmit: function() {
-
-            console.log('login submit',this.getInputs());
-
             this.submitRegistration();
-
             return this;
-
         },
 
         onInvalidSubmission: function(jqxhr) {
@@ -213,9 +208,10 @@ $(function() {
 
         onValidSubmission: function(jsonResponse) {
             this.hideLoading();
-            Endeavour.alert({message:"all good!"});
-            console.log('****************registered');
-            console.log(jsonResponse);
+            Endeavour.alert({
+                message:"Looks good!  Your password has been emailed to you =)",
+                callback: function() { Endeavour.router.navigate('#/login', {trigger: true, replace: true}); },
+            });
             return this;
         },
 
