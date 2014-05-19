@@ -86,6 +86,43 @@ $(function() {
 
         },
 
+        changeEmailAddress: function(options) {
+
+            var onSuccess = 'success' in options ? options.success : function() {};
+            var onError = 'error' in options ? options.error : function() {};
+            var data = {
+                currentPassword: options.currentPassword,
+                newEmailAddress: options.newEmailAddress,
+                confirmEmailAddress: options.confirmEmailAddress,
+            };
+
+            Endeavour.authedPost({
+                url: '/users/' + this.get('ID') + '/change-email',
+                data: data,
+                success: onSuccess,
+                error: onError,
+            });
+
+        },
+
+        verifyEmailAddress: function(options) {
+
+            var onSuccess = 'success' in options ? options.success : function() {};
+            var onError = 'error' in options ? options.error : function() {};
+            var data = {
+                newEmailAddress: options.newEmailAddress,
+                verificationCode: options.verificationCode,
+            };
+
+            Endeavour.authedPost({
+                url: '/users/' + this.get('ID') + '/verify-email',
+                data: data,
+                success: onSuccess,
+                error: onError,
+            });
+
+        },
+
     });
 
 });
