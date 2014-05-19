@@ -152,8 +152,14 @@ $(function() {
         },
 
         onValidChangeRequest: function() {
+
             this.setStep(2);
+
             this.els.newEmailText.html(this.els.newEmailInput.val());
+
+            this.hideLoading()
+                .enableButtons();
+
         },
 
         onInvalidChangeRequest: function(jqxhr) {
@@ -224,6 +230,9 @@ $(function() {
 
             Endeavour.state.session.user.fetch();
 
+            this.hideLoading()
+                .enableButtons();
+
             this.setStep(1);
             this.clearInputs();
 
@@ -288,8 +297,8 @@ $(function() {
 
         clearInputs: function() {
             this.els.currentPasswordInput.val('');
-            this.els.newEmailAddressInput.val('');
-            this.els.confirmEmailAddressInput.val('');
+            this.els.newEmailInput.val('');
+            this.els.confirmEmailInput.val('');
             this.els.verificationCodeInput.val('');
             return this;
         },
