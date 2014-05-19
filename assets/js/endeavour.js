@@ -18,6 +18,12 @@ $(function() {
         return Endeavour.ajax(options);
     };
 
+    Endeavour.authedPost = function(options) {
+        options.type = 'POST';
+        options.beforeSend = Endeavour.ajaxSetHeaders;
+        return Endeavour.ajax(options);
+    };
+
     Endeavour.get = function(options) {
         options.type = 'GET';
         return Endeavour.ajax(options);

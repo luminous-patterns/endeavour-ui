@@ -67,6 +67,25 @@ $(function() {
             return this.lists.create(_.extend(attributes, {UserID: Endeavour.state.session.get('UserID')}));
         },
 
+        changePassword: function(options) {
+
+            var onSuccess = 'success' in options ? options.success : function() {};
+            var onError = 'error' in options ? options.error : function() {};
+            var data = {
+                currentPassword: options.currentPassword,
+                newPassword: options.newPassword,
+                confirmPassword: options.confirmPassword,
+            };
+
+            Endeavour.authedPost({
+                url: '/users/' + this.get('ID') + '/change-password',
+                data: data,
+                success: onSuccess,
+                error: onError,
+            });
+
+        },
+
     });
 
 });

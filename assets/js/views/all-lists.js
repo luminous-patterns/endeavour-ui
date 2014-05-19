@@ -209,6 +209,8 @@ $(function() {
 
             // model.trigger('active-model:set');
 
+            this.listItemDetails.reset();
+
             if (this.activeSingleList) {
                 if (model.id == this.activeSingleList.model.id) return this;
                 this.activeSingleList.clearActiveClass();

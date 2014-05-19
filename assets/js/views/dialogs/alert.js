@@ -24,6 +24,11 @@ $(function() {
 
         },
 
+        focusField: function() {
+            this.els.okButton.focus();
+            return this;
+        },
+
         onClickOK: function() {
             return this.closeDialog();
         },

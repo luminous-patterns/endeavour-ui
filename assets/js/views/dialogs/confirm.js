@@ -32,6 +32,11 @@ $(function() {
 
         },
 
+        focusField: function() {
+            this.els.noButton.focus();
+            return this;
+        },
+
         onClickYes: function() {
             this.confirmed = true;
             return this.closeDialog();

@@ -122,6 +122,8 @@ $(function() {
 
             $('body').append(dialogContainer.render().$el);
 
+            dialogContainer.focusDialogField();
+
         }
 
         $(window).on('resize', function() {

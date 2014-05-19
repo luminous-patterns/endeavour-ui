@@ -74,15 +74,6 @@ $(function() {
             return this;
         },
 
-        onLogoutSuccess: function(jsonResponse) {
-
-            // Clear saved session key
-            this.clearSavedSessionKey();
-
-            Enveavour.publish('session:unset');
-
-        },
-
         onLoginSuccess: function(jsonResponse) {
             this.checkingSession = false;
             this.session.off('login:failure', this.onLoadSessionFailure, this);
