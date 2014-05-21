@@ -11,14 +11,18 @@ $(function() {
 
     Endeavour.on('start', function(options) {
 
-        if (navigator.userAgent && /Android|iPhone|iPad|iPod|IEMobile|BlackBerry/i.test(navigator.userAgent)){
-            window.location = 'https://m.endeavourapp.com/' + window.location.hash;
-            return;
-        }
+        if (/endeavourapp\.com/i.test(window.location)) {
 
-        if (/^http\:\/\//i.test(window.location)){
-            window.location = 'https://beta.endeavourapp.com/' + window.location.hash;
-            return;
+            if (navigator.userAgent && /Android|iPhone|iPad|iPod|IEMobile|BlackBerry/i.test(navigator.userAgent)){
+                window.location = 'https://m.endeavourapp.com/' + window.location.hash;
+                return;
+            }
+
+            if (/^http\:\/\//i.test(window.location)){
+                window.location = 'https://beta.endeavourapp.com/' + window.location.hash;
+                return;
+            }
+
         }
 
         console.log('Endeavour start',options);
