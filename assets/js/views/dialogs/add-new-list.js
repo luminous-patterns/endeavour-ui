@@ -34,7 +34,20 @@ $(function() {
         },
 
         submit: function() {
+
+            var self = this;
             var inputs = this.getInputs();
+
+            if (!inputs.Title || !inputs.Title.trim()) {
+                Endeavour.alert({
+                    message: 'Please enter a title',
+                    callback: function() {
+                        self.getFieldByID('list-title').$el.focus();
+                    },
+                });
+                return this;
+            }
+
             if ('ParentID' in inputs && inputs.ParentID) {
                 parentID = inputs.ParentID;
                 parentModel = Endeavour.collection.lists.get(parentID);
