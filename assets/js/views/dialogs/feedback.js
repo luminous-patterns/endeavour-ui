@@ -41,9 +41,40 @@ $(function() {
                 url: '/email',
                 data: data,
                 beforeSend: Endeavour.ajaxSetHeaders,
-                success: $.proxy(this.closeDialog, this),
+                success: $.proxy(this.onValidSubmission, this),
+                error: $.proxy(this.onInvalidSubmission, this),
             });
             return this;
+        },
+
+        onValidSubmission: function() {
+            return this.closeDialog();
+        },
+
+        onInvalidSubmission: function(jqxhr) {
+
+            var self = this;
+            var response = jqxhr.responseJSON;
+
+            var message = 'Invalid submission';
+            var callback = function() {};
+
+            switch (response.error) {
+                case 'fields_missing':
+                    message = "Please complete all fields";
+                    callback = function() {
+                        self.getFieldByID('feedback-message').$el.focus();
+                    };
+                    break;
+            }
+
+            Endeavour.alert({
+                message: message,
+                callback: callback,
+            });
+
+            return this;
+
         },
 
     });
