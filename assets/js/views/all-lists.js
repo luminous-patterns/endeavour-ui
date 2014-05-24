@@ -141,6 +141,7 @@ $(function() {
             });
             var rightCell = flexi.addCell({
                 weight: 2.5,
+                extraClassName: 'list-item-details-cell',
             });
 
             leftCell.addContent({

@@ -6,10 +6,17 @@ $(function() {
         className: 'list-item-details',
 
         events: {
-            'click .reset':      'onClickReset',
-            'click .save':       'onClickSave',
-            'keypress input':    'onChangeInput',
-            'keypress textarea': 'onChangeInput',
+
+            'click h2':                          'onClickTitle',
+            'blur .inline-summary-input':        'onBlurInlineSummaryInput',
+            'keydown .inline-summary-input':     'onKeydownInlineSummaryInput',
+
+            'blur .item-details':                'onBlurItemDetailsInput',
+
+            'click .add-due-date button':        'onClickAddDueDateButton',
+            'click .due-date-text':              'onClickDueDateText',
+            'click .clear-due-date':             'onClickClearDueDateButton',
+
         },
 
         initialize: function() {
@@ -18,45 +25,46 @@ $(function() {
             this.loadingIndicatorExists = false;
             this.detailsLoaded = false;
 
+            this.datePicker = null;
+
             this.views = [];
             this.els = {};
 
-            this.els.summaryContainer = $('<div class="item-summary input-row"><label>Summary</label><div class="input-container"><input class="fullwidth" /></div></div>');
-            this.els.summaryInput = this.els.summaryContainer.find('input');
+            var headerEl = this.els.header = $('<div class="item-details-header"></div>');
+            var actionBarEl = this.els.actionBar = $('<div class="item-details-actions"></div>');
+            var fullDetailsSectionEl = this.els.fullDetailsSection = $('<div class="item-details-body"></div>');
 
-            this.datePicker = null;
-            this.els.dueDateContainer = $('<div class="item-due input-row"><label>Due Date</label><div class="input-container"><input type="text" class="fullwidth" /><input type="hidden" /></div></div>');
-            this.els.dueDateInput = this.els.dueDateContainer.find('input[type=text]');
-            this.els.dueDateValue = this.els.dueDateContainer.find('input[type=hidden]');
+            var summaryEl = this.els.summary = $('<h2></h2>');
+            var inlineSummaryInputContainerEl = this.els.inlineSummaryInputContainer = $('<div class="input-container"><input type="text" class="inline-summary-input fullwidth" /></div>');
+            var inlineSummaryInputEl = this.els.inlineSummaryInput = inlineSummaryInputContainerEl.find('input');
             
-            this.els.dueDateContainer.on('click', function(ev){ev.stopImmediatePropagation();});
-            this.els.dueDateInput.on('focus', $.proxy(this.onDueDateFocus, this))
-                                 .on('blur', $.proxy(this.onDueDateBlur, this));
+            var dueDateContainerEl = this.els.dueDateContainer = $('<div class="due-date-container"></div>');
+            var addDueDateEl = this.els.addDueDate = $('<div class="add-due-date"><button class="action-bar-button">Set due date</button></div>');
+            var addDueDateButtonEl = this.els.addDueDateButton = addDueDateEl.find('button');
+            var dueDateEl = this.els.dueDate = $('<div class="due-date"><span class="due-date-label">Due</span><div class="due-date-text"></div><button class="clear-due-date action-bar-button">Clear</button></div>');
+            var dueDateTextEl = this.els.dueDateText = dueDateEl.find('.due-date-text');
 
-            this.els.tagsContainer = $('<div class="item-tags input-row"><label>Tags</label><div class="input-container"><input class="fullwidth" /></div></div>');
-            this.els.tagsInput = this.els.tagsContainer.find('input');
+            var fullDetailsEl = this.els.fullDetails = $('<div class="full-details"></div>');
+            var inlineDetailsInputEl = this.els.inlineDetailsInput = $('<textarea class="item-details"></textarea>');
 
-            this.els.inputsContainer = $('<div class="input-rows"></div>');
+            headerEl
+                .append(summaryEl)
+                .append(inlineSummaryInputContainerEl.hide());
 
-            this.els.buttons = $('<div class="buttons"><div class="button-container"><button class="reset">Reset</button></div><div class="button-container"><button class="save">Save</button></div></div>');
-            this.els.resetButton = this.els.buttons.find('.reset');
-            this.els.saveButton = this.els.buttons.find('.save');
+            dueDateContainerEl
+                .append(dueDateEl)
+                .append(addDueDateEl);
 
-            this.els.inputsContainer
-                .append(this.els.summaryContainer)
-                .append(this.els.dueDateContainer)
-                .append(this.els.tagsContainer);
+            actionBarEl
+                .append(dueDateContainerEl);
 
-            this.els.header = $('<div class="item-details-header"></div>');
-            this.els.detailsInput = $('<textarea class="item-details"></textarea>');
-
-            this.els.header
-                .append(this.els.inputsContainer)
-                .append(this.els.buttons);
+            fullDetailsSectionEl
+                .append(inlineDetailsInputEl);
 
             this.$el
-                .append(this.els.header)
-                .append(this.els.detailsInput);
+                .append(headerEl)
+                .append(actionBarEl)
+                .append(fullDetailsSectionEl);
 
         },
 
@@ -64,61 +72,79 @@ $(function() {
 
             if (this.model) {
 
-                this.enableInputs();
-
-                this.els.summaryInput.val(this.model.get('Summary'));
-
-                var dueDate = this.model.getDueDate();
-                if (dueDate) {
-                    this.els.dueDateInput.val(dueDate.toDateString());
-                    this.els.dueDateValue.val(dueDate.toJSON());
-                }
-                else {
-                    this.els.dueDateInput.val('');
-                    this.els.dueDateValue.val('');
-                }
-
-                if (this.model.detailsLoaded) {
-                    this.els.detailsInput.val(this.model.details.get('Body'))
-                }
-                else {
-                    this.els.detailsInput.val('');
-                    this.model.loadDetails();
-                }
+                this.show()
+                    .renderModelElements();
 
             }
             else {
-                this.disableInputs();
+                this.hide();
             }
-
-            this.disableButtons();
 
             return this;
 
+        },
+
+        renderModelElements: function() {
+
+            this.els.inlineSummaryInput.val(this.model.get('Summary'));
+            this.els.summary.html(this.model.get('Summary'));
+
+            var dueDate = this.model.getDueDate();
+            if (dueDate) {
+                this.els.addDueDate.hide();
+                this.els.dueDate.show();
+                this.els.dueDateText.html(dueDate.toDateString());
+            }
+            else {
+                this.els.addDueDate.show();
+                this.els.dueDate.hide();
+                this.els.dueDateText.html('');
+            }
+
+            if (this.model.detailsLoaded) {
+                this.els.inlineDetailsInput.val(this.model.details.get('Body'))
+                this.els.fullDetails.html(this.model.details.get('Body'))
+            }
+            else {
+                this.els.inlineDetailsInput.val('');
+                this.model.loadDetails();
+            }
+
+            return this;
+
+        },
+
+        show: function() {
+            this.$el.show();
+            return this;
+        },
+
+        hide: function() {
+            this.$el.hide();
+            return this;
         },
 
         reset: function() {
             console.log('resetting');
             this.unsetModel();
-            this.clearInputs();
             return this.render();
         },
 
-        save: function() {
+        // save: function() {
 
-            // Save ListItem model
-            var props = {
-                Summary: this.els.summaryInput.val(),
-                Due: this.els.dueDateValue.val(),
-            };
-            this.model.save(props, {patch: true})
+        //     // Save ListItem model
+        //     var props = {
+        //         Summary: this.els.summaryInput.val(),
+        //         Due: this.els.dueDateValue.val(),
+        //     };
+        //     this.model.save(props, {patch: true})
 
-            // Save ListItemDetails model
-            this.model.details.save({Body: this.els.detailsInput.val()}, {patch: true});
+        //     // Save ListItemDetails model
+        //     this.model.details.save({Body: this.els.detailsInput.val()}, {patch: true});
 
-            return this;
+        //     return this;
 
-        },
+        // },
 
         unsetModel: function() {
             if (this.model) this.unbindModelEvents();
@@ -134,12 +160,14 @@ $(function() {
         unbindModelEvents: function() {
             this.model.off('loaded:details', this.onDetailsLoaded, this);
             this.model.off('destroy', this.onListItemDestroy, this);
+            this.model.off('change', this.render, this);
             return this;
         },
 
         bindModelEvents: function() {
             this.model.on('loaded:details', this.onDetailsLoaded, this);
             this.model.on('destroy', this.onListItemDestroy, this);
+            this.model.on('change', this.render, this);
             return this;
         },
 
@@ -158,67 +186,124 @@ $(function() {
 
         },
 
-        disableButtons: function() {
-            this.els.resetButton.attr('disabled', 'disabled');
-            this.els.saveButton.attr('disabled', 'disabled');
+        onClickTitle: function() {
+            return this.editSummary();
+        },
+
+        editSummary: function() {
+            this.els.summary.hide();
+            this.els.inlineSummaryInputContainer.show();
+            this.els.inlineSummaryInput.select();
             return this;
         },
 
-        enableButtons: function() {
-            this.els.resetButton.removeAttr('disabled');
-            this.els.saveButton.removeAttr('disabled');
+        finishedEditingSummary: function() {
+            var Summary = this.els.inlineSummaryInput.val();
+            if (Summary != this.model.get('Summary')) {
+                this.model.save({Summary: Summary}, {patch: true})
+            }
+            this.els.inlineSummaryInputContainer.hide();
+            this.els.summary.show();
             return this;
         },
 
-        onChangeInput: function() {
-            this.enableButtons();
-            return this;
-        },
-
-        onClickReset: function() {
+        cancelEditSummary: function() {
+            this.els.inlineSummaryInputContainer
+                .val(this.model.get('Summary'))
+                .hide();
+            this.els.summary.show();
             return this.render();
         },
 
-        onClickSave: function() {
-            return this.save();
+        onBlurInlineSummaryInput: function() {
+            return this.finishedEditingSummary();
         },
 
-        onDetailsLoaded: function() {
-            return this.render()
+        onBlurItemDetailsInput: function() {
+
+            var detailsBody = this.els.inlineDetailsInput.val();
+
+            if (detailsBody == this.model.details.get('Body')) {
+                return this;
+            }
+
+            this.model.details.save({Body: detailsBody}, {patch: true});
+
+            return this.render();
+
         },
 
-        onDueDateFocus: function(ev) {
+        onKeydownInlineSummaryInput: function(ev) {
 
-            if (this.datePicker) return;
+            var which = ev.which;
+
+            if (which != 13 && which != 27) {
+                return this;
+            }
+
+            if (which == 13) {
+                
+                // Prevent new line
+                ev.preventDefault();
+
+                // Finished editing summary
+                return this.finishedEditingSummary();
+
+            }
+
+            if (which == 27) {
+                return this.cancelEditSummary();
+            }
+
+        },
+
+        onClickClearDueDateButton: function(ev) {
+            this.model.save({Due: null}, {patch: true});
+            return this.renderModelElements();
+        },
+
+        showDueDatePicker: function() {
+
+            if (this.datePicker) return this;
 
             var datePickerOptions = {
 
             };
 
-            if (this.els.dueDateValue.val()) datePickerOptions.selectedDate = new Date(this.els.dueDateValue.val());
+            var dueDate = this.model.getDueDate();
+            if (dueDate) datePickerOptions.selectedDate = new Date(dueDate.toJSON());
 
             var datePicker = this.datePicker = new Endeavour.View.DatePicker(datePickerOptions);
 
             this.els.dueDateContainer.append(datePicker.render().$el);
 
             datePicker.on('date-selected', function(date) {
-                this.els.dueDateInput.val(date.toDateString());
-                this.els.dueDateValue.val(date.toJSON());
+                this.model.save({Due: date.toJSON()}, {patch: true});
                 this.closeDatePicker();
-                this.enableButtons();
+                this.renderModelElements();
             }, this);
 
             this.bindBodyClickEvents();
 
+            return this;
+
         },
 
-        onDueDateBlur: function() {
+        onClickDueDateText: function(ev) {
+            ev.stopPropagation();
+            return this.showDueDatePicker();
+        },
 
+        onClickAddDueDateButton: function(ev) {
+            ev.stopPropagation();
+            return this.showDueDatePicker();
+        },
+
+        onDetailsLoaded: function() {
+            return this.render();
         },
 
         onBodyClick: function(ev) {
-            console.log($(ev.target), this.els.dueDateInput)
-            if ($(ev.target)[0] === this.els.dueDateInput[0]) return;
             this.unbindBodyClickEvents();
             this.closeDatePicker();
         },
@@ -234,31 +319,6 @@ $(function() {
 
         unbindBodyClickEvents: function() {
             $('body').off('click', $.proxy(this.onBodyClick, this));
-        },
-
-        clearInputs: function() {
-            this.els.summaryInput.val('');
-            this.els.dueDateInput.val('');
-            this.els.dueDateValue.val('');
-            this.els.tagsInput.val('');
-            this.els.detailsInput.val('');
-            return this;
-        },
-
-        enableInputs: function() {
-            this.els.summaryInput.removeAttr('disabled');
-            this.els.dueDateInput.removeAttr('disabled');
-            this.els.tagsInput.removeAttr('disabled');
-            this.els.detailsInput.removeAttr('disabled');
-            return this;
-        },
-
-        disableInputs: function() {
-            this.els.summaryInput.attr('disabled', 'disabled');
-            this.els.dueDateInput.attr('disabled', 'disabled');
-            this.els.tagsInput.attr('disabled', 'disabled');
-            this.els.detailsInput.attr('disabled', 'disabled');
-            return this;
         },
 
     });

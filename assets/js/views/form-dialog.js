@@ -141,6 +141,14 @@ $(function() {
             return this;
         },
 
+        getFieldByID: function(id) {
+            var field = null;
+            _.each(this.fields, function(f, i) {
+                if (f.id == id) field = f;
+            });
+            return field;
+        },
+
         getInputs: function() {
 
             var inputs = {};
@@ -208,7 +216,7 @@ $(function() {
 
             // The specific input el
             var el = $(ev.delegateTarget);
-console.log('datetimeinputfocus',field.datePicker);
+
             if ('datePicker' in field && field.datePicker) return;
 
             var datePickerOptions = {
@@ -238,11 +246,6 @@ console.log('datetimeinputfocus',field.datePicker);
 
             // Context of a field item
             var field = this;
-
-            // if (!('datePicker' in field) || !field.datePicker) return;
-
-            // field.datePicker.close();
-            // delete field.datePicker;
 
         },
 

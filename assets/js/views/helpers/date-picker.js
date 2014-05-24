@@ -5,6 +5,10 @@ $(function() {
         tagName: 'div',
         className: 'date-picker',
 
+        events: {
+            'click':      'onClick',
+        },
+
         initialize: function() {
 
             var monthOptions = {
@@ -29,6 +33,10 @@ $(function() {
 
             return this;
 
+        },
+
+        onClick: function(ev) {
+            ev.stopPropagation();
         },
 
         onCalendarDateSelected: function(date) {
