@@ -29,8 +29,10 @@ $(function() {
 
             this.items = new Endeavour.Collection.ListItems;
             this.itemsLoaded = false;
+            this.itemsLoading = false;
             this.lists = new Endeavour.Collection.Lists;
             this.listsLoaded = false;
+            this.listsLoading = false;
 
             this.on('change:Created', this.onChangeCreated, this);
             this.on('change:Start', this.onChangeStart, this);
@@ -49,13 +51,28 @@ $(function() {
         },
 
         loadItems: function() {
+
+            if (this.itemsLoading) return this;
+
             this.items.url = Endeavour.serverURL + '/lists/' + this.id + '/items';
-            this.items.fetch({success: $.proxy(this.onItemsLoaded, this)});
+            this.itemsLoading = true;
+
+            this.items.fetch({
+                success: $.proxy(this.onItemsLoaded, this),
+                error: $.proxy(this.onItemsLoadError, this),
+            });
+            
             return this;
         },
 
         onItemsLoaded: function() {
+            this.itemsLoading = false;
             this.itemsLoaded = true;
+            return this;
+        },
+
+        onItemsError: function() {
+            this.itemsLoading = false;
             return this;
         },
 
@@ -75,13 +92,29 @@ $(function() {
         },
 
         loadLists: function() {
+
+            if (this.listsLoading) return this;
+
             this.lists.url = Endeavour.serverURL + '/lists/' + this.id + '/lists';
-            this.lists.fetch({success: $.proxy(this.onListsLoaded, this)});
+            this.listsLoading = true;
+
+            this.lists.fetch({
+                success: $.proxy(this.onListsLoaded, this),
+                error: $.proxy(this.onListsLoadError),
+            });
+
             return this;
+
         },
 
         onListsLoaded: function() {
+            this.listsLoading = false;
             this.listsLoaded = true;
+            return this;
+        },
+
+        onListsLoadError: function() {
+            this.listsLoading = false;
             return this;
         },
 

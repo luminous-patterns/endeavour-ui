@@ -66,18 +66,30 @@ $(function() {
                 if (this.model instanceof Endeavour.Model.List) {
 
                     this.setTitle(this.model.get('Title'));
-
-                    this.model.loadLists();
-                    this.model.loadItems();
                     this.showAddListItemButton();
 
                 }
                 else if (this.model instanceof Endeavour.Model.User) {
 
                     this.setTitle('My Lists');
-                    this.model.loadLists();
                     this.hideAddListItemButton();
 
+                }
+
+            }
+
+            return this;
+
+        },
+
+        reloadData: function() {
+
+            if (this.model) {
+
+                this.model.loadLists();
+
+                if (this.model instanceof Endeavour.Model.List) {
+                    this.model.loadItems();
                 }
 
             }
@@ -252,14 +264,15 @@ $(function() {
             this.bindModelEvents();
             this.showHeaderButtons();
 
-            this.render();
+            this.render()
+                .reloadData();
 
             this.clearList();
 
             if (this.listCollection.length + this.itemCollection.length < 1) {
                 this.addLoadingIndicator();
-                if (!this.model.listLoaded) this.model.loadLists();
-                if ('itemsLoaded' in this.model && !this.model.itemsLoaded) this.model.loadItems();
+                // if (!this.model.listLoaded) this.model.loadLists();
+                // if ('itemsLoaded' in this.model && !this.model.itemsLoaded) this.model.loadItems();
             }
             else this.onModelCollectionsSync();
 
