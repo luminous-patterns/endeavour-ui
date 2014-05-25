@@ -16,6 +16,37 @@ $(function() {
             this.height = 'height' in this.options ? this.options.height : 0;
             this.width = 'width' in this.options ? this.options.width : 0;
 
+            this.itemsDueSoon = new Endeavour.View.ListItemsContainer({
+                paginate: false,
+                limit: 20,
+                title: 'Upcoming',
+                collection: {
+                    type: Endeavour.Collection.ListItems,
+                    url: Endeavour.serverURL + '/listitems',
+                    data: {
+                        search: 'upcoming',
+                        days: 14,
+                        orderBy: 'Due',
+                        order: 'ASC',
+                    },
+                },
+            });
+
+            this.itemsOverdue = new Endeavour.View.ListItemsContainer({
+                paginate: false,
+                limit: 20,
+                title: 'Overdue',
+                collection: {
+                    type: Endeavour.Collection.ListItems,
+                    url: Endeavour.serverURL + '/listitems',
+                    data: {
+                        search: 'overdue',
+                        orderBy: 'Due',
+                        order: 'ASC',
+                    },
+                },
+            });
+
             this.$el
                 .append("<h1>Dashboard</h1>")
                 .append(this.els.main);
@@ -60,7 +91,7 @@ $(function() {
 
             // Add left cell
             var leftCell = flexi.addCell({
-                type: 'container',
+                weight: 2,
             });
             var middleCell = flexi.addCell({
                 weight: 2,
@@ -69,62 +100,17 @@ $(function() {
                 weight: 2,
             });
 
+            leftCell.addContent({
+                html: 'left cell',
+            });
+
             middleCell.addContent({
-                html: 'Middle left cell',
+                html: this.itemsOverdue.render().$el,
             });
 
             rightCell.addContent({
-                html: 'Right cell',
+                html: this.itemsDueSoon.render().$el,
             });
-
-                var leftContainer = leftCell.addContainer({
-                    containerID: 'left',
-                    height: leftCell.getHeight(),
-                    width: leftCell.getWidth(),
-                    margin: 0,
-                    cellOrientation: 'horizontal',
-                });
-
-                var leftTopCell = leftContainer.addCell();
-                var leftMiddleCell = leftContainer.addCell({
-                    weight: 2,
-                });
-                var leftBottomCell = leftContainer.addCell({
-                    type: 'container',
-                    weight: 2,
-                });
-
-                leftTopCell.addContent({
-                    html: 'Left top cell',
-                });
-
-                leftMiddleCell.addContent({
-                    html: 'Left middle cell',
-                });
-
-                    var leftBottomContainer = leftBottomCell.addContainer({
-                        containerID: 'left-bottom',
-                        height: leftBottomCell.getHeight(),
-                        width: leftBottomCell.getWidth(),
-                        margin: 0,
-                        cellOrientation: 'vertical',
-                    });
-
-                    var leftBottomLeftCell = leftBottomContainer.addCell();
-                    var leftBottomMiddleCell = leftBottomContainer.addCell();
-                    var leftBottomRightCell = leftBottomContainer.addCell();
-
-                    leftBottomLeftCell.addContent({
-                        html: 'Left bottom left cell',
-                    });
-
-                    leftBottomMiddleCell.addContent({
-                        html: 'Left bottom middle cell',
-                    });
-
-                    leftBottomRightCell.addContent({
-                        html: 'Right bottom right cell',
-                    });
 
             this.render();
 

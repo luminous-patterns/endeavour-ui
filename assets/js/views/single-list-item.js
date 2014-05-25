@@ -95,8 +95,10 @@ $(function() {
         },
 
         onClick: function(ev) {
-            console.log('click',this);
             this.trigger('click', this);
+            if (this.options.linkToList) {
+                Endeavour.router.navigate('#/list/' + this.model.get('ListID'), {trigger: true});
+            }
             return this;
         },
 
