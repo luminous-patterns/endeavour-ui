@@ -158,6 +158,13 @@ $(function() {
             var lastParent = Endeavour.collection.lists.get(lastParentID);
 
             var parent = Endeavour.collection.lists.get(ParentID);
+
+            if (parent.get('ParentID') == this.get('ID')) {
+                Endeavour.alert({
+                    message: 'You can\'t place a list inside it\'s self',
+                });
+                return this;
+            }
             
             if (lastParent) {
                 lastParent.lists.remove(this);
