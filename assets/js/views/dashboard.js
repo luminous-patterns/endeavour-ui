@@ -16,6 +16,8 @@ $(function() {
             this.height = 'height' in this.options ? this.options.height : 0;
             this.width = 'width' in this.options ? this.options.width : 0;
 
+            this.newsAndAnnouncements = new Endeavour.View.NewsAnnouncementsBox;
+
             this.itemsDueSoon = new Endeavour.View.ListItemsContainer({
                 paginate: false,
                 limit: 20,
@@ -91,6 +93,7 @@ $(function() {
 
             // Add left cell
             var leftCell = flexi.addCell({
+                extraClassName: 'news-cell',
                 weight: 2,
             });
             var middleCell = flexi.addCell({
@@ -101,7 +104,7 @@ $(function() {
             });
 
             leftCell.addContent({
-                html: 'left cell',
+                html: this.newsAndAnnouncements.render().$el,
             });
 
             middleCell.addContent({

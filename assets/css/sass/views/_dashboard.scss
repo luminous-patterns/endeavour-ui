@@ -12,6 +12,48 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
             border-radius: 3px;
         }
+        .flexi-cell {
+
+            &.news-cell {
+
+                .flexi-content {
+
+                    background: #777;
+                    color: #eee;
+                    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+                    font-size: 0.9em;
+
+                    .news-and-announcements {
+                        
+                        padding: 20px;
+                        
+                        h2 {
+                            margin: 0;
+                            line-height: 1;
+                            border-bottom: 1px solid #888;
+                            padding-bottom: 20px;
+                        }
+                        ul.news-posts {
+                            
+                            list-style-type: none;
+                            margin: 0;
+                            padding: 0;
+                            
+                            li.news-post {
+                                margin-top: 20px;
+                                border-bottom: 1px solid #888;
+                                padding-bottom: 20px;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
 
     }
 
