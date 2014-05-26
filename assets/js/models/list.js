@@ -11,6 +11,8 @@ $(function() {
             'ParentID':           null, // int
             'UserID':             null, // int
             'OwnerID':            null, // int
+            'DescendantIDs':      [], // array
+            'AncestorIDs':        [], // array
             'Shared':             null, // boolean
             'Title':              null, // string
             'Description':        null, // string
@@ -159,7 +161,7 @@ $(function() {
 
             var parent = Endeavour.collection.lists.get(ParentID);
 
-            if (parent.get('ParentID') == this.get('ID')) {
+            if (_.indexOf(this.get('DescendantIDs'), ParentID) > -1) {
                 Endeavour.alert({
                     message: 'You can\'t place a list inside it\'s self',
                 });

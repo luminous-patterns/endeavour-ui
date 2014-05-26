@@ -194,7 +194,12 @@ $(function() {
             }
             else {
                 this.showSubList();
-                if (!this.model.listsLoaded) this.model.loadLists();
+                if (!this.model.listsLoaded) {
+                    // Fetch the model to make sure we have
+                    // the DescendantIDs property
+                    this.model.fetch();
+                    this.model.loadLists();
+                }
             }
             return this;
         },
