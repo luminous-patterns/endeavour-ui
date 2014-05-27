@@ -18,7 +18,7 @@ $(function() {
             this.els.emailAddressSection = $('<div class="dialog-section"><label for="email">Email Address</label><input type="email" id="email" /></div>');
             this.els.confirmEmailSection = $('<div class="dialog-section"><label for="email">Confirm Email Address</label><input type="email" id="confirm-email" /></div>');
             this.els.timeZoneSection = $('<div class="dialog-section"><label for="time-zone">Time Zone</label><select id="time-zone"><option>Australia/Melbourne</option></select></div>');
-            this.els.newsletterSection = $('<div class="dialog-section"><label for="newsletter"><input type="checkbox" id="newsletter" value="newsletter" checked="checked" /> Subscribe to our monthly newsletter</div>');
+            this.els.newsletterSection = $('<div class="dialog-section"><label for="newsletter"><input type="checkbox" id="newsletter" value="newsletter" /> Subscribe to our monthly newsletter</div>');
 
             this.els.firstNameInput = this.els.firstNameSection.find('#first-name');
             this.els.lastNameInput = this.els.lastNameSection.find('#last-name');
