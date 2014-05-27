@@ -87,9 +87,11 @@ $(function() {
             // Add left cell
             var leftCell = flexi.addCell({
 
+                minWidth: 210,
             });
             var rightCell = flexi.addCell({
                 weight: 4,
+                minWidth: 660,
             });
 
             leftCell.addContent({

@@ -13,7 +13,7 @@ $(function() {
             var minHeight = stage.getMinHeight();
             var minWidth = stage.getMinWidth();
             
-            var message = this.message = 'Window size must be at least<br />' + minHeight + 'x' + minWidth + ' pixels!';
+            var message = this.message = 'Window size must be at least<br />' + minWidth + 'x' + minHeight + ' pixels.';
             var messageContainerEl = this.els.messageContainer = $('<div class="message-container"></div>');
 
             messageContainerEl

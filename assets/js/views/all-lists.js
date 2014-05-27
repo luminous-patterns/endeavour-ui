@@ -135,13 +135,16 @@ $(function() {
             var leftCell = flexi.addCell({
                 weight: 1,
                 extraClassName: 'list-tree-cell',
+                minWidth: 210,
             });
             var middleCell = flexi.addCell({
                 weight: 1.5,
+                minWidth: 330,
             });
             var rightCell = flexi.addCell({
                 weight: 2.5,
                 extraClassName: 'list-item-details-cell',
+                minWidth: 330,
             });
 
             leftCell.addContent({

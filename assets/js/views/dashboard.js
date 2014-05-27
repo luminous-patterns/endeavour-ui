@@ -95,12 +95,15 @@ $(function() {
             var leftCell = flexi.addCell({
                 extraClassName: 'news-cell',
                 weight: 2,
+                minWidth: 260,
             });
             var middleCell = flexi.addCell({
                 weight: 2,
+                minWidth: 310,
             });
             var rightCell = flexi.addCell({
                 weight: 2,
+                minWidth: 310,
             });
 
             leftCell.addContent({
