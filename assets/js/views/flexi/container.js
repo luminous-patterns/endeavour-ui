@@ -329,6 +329,8 @@ $(function() {
             // Add cell to container array
             var flexiCell = this.cells[cellIndex] = new Endeavour.View.FlexiCell(flexiCellOptions);
             var cellWeight = 'weight' in flexiCellOptions ? flexiCellOptions.weight : 1;
+            var cellMinWidth = 'minWidth' in flexiCellOptions ? flexiCellOptions.minWidth : 0;
+            var cellMinHeight = 'minHeight' in flexiCellOptions ? flexiCellOptions.minHeight : 0;
 
             // Set cell position defaults
             this.cellPos[cellIndex] = {
@@ -340,6 +342,8 @@ $(function() {
                 width: 0,
                 weight: cellWeight,
                 index: cellIndex,
+                minWidth: cellMinWidth,
+                minHeight: cellMinHeight,
             };
 
             // Add resize handle for each cell not including the first
@@ -396,6 +400,11 @@ $(function() {
 
             var movedX = this.resizeCoords.last.x - x;
 
+            if ((movedX > 0 && !this.canSubCellWidth(this.resizeHandleIndex))
+                || (movedX < 0 && !this.canSubCellWidth(this.resizeHandleIndex+1))) {
+                return this.resizeEnd();
+            }
+
             this.resizeCoords.last.x = x;
 
             this.subHandleLeft(this.resizeHandleIndex, movedX);
@@ -415,6 +424,11 @@ $(function() {
             }
 
             var movedY = this.resizeCoords.last.y - y;
+
+            if ((movedY < 0 && !this.canSubCellHeight(this.resizeHandleIndex))
+                || (movedY > 0 && !this.canSubCellHeight(this.resizeHandleIndex+1))) {
+                return this.resizeEnd();
+            }
 
             this.resizeCoords.last.y = y;
 
@@ -597,11 +611,19 @@ $(function() {
 
         */
 
+        canSubCellHeight: function(cellIndex) {
+            var cellPos = this.cellPos[cellIndex];
+            return cellPos.minHeight && cellPos.height > cellPos.minHeight;
+        },
+
         addCellHeight: function(cellIndex, height) {
             return this.setCellHeight(cellIndex, this.cellPos[cellIndex].height + height);
         },
 
         subCellHeight: function(cellIndex, height) {
+            // if (!this.canSubCellHeight(cellIndex)) {
+            //     return false;
+            // }
             return this.setCellHeight(cellIndex, this.cellPos[cellIndex].height - height);
         },
 
@@ -623,11 +645,19 @@ $(function() {
 
         */
 
+        canSubCellWidth: function(cellIndex) {
+            var cellPos = this.cellPos[cellIndex];
+            return cellPos.minWidth > 0 && cellPos.width > cellPos.minWidth;
+        },
+
         addCellWidth: function(cellIndex, width) {
             return this.setCellWidth(cellIndex, this.cellPos[cellIndex].width + width);
         },
 
         subCellWidth: function(cellIndex, width) {
+            // if (!this.canSubCellWidth(cellIndex)) {
+            //     return false;
+            // }
             return this.setCellWidth(cellIndex, this.cellPos[cellIndex].width - width);
         },
 

@@ -84,7 +84,8 @@ $(function() {
                 containerID: 'main',
                 height: height - 100,
                 width: width,
-                margin: 20,
+                margin: 10,
+                spacing: 10,
             });
 
             this.els.main.append(flexi.$el);
