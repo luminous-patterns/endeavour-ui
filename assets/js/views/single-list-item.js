@@ -108,7 +108,8 @@ $(function() {
             return this;
         },
 
-        onClickCheckbox: function() {
+        onClickCheckbox: function(ev) {
+            ev.stopImmediatePropagation();
             this.model.toggleComplete();
             return this;
         },

@@ -13,6 +13,9 @@
         margin: 0;
         color: #eee;
         font-size: 1.2em;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
     .full-details {
         padding: 20px;
@@ -127,7 +130,7 @@
             resize: none;
 
             &:disabled {
-                background-color: #fff;
+                color: #aaa;
             }
             &:focus {
                 outline: none;

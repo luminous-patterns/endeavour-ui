@@ -30,3 +30,22 @@ body {
 li {
     cursor: default;
 }
+div#small-screen-overlay {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    z-index: 100000;
+    color: #eee;
+
+    .message-container {
+        margin: 0 auto;
+        max-width: 300px;
+        text-align: center;
+        font-size: 1.4em;
+    }
+
+}

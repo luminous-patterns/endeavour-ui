@@ -66,6 +66,8 @@ $(function() {
                 .append(actionBarEl)
                 .append(fullDetailsSectionEl);
 
+            this.disableDetailsInput();
+
         },
 
         render: function() {
@@ -102,10 +104,12 @@ $(function() {
             }
 
             if (this.model.detailsLoaded) {
+                this.enableDetailsInput();
                 this.els.inlineDetailsInput.val(this.model.details.get('Body'))
                 this.els.fullDetails.html(this.model.details.get('Body'))
             }
             else {
+                this.disableDetailsInput();
                 this.els.inlineDetailsInput.val('');
                 this.model.loadDetails();
             }
@@ -129,22 +133,6 @@ $(function() {
             this.unsetModel();
             return this.render();
         },
-
-        // save: function() {
-
-        //     // Save ListItem model
-        //     var props = {
-        //         Summary: this.els.summaryInput.val(),
-        //         Due: this.els.dueDateValue.val(),
-        //     };
-        //     this.model.save(props, {patch: true})
-
-        //     // Save ListItemDetails model
-        //     this.model.details.save({Body: this.els.detailsInput.val()}, {patch: true});
-
-        //     return this;
-
-        // },
 
         unsetModel: function() {
             if (this.model) this.unbindModelEvents();
@@ -300,7 +288,10 @@ $(function() {
         },
 
         onDetailsLoaded: function() {
-            return this.render();
+            this.enableDetailsInput();
+            this.els.inlineDetailsInput.val(this.model.details.get('Body'))
+            this.els.fullDetails.html(this.model.details.get('Body'))
+            return this;
         },
 
         onBodyClick: function(ev) {
@@ -319,6 +310,17 @@ $(function() {
 
         unbindBodyClickEvents: function() {
             $('body').off('click', $.proxy(this.onBodyClick, this));
+        },
+
+        disableDetailsInput: function() {
+            this.els.inlineDetailsInput.attr('disabled', 'disabled');
+            return this;
+        },
+
+        enableDetailsInput: function() {
+            this.els.inlineDetailsInput.removeAttr('disabled');
+            return this;
+
         },
 
     });

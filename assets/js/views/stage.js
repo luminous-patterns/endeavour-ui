@@ -9,6 +9,9 @@ $(function() {
 
         dragging: null,
 
+        minWidth: 950,
+        minHeight: 600,
+
         initialize: function() {
 
             console.log('### initialize stage view');
@@ -17,6 +20,7 @@ $(function() {
 
             this.headerOn = true;
             this.header = new Endeavour.View.Header;
+            this.smallScreenOverlay = null;
 
             this.currentViewName = null;
 
@@ -41,19 +45,62 @@ $(function() {
 
         render: function() {
             console.log('### render stage view');
+            this.checkStageSize();
             return this;
         },
 
         resize: function(height, width) {
-            console.log('resize stage', height, width);
+
             this.height = height;
             this.width = width;
+
+            this.checkStageSize();
+
             if (this.currentView) {
                 var currentView = this.currentView;
                 if ('resize' in currentView) {
                     currentView.resize(this.getUseableHeight(), this.getUseableWidth());
                 }
             }
+
+        },
+
+        checkStageSize: function() {
+
+            if (this.height < this.minHeight || this.width < this.minWidth) {
+                if (!this.smallScreenOverlay) this.showSmallScreenOverlay();
+                else this.smallScreenOverlay.render();
+            }
+            else if (this.smallScreenOverlay) {
+                this.hideSmallScreenOverlay();
+            }
+
+            return this;
+
+        },
+
+        getMinHeight: function() {
+            return this.minHeight;
+        },
+
+        getMinWidth: function() {
+            return this.minWidth;
+        },
+
+        showSmallScreenOverlay: function() {
+            console.log('showing overlay');
+            if (this.smallScreenOverlay) return this;
+            var smallScreenOverlay = this.smallScreenOverlay = new Endeavour.View.SmallScreenOverlay;
+            this.$el.append(smallScreenOverlay.$el);
+            smallScreenOverlay.render();
+            return this;
+        },
+
+        hideSmallScreenOverlay: function() {
+            if (!this.smallScreenOverlay) return this;
+            this.smallScreenOverlay.close();
+            this.smallScreenOverlay = null;
+            return this;
         },
 
         newDialogContainer: function(dialog) {

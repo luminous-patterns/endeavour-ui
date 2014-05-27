@@ -245,6 +245,13 @@
                     cursor: pointer;
                     position: absolute;
 
+                    &:hover {
+
+                        div.outline {
+                            border-color: #aaa;
+                        }
+
+                    }
                     div.outline {
 
                         height: 18px;
