@@ -41,8 +41,6 @@ $(function() {
 
         render: function() {
 
-            // this.renderCellPositions();
-
             return this;
 
         },
@@ -133,16 +131,70 @@ $(function() {
 
         nextResizeCell: function() {
             this.resizeCellIndex = this.resizeCellIndex == this.cells.length - 1 ? 0 : this.resizeCellIndex + 1;
-            return this;
+            return this.resizeCellIndex;
         },
 
         prevResizeCell: function() {
             this.resizeCellIndex = this.resizeCellIndex == 0 ? this.cells.length - 1 : this.resizeCellIndex - 1;
-            return this;
+            return this.resizeCellIndex;
         },
 
         getResizeCellIndex: function() {
             return this.resizeCellIndex;
+        },
+
+        increaseCellHeights: function(px) {
+
+            var resizeCellIndex = null;
+            var numCells = this.cells.length;
+
+            for (var i = 0; i < numCells; i++) {
+
+                resizeCellIndex = this.getResizeCellIndex();
+
+                this.addCellHeight(resizeCellIndex, px/numCells);
+                this.addNextCellsHorizontal(resizeCellIndex, px/numCells);
+
+                this.nextResizeCell();
+
+            }
+
+        },
+
+        decreaseCellHeights: function(px) {
+
+            var resizeCellIndex = null;
+            var numCells = this.cells.length;
+
+            for (var i = 0; i < numCells; i++) {
+
+                resizeCellIndex = this.getResizeCellIndex();
+
+                this.subCellHeight(resizeCellIndex, px/numCells);
+                this.subNextCellsHorizontal(resizeCellIndex, px/numCells);
+
+                this.prevResizeCell();
+
+            }
+
+        },
+
+        addNextCellsHorizontal: function(cellIndex, px) {
+
+            for (var i = cellIndex + 1; i < this.cells.length; i++) {
+                this.addCellTop(i, px);
+                this.addHandleTop(i-1, px);
+            }
+
+        },
+
+        subNextCellsHorizontal: function(cellIndex, px) {
+
+            for (var i = cellIndex + 1; i < this.cells.length; i++) {
+                this.subCellTop(i, px);
+                this.subHandleTop(i-1, px);
+            }
+
         },
 
         updateHorizontalCellPositions: function(oldHeight, newHeight) {
@@ -150,35 +202,8 @@ $(function() {
             var changeHeight = newHeight - oldHeight;
             var heightIncreased = changeHeight > 0;
 
-            // Find the "primary" cell
-            var primaryCellIndex = this.getPrimaryCellIndex();
-
-            // Increase the primary cell
-            if (heightIncreased) this.addCellHeight(primaryCellIndex, changeHeight);
-            else this.subCellHeight(primaryCellIndex, Math.abs(changeHeight));
-            
-            // Increase left and right For each cell after the primary
-            for (var i = primaryCellIndex + 1; i < this.cells.length; i++) {
-                
-                cell = this.cells[i];
-
-                isLastCell = i == this.cells.length - 1;
-                isFirstCell = i == 0;
-
-                if (heightIncreased) {
-
-                    this.addCellTop(i, changeHeight);
-                    this.addHandleTop(i-1, changeHeight);
-
-                }
-                else {
-
-                    this.subCellTop(i, Math.abs(changeHeight));
-                    this.subHandleTop(i-1, Math.abs(changeHeight));
-
-                }
-
-            }
+            if (heightIncreased) this.increaseCellHeights(changeHeight);
+            else this.decreaseCellHeights(Math.abs(changeHeight));
 
         },
 
@@ -186,40 +211,67 @@ $(function() {
             return 1;
         },
 
+        increaseCellWidths: function(px) {
+
+            var resizeCellIndex = null;
+            var numCells = this.cells.length;
+
+            for (var i = 0; i < numCells; i++) {
+
+                resizeCellIndex = this.getResizeCellIndex();
+
+                this.addCellWidth(resizeCellIndex, px/numCells);
+                this.addNextCellsVertical(resizeCellIndex, px/numCells);
+
+                this.nextResizeCell();
+
+            }
+
+        },
+
+        decreaseCellWidths: function(px) {
+
+            var resizeCellIndex = null;
+            var numCells = this.cells.length;
+
+            for (var i = 0; i < numCells; i++) {
+
+                resizeCellIndex = this.getResizeCellIndex();
+
+                this.subCellWidth(resizeCellIndex, px/numCells);
+                this.subNextCellsVertical(resizeCellIndex, px/numCells);
+
+                this.prevResizeCell();
+
+            }
+
+        },
+
+        addNextCellsVertical: function(cellIndex, px) {
+
+            for (var i = cellIndex + 1; i < this.cells.length; i++) {
+                this.addCellLeft(i, px);
+                this.addHandleLeft(i-1, px);
+            }
+
+        },
+
+        subNextCellsVertical: function(cellIndex, px) {
+
+            for (var i = cellIndex + 1; i < this.cells.length; i++) {
+                this.subCellLeft(i, px);
+                this.subHandleLeft(i-1, px);
+            }
+
+        },
+
         updateVerticalCellPositions: function(oldWidth, newWidth) {
 
             var changeWidth = newWidth - oldWidth;
             var widthIncreased = changeWidth > 0;
 
-            // Find the "primary" cell
-            var primaryCellIndex = this.getPrimaryCellIndex();
-
-            // Increase the primary cell right
-            if (widthIncreased) this.addCellWidth(primaryCellIndex, changeWidth);
-            else this.subCellWidth(primaryCellIndex, Math.abs(changeWidth));
-            
-            // Increase left and right For each cell after the primary
-            for (var i = primaryCellIndex + 1; i < this.cells.length; i++) {
-                
-                cell = this.cells[i];
-
-                isLastCell = i == this.cells.length - 1;
-                isFirstCell = i == 0;
-
-                if (widthIncreased) {
-
-                    this.addCellLeft(i, changeWidth);
-                    this.addHandleLeft(i-1, changeWidth);
-
-                }
-                else {
-
-                    this.subCellLeft(i, Math.abs(changeWidth));
-                    this.subHandleLeft(i-1, Math.abs(changeWidth));
-
-                }
-
-            }
+            if (widthIncreased) this.increaseCellWidths(changeWidth);
+            else this.decreaseCellWidths(Math.abs(changeWidth));
 
             return this;
 
@@ -232,8 +284,6 @@ $(function() {
             var totalCellWeights = this.getTotalCellWeights();
             var totalCellWeightsBeforeThis = this.getTotalCellWeightsUntil(cellIndex);
             var handlePosition = 0;
-
-            console.log(this.getTotalCellWeights(),totalCellWeightsBeforeThis,'Total weights');
 
             if (this.cellOrientation == 'vertical') {
 
@@ -308,7 +358,6 @@ $(function() {
             this.$el.append(flexiCell.render().$el);
 
             // Render cell positions
-            console.log('rrrrr',this.height,this.width);
             this.renderCellPositions();
 
             return flexiCell;
