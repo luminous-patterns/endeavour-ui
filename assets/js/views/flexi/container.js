@@ -147,13 +147,16 @@ $(function() {
 
             var resizeCellIndex = null;
             var numCells = this.cells.length;
+            var totalCellWeights = this.getTotalCellWeights();
 
             for (var i = 0; i < numCells; i++) {
 
+                var cellWeight = this.cellPos[i].weight;
+
                 resizeCellIndex = this.getResizeCellIndex();
 
-                this.addCellHeight(resizeCellIndex, px/numCells);
-                this.addNextCellsHorizontal(resizeCellIndex, px/numCells);
+                this.addCellHeight(resizeCellIndex, (px/totalCellWeights)*cellWeight);
+                this.addNextCellsHorizontal(resizeCellIndex, (px/totalCellWeights)*cellWeight);
 
                 this.nextResizeCell();
 
@@ -165,13 +168,16 @@ $(function() {
 
             var resizeCellIndex = null;
             var numCells = this.cells.length;
+            var totalCellWeights = this.getTotalCellWeights();
 
             for (var i = 0; i < numCells; i++) {
 
+                var cellWeight = this.cellPos[i].weight;
+
                 resizeCellIndex = this.getResizeCellIndex();
 
-                this.subCellHeight(resizeCellIndex, px/numCells);
-                this.subNextCellsHorizontal(resizeCellIndex, px/numCells);
+                this.subCellHeight(resizeCellIndex, (px/totalCellWeights)*cellWeight);
+                this.subNextCellsHorizontal(resizeCellIndex, (px/totalCellWeights)*cellWeight);
 
                 this.prevResizeCell();
 
@@ -207,21 +213,20 @@ $(function() {
 
         },
 
-        getPrimaryCellIndex: function() {
-            return 1;
-        },
-
         increaseCellWidths: function(px) {
 
             var resizeCellIndex = null;
             var numCells = this.cells.length;
+            var totalCellWeights = this.getTotalCellWeights();
 
             for (var i = 0; i < numCells; i++) {
 
+                var cellWeight = this.cellPos[i].weight;
+
                 resizeCellIndex = this.getResizeCellIndex();
 
-                this.addCellWidth(resizeCellIndex, px/numCells);
-                this.addNextCellsVertical(resizeCellIndex, px/numCells);
+                this.addCellWidth(resizeCellIndex, (px/totalCellWeights)*cellWeight);
+                this.addNextCellsVertical(resizeCellIndex, (px/totalCellWeights)*cellWeight);
 
                 this.nextResizeCell();
 
@@ -233,13 +238,16 @@ $(function() {
 
             var resizeCellIndex = null;
             var numCells = this.cells.length;
+            var totalCellWeights = this.getTotalCellWeights();
 
             for (var i = 0; i < numCells; i++) {
 
+                var cellWeight = this.cellPos[i].weight;
+
                 resizeCellIndex = this.getResizeCellIndex();
 
-                this.subCellWidth(resizeCellIndex, px/numCells);
-                this.subNextCellsVertical(resizeCellIndex, px/numCells);
+                this.subCellWidth(resizeCellIndex, (px/totalCellWeights)*cellWeight);
+                this.subNextCellsVertical(resizeCellIndex, (px/totalCellWeights)*cellWeight);
 
                 this.prevResizeCell();
 

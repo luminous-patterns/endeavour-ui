@@ -138,11 +138,11 @@ $(function() {
                 minWidth: 210,
             });
             var middleCell = flexi.addCell({
-                weight: 1.5,
+                weight: 2,
                 minWidth: 330,
             });
             var rightCell = flexi.addCell({
-                weight: 2.5,
+                weight: 2,
                 extraClassName: 'list-item-details-cell',
                 minWidth: 330,
             });
