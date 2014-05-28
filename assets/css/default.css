@@ -74,8 +74,8 @@ div#small-screen-overlay .message-container { margin: 0 auto; max-width: 300px; 
 .dialog .dialog-section input.full-width, .dialog .dialog-section select.full-width, .dialog .dialog-section textarea.full-width { width: 100%; }
 .dialog .dialog-section textarea.tall { height: 200px; }
 .dialog .dialog-section .rating-stars { list-style-type: none; margin: 0; padding: 0; width: 250px; display: inline-block; vertical-align: middle; }
-.dialog .dialog-section .rating-stars li { cursor: pointer; display: inline-block; height: 50px; width: 50px; background-image: url(../img/feedback-star-inactive.png); background-size: 32px; background-repeat: no-repeat; background-position: center; }
-.dialog .dialog-section .rating-stars li.active { background-image: url(../img/feedback-star-active.png); }
+.dialog .dialog-section .rating-stars li { cursor: pointer; display: inline-block; height: 32px; width: 32px; margin: 9px; background-image: url(../img/feedback-star.png); background-size: 32px; background-repeat: no-repeat; background-position: 0px 0px; }
+.dialog .dialog-section .rating-stars li.active { background-image: url(../img/feedback-star.png); background-position: 0px -32px; }
 .dialog .dialog-section .rating-value { display: inline-block; line-height: 30px; padding: 10px 30px; vertical-align: middle; color: #aaa; font-style: italic; }
 .dialog .dialog-section .instructions { font-size: 0.75em; color: #aaa; margin-left: 10px; }
 .dialog .dialog-section.error-section { color: #a21; }

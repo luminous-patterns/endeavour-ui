@@ -142,7 +142,7 @@ $(function() {
                 minWidth: 330,
             });
             var rightCell = flexi.addCell({
-                weight: 2,
+                weight: 3,
                 extraClassName: 'list-item-details-cell',
                 minWidth: 330,
             });

@@ -110,15 +110,17 @@
 
                 cursor: pointer;
                 display: inline-block;
-                height: 50px;
-                width: 50px;
-                background-image: url(../img/feedback-star-inactive.png);
+                height: 32px;
+                width: 32px;
+                margin: 9px;
+                background-image: url(../img/feedback-star.png);
                 background-size: 32px;
                 background-repeat: no-repeat;
-                background-position: center;
+                background-position: 0px 0px;
 
                 &.active {
-                    background-image: url(../img/feedback-star-active.png);
+                    background-image: url(../img/feedback-star.png);
+                    background-position: 0px -32px;
                 }
 
             }
