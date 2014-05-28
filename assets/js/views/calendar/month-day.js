@@ -26,7 +26,6 @@ $(function() {
 
             if (this.options.extra) {
                 this.$el.addClass('extra');
-                // this.$el.append(this.date.getDate() + '/' + (this.date.getMonth() + 1));
                 this.$el.append(this.date.getDate());
             }
             else {
