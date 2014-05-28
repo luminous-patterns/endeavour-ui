@@ -8,6 +8,7 @@ $(function() {
         events: {
             'click .add-list':                'onClickAddList',
             'click .add-item':                'onClickAddListItem',
+            'click .back-button button':      'onClickBackButton',
             'submit .list-item-quick-add':    'onSubmitListItemQuickForm',
         },
 
@@ -28,9 +29,10 @@ $(function() {
 
             this.els.header = $('<div class="list-items-section-header">'
                 + '<h3>My Lists</h3>'
+                + '<div class="back-button"><button type="button"><span class="icon"></span></button></div>'
                 + '<div class="buttons">'
-                + '<button type="button" class="add-item">+ Item</button>'
-                + '<button type="button" class="add-list">+ List</button>'
+                + '<button type="button" class="add-item"><strong>+</strong> Item</button>'
+                + '<button type="button" class="add-list"><strong>+</strong> List</button>'
                 + '</buttons></div>');
             this.els.addListItemInputContainer = $('<div class="list-item-input-container"><form class="list-item-quick-add">'
                 + '<label for="list-items-section-input">Item Summary</label>'
@@ -56,6 +58,7 @@ $(function() {
                 .append(this.els.listContainer);
 
             this.hideHeaderButtons();
+            this.hideBackButton();
 
         },
 
@@ -67,12 +70,14 @@ $(function() {
 
                     this.setTitle(this.model.get('Title'));
                     this.showAddListItemButton();
+                    this.showBackButton();
 
                 }
                 else if (this.model instanceof Endeavour.Model.User) {
 
                     this.setTitle('My Lists');
                     this.hideAddListItemButton();
+                    this.hideBackButton();
 
                 }
 
@@ -119,6 +124,16 @@ $(function() {
             ===================================
 
         */
+
+        onClickBackButton: function() {
+            if (this.model.get('ParentID')) {
+                Endeavour.router.navigate('#/list/' + this.model.get('ParentID'), {trigger: true});
+            }
+            else {
+                Endeavour.router.navigate('#/lists', {trigger: true});
+            }
+            return this;
+        },
 
         onClickAddList: function() {
             if (this.model) {
@@ -204,6 +219,16 @@ $(function() {
 
         showHeaderButtons: function() {
             this.els.header.find('button').show();
+        },
+
+        hideBackButton: function() {
+            this.els.header.removeClass('show-back-button');
+            return this;
+        },
+
+        showBackButton: function() {
+            this.els.header.addClass('show-back-button');
+            return this;
         },
 
         /*
