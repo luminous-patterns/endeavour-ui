@@ -6,15 +6,20 @@ $(function() {
         tagName: 'div',
         className: 'dialog',
 
+        events: {
+            'submit form':   'onSubmit',
+        },
+
         initialize: function() {
 
             this.els = {};
             this.validationErrorMessage = '';
 
             this.els.title = $('<div class="dialog-title">Endeavour Registration</div>');
+            this.els.form = $('<form></form>');
 
-            this.els.firstNameSection = $('<div class="dialog-section"><label for="email">First Name</label><input type="email" id="first-name" /></div>');
-            this.els.lastNameSection = $('<div class="dialog-section"><label for="email">Last Name</label><input type="email" id="last-name" /></div>');
+            this.els.firstNameSection = $('<div class="dialog-section"><label for="email">First Name</label><input type="text" id="first-name" /></div>');
+            this.els.lastNameSection = $('<div class="dialog-section"><label for="email">Last Name</label><input type="text" id="last-name" /></div>');
             this.els.emailAddressSection = $('<div class="dialog-section"><label for="email">Email Address</label><input type="email" id="email" /></div>');
             this.els.confirmEmailSection = $('<div class="dialog-section"><label for="email">Confirm Email Address</label><input type="email" id="confirm-email" /></div>');
             this.els.timeZoneSection = $('<div class="dialog-section"><label for="time-zone">Time Zone</label><select id="time-zone"><option>Australia/Melbourne</option></select></div>');
@@ -27,30 +32,22 @@ $(function() {
             this.els.timeZoneSelect = this.els.timeZoneSection.find('#time-zone');
             this.els.newsletterCheckbox = this.els.newsletterSection.find('#newsletter')
 
-            this.els.buttonSection = $('<div class="dialog-section button-section"><div class="loading hidden"></div><button class="call-to-action">Complete registration</button></div>');
+            this.els.buttonSection = $('<div class="dialog-section button-section"><div class="loading hidden"></div><button type="submit" class="call-to-action">Complete registration</button></div>');
             this.els.submitButton = this.els.buttonSection.find('.call-to-action');
             this.els.loadingIndicator = this.els.buttonSection.find('.loading');
 
-            this.els.errorMessage = $('<div class="error-message"></div>');
-            this.els.errorContainer = $('<div class="dialog-section error-section"></div>');
-
-            this.els.errorContainer
-                .append(this.els.errorMessage)
-                .hide();
-
-            this.$el
-                .append(this.els.title)
+            this.els.form
                 .append(this.els.firstNameSection)
                 .append(this.els.lastNameSection)
                 .append(this.els.emailAddressSection)
                 .append(this.els.confirmEmailSection)
                 .append(this.els.timeZoneSection)
                 .append(this.els.newsletterSection)
-                .append(this.els.buttonSection)
-                .prepend(this.els.errorContainer);
+                .append(this.els.buttonSection);
 
-            this.els.submitButton
-                .on('click', $.proxy(this.onClickSubmit, this));
+            this.$el
+                .append(this.els.title)
+                .append(this.els.form);
 
             this.hideLoading();
 
@@ -141,7 +138,8 @@ $(function() {
             return this;
         },
 
-        onClickSubmit: function() {
+        onSubmit: function(ev) {
+            ev.preventDefault();
             this.submitRegistration();
             return this;
         },
