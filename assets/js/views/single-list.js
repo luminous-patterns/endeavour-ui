@@ -80,7 +80,7 @@ $(function() {
 
         render: function() {
 
-            this.els.titleText.html(this.model.get('Title'));
+            this.els.titleText.text(this.model.get('Title'));
             this.els.titleInput.val(this.model.get('Title'));
             this.els.titleInput.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, this.els.titleInput.val().length + Number(this.els.titleInput.val().length * 0.1))));
 
@@ -90,7 +90,7 @@ $(function() {
             }
 
             if (this.model.owner) {
-                this.els.ownerLabel.html(this.model.owner.get('FirstName'));
+                this.els.ownerLabel.text(this.model.owner.get('FirstName'));
                 this.els.titleText.append(this.els.ownerLabel);
             }
 

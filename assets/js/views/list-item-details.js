@@ -89,7 +89,7 @@ $(function() {
         renderModelElements: function() {
 
             this.els.inlineSummaryInput.val(this.model.get('Summary'));
-            this.els.summary.html(this.model.get('Summary'));
+            this.els.summary.text(this.model.get('Summary'));
 
             var dueDate = this.model.getDueDate();
             if (dueDate) {
@@ -106,7 +106,6 @@ $(function() {
             if (this.model.detailsLoaded) {
                 this.enableDetailsInput();
                 this.els.inlineDetailsInput.val(this.model.details.get('Body'))
-                this.els.fullDetails.html(this.model.details.get('Body'))
             }
             else {
                 this.disableDetailsInput();
@@ -289,8 +288,7 @@ $(function() {
 
         onDetailsLoaded: function() {
             this.enableDetailsInput();
-            this.els.inlineDetailsInput.val(this.model.details.get('Body'))
-            this.els.fullDetails.html(this.model.details.get('Body'))
+            this.els.inlineDetailsInput.val(this.model.details.get('Body'));
             return this;
         },
 
@@ -300,8 +298,10 @@ $(function() {
         },
 
         closeDatePicker: function() {
+            if (!this.datePicker) return this;
             this.datePicker.close();
             this.datePicker = null;
+            return this;
         },
         
         bindBodyClickEvents: function() {

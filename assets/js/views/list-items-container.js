@@ -118,7 +118,7 @@ $(function() {
         },
 
         setTitle: function(title) {
-            this.els.headerTitle.html(title ? title : 'My Lists');
+            this.els.headerTitle.text(title ? title : 'My Lists');
             return this;
         },
 

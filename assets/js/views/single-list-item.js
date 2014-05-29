@@ -56,7 +56,7 @@ $(function() {
 
         render: function() {
 
-            this.els.summary.html(this.model.get('Summary'));
+            this.els.summary.text(this.model.get('Summary'));
             this.els.summaryInput.val(this.model.get('Summary'));
             this.els.summaryInput.attr('size', Math.min(this.inputMaxSize, Math.max(this.inputMinSize, this.els.summaryInput.val().length + Number(this.els.summaryInput.val().length * 0.1))));
 

@@ -76,7 +76,7 @@ $(function() {
         render: function() {
 
             if (Endeavour.state.session.user) {
-                this.els.currentEmailText.html(Endeavour.state.session.user.get('EmailAddress'));
+                this.els.currentEmailText.text(Endeavour.state.session.user.get('EmailAddress'));
             }
 
             return this;
@@ -155,7 +155,7 @@ $(function() {
 
             this.setStep(2);
 
-            this.els.newEmailText.html(this.els.newEmailInput.val());
+            this.els.newEmailText.text(this.els.newEmailInput.val());
 
             this.hideLoading()
                 .enableButtons();
