@@ -62,6 +62,9 @@ $(function() {
                                 });
                             }
                             break;
+                        case 'access_denied':
+                            Endeavour.router.navigate('#/lists', {trigger: true});
+                            break;
                     }
                     break;
                 case 404:

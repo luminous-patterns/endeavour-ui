@@ -10,10 +10,12 @@ $(function() {
         initialize: function() {
 
             var titleEl = this.els.title = $('<h3></h3>');
-            var excerptEl = this.els.excerpt = $('<ul class="news-posts"></ul>');
+            var dateEl = this.els.date = $('<div class="date"></div>');
+            var excerptEl = this.els.excerpt = $('<div class="excerpt"></div>');
 
             this.$el
                 .append(titleEl)
+                .append(dateEl)
                 .append(excerptEl);
 
         },
@@ -22,7 +24,8 @@ $(function() {
 
             var model = this.model;
 
-            this.els.title.html(model.get('Title'));
+            this.els.title.text(model.get('Title'));
+            this.els.date.text(model.getPublishedDate().toDateString());
             this.els.excerpt.html(model.get('Excerpt'));
 
             return this;

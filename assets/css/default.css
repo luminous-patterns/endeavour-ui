@@ -218,7 +218,10 @@ div.flexi-container div.flexi-cell div.flexi-content { background-color: #fff; p
 #dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements { padding: 20px; }
 #dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements h2 { margin: 0; line-height: 1; border-bottom: 1px solid #888; padding-bottom: 20px; }
 #dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements ul.news-posts { list-style-type: none; margin: 0; padding: 0; }
-#dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements ul.news-posts li.news-post { margin-top: 20px; border-bottom: 1px solid #888; padding-bottom: 20px; }
+#dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements ul.news-posts li.news-post { margin-top: 20px; position: relative; }
+#dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements ul.news-posts li.news-post h3 { background-color: #333; padding: 10px; border-radius: 3px 3px 0 0; margin: 0; }
+#dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements ul.news-posts li.news-post div.excerpt { background-color: #ddd; color: #333; padding: 15px 20px; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3); border-radius: 0 0 3px 3px; }
+#dashboard div.dashboard-flexi .flexi-cell.news-cell .flexi-content .news-and-announcements ul.news-posts li.news-post div.date { position: absolute; top: 10px; right: 10px; color: #aaa; line-height: 20px; }
 
 #my-account div.my-account-flexi { position: absolute; top: 100px; left: 0; bottom: 0; right: 0; }
 #my-account div.my-account-flexi div.flexi-container div.flexi-cell div.flexi-content { background-color: transparent; }
@@ -247,14 +250,14 @@ a { -webkit-transition: color 100ms; transition: color 100ms; }
 
 button, input, textarea, select { font-family: "Exo2"; }
 
-@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-Regular.tff); src: url(../fonts/Exo2/Exo2-Regular.ttf) format("truetype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-Regular.woff) format("woff"), url(../fonts/Exo2/Exo2-Regular.ttf) format("truetype"); font-weight: 400; font-style: normal; }
 
-@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-Italic.tff); src: url(../fonts/Exo2/Exo2-Italic.ttf) format("truetype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-Italic.woff) format("woff"), url(../fonts/Exo2/Exo2-Italic.ttf) format("truetype"); font-weight: 400; font-style: italic; }
 
-@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBold.tff); src: url(../fonts/Exo2/Exo2-SemiBold.ttf) format("truetype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBold.woff) format("woff"), url(../fonts/Exo2/Exo2-SemiBold.ttf) format("truetype"); font-weight: 600; font-style: normal; }
 
-@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBoldItalic.tff); src: url(../fonts/Exo2/Exo2-SemiBoldItalic.ttf) format("truetype"); font-weight: 600; font-style: italic; }
+@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBoldItalic.woff) format("woff"), url(../fonts/Exo2/Exo2-SemiBoldItalic.ttf) format("truetype"); font-weight: 600; font-style: italic; }
 
-@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBold.tff); src: url(../fonts/Exo2/Exo2-SemiBold.ttf) format("truetype"); font-weight: 800; font-style: normal; }
+@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBold.woff) format("woff"), url(../fonts/Exo2/Exo2-SemiBold.ttf) format("truetype"); font-weight: 800; font-style: normal; }
 
-@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBoldItalic.tff); src: url(../fonts/Exo2/Exo2-SemiBoldItalic.ttf) format("truetype"); font-weight: 800; font-style: italic; }
+@font-face { font-family: "Exo2"; src: url(../fonts/Exo2/Exo2-SemiBoldItalic.woff) format("woff"), url(../fonts/Exo2/Exo2-SemiBoldItalic.ttf) format("truetype"); font-weight: 800; font-style: italic; }
