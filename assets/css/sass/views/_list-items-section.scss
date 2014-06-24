@@ -13,7 +13,7 @@
             top: 50px;
         }
         .list-items-container {
-            top: 85px;
+            top: 86px;
         }
 
     }
@@ -133,46 +133,50 @@
     .list-item-input-container {
 
         position: absolute;
-        top: 15px;
+        top: 14px;
         left: 0;
         right: 0;
-        height: 35px;
+        height: 36px;
         transition: top 300ms;
         z-index: 3;
-        @include background(linear-gradient(to bottom right, #f5f5f5 0%, #fafafa 100%));
-        border-bottom: 1px solid #eee;
+        @include background(linear-gradient(to bottom right, #e5e5e5 0%, #eaeaea 100%));
+        border-bottom: 1px solid #ddd;
 
         label {
             position: absolute;
-            left: 10px;
+            left: 13px;
             line-height: 35px;
             font-size: 0.7em;
             text-transform: uppercase;
-            color: #777;
+            color: #aaa;
+            z-index: 3;
         }
         .list-items-section-input-container {
 
             position: absolute;
-            left: 100px;
+            left: 3px;
             top: 3px;
             height: 27px;
-            right: 60px;
+            right: 3px;
 
             input {
-                background: transparent;
-                border: none;
+                background: #fff;
+                border: 1px solid #ccc;
                 width: 100%;
                 line-height: 23px;
-                padding: 2px 0;
+                padding: 2px 60px 2px 100px;
                 margin: 0;
                 outline: none;
+                box-shadow: inset 1px 1px 1px rgba(0,0,0,0.05);
+                border-radius: 3px;
             }
 
         }
         button {
             position: absolute;
-            right: 3px;
-            top: 4px;
+            right: 4px;
+            top: 6px;
+            height: 23px;
         }
 
     }
